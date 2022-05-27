@@ -1,0 +1,86 @@
+<div class="flex flex-col flex-auto w-full">
+    <div class="w-full max-w-screen-xl mx-auto p-5">
+        <table class="w-full" mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="batchNumber">
+                <th mat-header-cell *matHeaderCellDef>Batch Number</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.batchNumber }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="geneticStain">
+                <th mat-header-cell *matHeaderCellDef>Genetic Stain</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.geneticStain }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="geneticCompany">
+                <th mat-header-cell *matHeaderCellDef>Genetic Company</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.geneticCompany }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="grower">
+                <th mat-header-cell *matHeaderCellDef>Grower Name</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.grower.businessName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="plantTest">
+                <th mat-header-cell *matHeaderCellDef>Test Status</th>
+                <td mat-cell *matCellDef="let element">
+                    <span
+                        class="badge"
+                        [ngClass]="
+                            element && !element.plantTest
+                                ? 'badge-light-danger'
+                                : 'badge-light-success'
+                        "
+                        >{{
+                            element && !element.plantTest ? "Pending" : "Done"
+                        }}</span
+                    >
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="plantProcess">
+                <th mat-header-cell *matHeaderCellDef>Process Status</th>
+                <td mat-cell *matCellDef="let element">
+                    <span
+                        class="badge"
+                        [ngClass]="
+                            element && !element.plantProcess
+                                ? 'badge-light-danger'
+                                : 'badge-light-success'
+                        "
+                        >{{
+                            element && !element.plantProcess
+                                ? "Pending"
+                                : "Done"
+                        }}</span
+                    >
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="w-10"></th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-raised-button class="max-h-auto">
+                        View Details
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="visibleColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: visibleColumns"></tr>
+        </table>
+
+        <mat-paginator
+            [pageSizeOptions]="[5, 10, 20, 30]"
+            [pageSize]="pageSize"
+            [length]="totalResults"
+            (page)="getDeliveriesData()"
+        >
+        </mat-paginator>
+    </div>
+</div>
