@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { PatientService } from 'app/core/admin/patient/patient.service';
 import { PlantsService } from 'app/core/admin/plants/plants.service';
 import { Patients } from './patients.interfaces';
 import { displayedColumns } from './patients.interfaces';
@@ -18,7 +19,7 @@ export class PatientsComponent implements OnInit {
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-    constructor(private plantsServices: PlantsService) {}
+    constructor(private patientServices: PatientService) {}
 
     visibleColumns = displayedColumns;
 
@@ -32,8 +33,8 @@ export class PatientsComponent implements OnInit {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
             : 10;
-        this.plantsServices
-            .getplantsDetails(
+        this.patientServices
+            .getPatientDetails(
                 this.paginator.pageSize,
                 this.paginator.pageIndex + 1
             )

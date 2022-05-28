@@ -56,7 +56,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Logout',
         type: 'basic',
         icon: 'heroicons_outline:logout',
-        link: '/logout',
+        link: '/sign-out',
     },
 ];
 export const compactNavigation: FuseNavigationItem[] = [

@@ -43,7 +43,7 @@ export class DeliveriesComponent implements OnInit {
                 (response: any) => {
                     this.dataSource = response.data.result.results;
                     this.totalResults = response.data.result.totalResults;
-                    console.log(response.data.result.results);
+                    console.log('deliverList', response.data.result);
                 },
                 (err: any) => {
                     console.log(err);

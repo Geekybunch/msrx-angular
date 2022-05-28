@@ -1,19 +1,15 @@
 export interface Patients {
-    batchNumber: string;
-    geneticStain: string;
-    geneticCompany: string;
-    grower: string;
-    plantTest: string;
-    plantProcess: string;
-    actions: any;
+    name: string;
+    age: string;
+    address: string;
+    mobile: string;
 }
 
 export const displayedColumns = [
-    'batchNumber',
-    'geneticStain',
-    'geneticCompany',
-    'grower',
-    'plantTest',
-    'plantProcess',
+    'name',
+    'age',
+    'address',
+    'mobile',
+    'createdAt',
     'actions',
 ];

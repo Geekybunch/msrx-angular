@@ -5,6 +5,8 @@ import { Route, RouterModule } from '@angular/router';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 const patientsRoutes: Route[] = [
     {
@@ -21,6 +23,8 @@ const patientsRoutes: Route[] = [
         MatPaginatorModule,
         MatTableModule,
         MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
     ],
 })
 export class PatientsModule {}

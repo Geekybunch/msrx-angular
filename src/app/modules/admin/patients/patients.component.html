@@ -1,76 +1,69 @@
 <div class="flex flex-col flex-auto w-full">
     <div class="w-full max-w-screen-xl mx-auto p-5">
         <table class="w-full" mat-table [dataSource]="dataSource">
-            <ng-container matColumnDef="batchNumber">
-                <th mat-header-cell *matHeaderCellDef>Batch Number</th>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.batchNumber }}
+                    {{ element.name }}
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="geneticStain">
-                <th mat-header-cell *matHeaderCellDef>Genetic Stain</th>
+            <ng-container matColumnDef="age">
+                <th mat-header-cell *matHeaderCellDef>Age</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.geneticStain }}
+                    {{ element.age }}
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="geneticCompany">
-                <th mat-header-cell *matHeaderCellDef>Genetic Company</th>
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef>Address</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.geneticCompany }}
+                    {{ element.address }}
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="grower">
-                <th mat-header-cell *matHeaderCellDef>Grower Name</th>
+            <ng-container matColumnDef="mobile">
+                <th mat-header-cell *matHeaderCellDef>Mobile</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.grower.businessName }}
+                    {{ element.mobile }}
                 </td>
             </ng-container>
-
-            <ng-container matColumnDef="plantTest">
-                <th mat-header-cell *matHeaderCellDef>Test Status</th>
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef>Created Date</th>
                 <td mat-cell *matCellDef="let element">
-                    <span
-                        class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
-                        [ngClass]="
-                            element && !element.plantProcess
-                                ? 'bg-red-200 text-red-600'
-                                : 'bg-green-200 text-green-600'
-                        "
-                        >{{
-                            element && !element.plantTest ? "Pending" : "Done"
-                        }}</span
-                    >
+                    {{ element.createdAt | date: "mediumDate" }}
                 </td>
             </ng-container>
-
-            <ng-container matColumnDef="plantProcess">
-                <th mat-header-cell *matHeaderCellDef>Process Status</th>
-                <td mat-cell *matCellDef="let element">
-                    <span
-                        class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
-                        [ngClass]="
-                            element && !element.plantProcess
-                                ? 'bg-red-200 text-red-600'
-                                : 'bg-green-200 text-green-600'
-                        "
-                        >{{
-                            element && !element.plantProcess
-                                ? "Pending"
-                                : "Done"
-                        }}</span
-                    >
-                </td>
-            </ng-container>
-
             <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef class="w-10"></th>
+                <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
-                    <button mat-raised-button class="max-h-auto">
-                        View Details
+                    <button mat-icon-button [matMenuTriggerFor]="overdueMenu">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:dots-vertical'"
+                        ></mat-icon>
                     </button>
+                    <mat-menu #overdueMenu="matMenu">
+                        <button mat-menu-item>
+                            <span class="flex items-center">
+                                <mat-icon
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'settings'"
+                                ></mat-icon>
+                                <span>Change Status</span>
+                            </span>
+                        </button>
+
+                        <button mat-menu-item>
+                            <span class="flex items-center">
+                                <mat-icon
+                                    class="icon-size-5 mr-3"
+                                    [svgIcon]="'delete'"
+                                ></mat-icon>
+                                <span>Delete</span>
+                            </span>
+                        </button>
+                    </mat-menu>
                 </td>
             </ng-container>
 

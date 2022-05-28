@@ -10,6 +10,9 @@ class Urls {
     get plants() {
         return this.serverUrl + '/plants';
     }
+    get patients() {
+        return this.serverUrl + '/patients';
+    }
     get employees() {
         return this.serverUrl + '/employees';
     }
