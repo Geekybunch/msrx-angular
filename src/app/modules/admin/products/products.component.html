@@ -1,43 +1,276 @@
-<div class="flex flex-col flex-auto w-full">
-    <div class="w-full max-w-screen-xl mx-auto p-5">
-        <table class="w-full" mat-table [dataSource]="dataSource">
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Product Name</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.name }}
-                </td>
-            </ng-container>
+<mat-sidenav-container class="example-container w-full">
+    <mat-sidenav-content>
+        <div class="flex flex-col flex-auto w-full">
+            <div class="w-full max-w-screen-xl mx-auto p-5">
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-8 bg-card mb-5"
+                >
+                    <div class="flex items-center">
+                        <mat-form-field
+                            class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                        >
+                            <mat-select
+                                (selectionChange)="filterBytype($event)"
+                                placeholder="Select By Type"
+                            >
+                                <mat-option [value]="'Manufacturer'">
+                                    Manufacturer</mat-option
+                                >
+                                <!-- <mat-option [value]="'Disposer'"
+                                    >Disposer</mat-option
+                                >
+                                <mat-option [value]="'Distributor'"
+                                    >Distributor</mat-option
+                                >
+                                <mat-option [value]="'Dispensary'"
+                                    >Dispensary</mat-option
+                                >
+                                <mat-option [value]="'Manufacturer'"
+                                    >Manufacturer</mat-option
+                                >
+                                <mat-option [value]="'Processor'"
+                                    >Processor</mat-option
+                                >
 
-            <ng-container matColumnDef="sku">
-                <th mat-header-cell *matHeaderCellDef>Sku</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.sku }}
-                </td>
-            </ng-container>
+                                <mat-option [value]="'Tester'"
+                                    >Tester</mat-option
+                                >
 
-            <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef>Description</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.description }}
-                </td>
-            </ng-container>
+                                <mat-option [value]="'WellnessCenter'"
+                                    >WellnessCenter</mat-option
+                                > -->
+                            </mat-select>
+                        </mat-form-field>
 
-            <ng-container matColumnDef="dosage">
-                <th mat-header-cell *matHeaderCellDef>Dosage</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.dosage }}
-                </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="visibleColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: visibleColumns"></tr>
-        </table>
+                        <mat-form-field
+                            class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 sm:ml-4 fuse-mat-dense"
+                            [floatLabel]="'always'"
+                        >
+                            <mat-icon
+                                matPrefix
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:search'"
+                            ></mat-icon>
+                            <input
+                                placeholder="Search by Name"
+                                (input)="filterByName(query.value)"
+                                matInput
+                                #query
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="flex flex-col items-center w-36">
+                        <div
+                            class="text-7xl font-bold tracking-tight leading-none text-blue-500"
+                        >
+                            {{ totalResults }}
+                        </div>
+                        <div
+                            class="text-lg font-medium text-blue-600 dark:text-blue-500"
+                        >
+                            Total Results
+                        </div>
+                    </div>
+                </div>
 
-        <mat-paginator
-            [pageSizeOptions]="[5, 10, 20, 30]"
-            [pageSize]="pageSize"
-            [length]="totalResults"
-            (page)="getProductsData()"
-        >
-        </mat-paginator>
-    </div>
-</div>
+                <table class="w-full" mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Product Name</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.name }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="businessType">
+                        <th mat-header-cell *matHeaderCellDef>Business Type</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.manufacturer.businessType }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sku">
+                        <th mat-header-cell *matHeaderCellDef>Sku</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.sku }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef>Description</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.description }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dosage">
+                        <th mat-header-cell *matHeaderCellDef>Dosage</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.dosage }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="w-10"></th>
+                        <td mat-cell *matCellDef="let element">
+                            <button
+                                (click)="sideToggle(element)"
+                                class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                            >
+                                View Details
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="visibleColumns"></tr>
+                    <tr
+                        mat-row
+                        *matRowDef="let row; columns: visibleColumns"
+                    ></tr>
+                </table>
+
+                <mat-paginator
+                    [pageSizeOptions]="[5, 10, 20, 30]"
+                    [pageSize]="pageSize"
+                    [length]="totalResults"
+                    (page)="getProductsData()"
+                >
+                </mat-paginator>
+            </div>
+        </div>
+    </mat-sidenav-content>
+    <mat-sidenav position="end" #sidenav class="sm:w-128">
+        <div class="p-6">
+            <div class="flex items-end justify-end absolute right-6">
+                <button mat-icon-button (click)="sidenav.close()">
+                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Product Details
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Name</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.name ? viewDetails.name : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Description</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.description
+                            ? viewDetails.description
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Dosage</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.dosage
+                            ? viewDetails.dosage
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Sku</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.sku ? viewDetails.sku : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Created At</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.createdAt
+                            ? (viewDetails.createdAt | date: "medium")
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col border-t pt-4 mt-5">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Employee Details
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Id Number</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.employee.idNumber
+                            ? viewDetails.employee.idNumber
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Name</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.employee.name
+                            ? viewDetails.employee.name
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Type</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.employee.type
+                            ? viewDetails.employee.type
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col border-t pt-4 mt-5">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Manufacturer Details
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Id Number</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.manufacturer.businessIDNumber
+                            ? viewDetails.manufacturer.businessIDNumber
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Name</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.manufacturer.businessName
+                            ? viewDetails.manufacturer.businessName
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Type</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.manufacturer.businessType
+                            ? viewDetails.manufacturer.businessType
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Phone</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.manufacturer.businessPhone
+                            ? viewDetails.manufacturer.businessPhone
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"> Address</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.manufacturer.businessAddress
+                            ? viewDetails.manufacturer.businessAddress
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav>
+</mat-sidenav-container>

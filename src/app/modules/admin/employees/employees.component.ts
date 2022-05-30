@@ -94,9 +94,9 @@ export class EmployeesComponent implements OnInit {
     }
     deleteBusiness(id: number) {
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Delete Business',
+            title: 'Delete employee',
             message:
-                'Are you sure you want to delete this Business? This action cannot be undone!',
+                'Are you sure you want to delete this employee? This action cannot be undone!',
             actions: {
                 confirm: {
                     label: 'Delete',

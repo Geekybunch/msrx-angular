@@ -27,10 +27,12 @@
     <button mat-menu-item>
         <span class="flex flex-col leading-none">
             <span>Signed in as</span>
-            <span class="mt-1.5 text-md font-medium">{{ user.email }}</span>
+            <span class="mt-1.5 text-md font-medium">{{
+                userDetails.email
+            }}</span>
         </span>
     </button>
-    <mat-divider class="my-2"></mat-divider>
+    <mat-divider class="m-0"></mat-divider>
     <!-- <button mat-menu-item>
         <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
         <span>Profile</span>
@@ -49,7 +51,7 @@
         <mat-icon [svgIcon]="'heroicons_outline:cog'"></mat-icon>
         <span>Change Password</span>
     </button>
-    <mat-divider class="my-2"></mat-divider>
+    <mat-divider class="m-0"></mat-divider>
     <button mat-menu-item (click)="signOut()">
         <mat-icon [svgIcon]="'heroicons_outline:logout'"></mat-icon>
         <span>Sign out</span>

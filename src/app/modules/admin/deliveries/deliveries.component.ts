@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { DeliveriesService } from 'app/core/admin/deliveries/deliveries.service';
 import { Deliveries } from './deliveries.interfaces';
@@ -12,9 +14,10 @@ import { displayedColumns } from './deliveries.interfaces';
     styleUrls: ['./deliveries.component.scss'],
 })
 export class DeliveriesComponent implements OnInit {
+    @ViewChild('sidenav') sideNav: MatSidenav;
     public pageSize = 10;
     public totalResults: number;
-
+    public deliveryDetails: any;
     visibleColumns = displayedColumns;
 
     dataSource = new MatTableDataSource<Deliveries>();
@@ -41,13 +44,18 @@ export class DeliveriesComponent implements OnInit {
             )
             .subscribe(
                 (response: any) => {
-                    this.dataSource = response.data.result.results;
-                    this.totalResults = response.data.result.totalResults;
-                    console.log('deliverList', response.data.result);
+                    this.dataSource = response.data.deliveries.results;
+                    this.totalResults = response.data.deliveries.totalResults;
+                    console.log(this.dataSource);
                 },
                 (err: any) => {
                     console.log(err);
                 }
             );
+    }
+    viewDetails(event) {
+        this.deliveryDetails = event;
+        console.log(event);
+        this.sideNav.toggle();
     }
 }

@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class AuthService {
     private _authenticated: boolean = false;
+    private userDtails: any;
     constructor(
         private _httpClient: HttpClient,
         private _userService: UserService
@@ -62,7 +63,11 @@ export class AuthService {
                     console.log(response);
                     this.accessToken = response.tokens.access.token;
                     this._authenticated = true;
-                    this._userService.user = response.data.user;
+                    this._userService.user = response.data.user.email;
+                    localStorage.setItem(
+                        'userData',
+                        JSON.stringify(response.data.user)
+                    );
                     return of(response);
                 })
             );
@@ -104,6 +109,7 @@ export class AuthService {
     signOut(): Observable<any> {
         // Remove the access token from the local storage
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('userData');
 
         // Set the authenticated flag to false
         this._authenticated = false;

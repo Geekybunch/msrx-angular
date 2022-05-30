@@ -1,19 +1,25 @@
 export interface Deliveries {
-    batchNumber: string;
-    geneticStain: string;
-    geneticCompany: string;
-    grower: string;
-    plantTest: string;
-    plantProcess: string;
+    businessName: string;
+    businessPhone: number;
+    vehicleNumber: string;
+    vehicleColor: string;
+
+    vehicleType: string;
+    pickUpLocation: string;
+    dropLocation: string;
     actions: any;
 }
 
 export const displayedColumns = [
-    'batchNumber',
-    'geneticStain',
-    'geneticCompany',
-    'grower',
-    'plantTest',
-    'plantProcess',
+    'businessName',
+    'businessPhone',
+    'vehicleNumber',
+    'vehicleColor',
+
+    'vehicleType',
+    'pickUpLocation',
+
+    'dropLocation',
+
     'actions',
 ];
