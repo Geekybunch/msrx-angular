@@ -1,4 +1,4 @@
-::ng-deep .mat-raised-button {
+ng-deep .mat-raised-button {
     max-height: auto !important;
     height: auto !important;
     min-height: auto !important;
@@ -13,5 +13,29 @@
     font-weight: 600;
 }
 .sm\:w-36 {
-    width: 11rem !important;
+    width: 13rem !important;
+}
+::ng-deep .ng-select.ng-select-single .ng-select-container {
+    height: 40px !important;
+    border-color: rgb(203 213 225 / 1) !important;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+}
+::ng-deep
+    .ng-select.ng-select-single
+    .ng-select-container
+    .ng-value-container
+    .ng-input {
+    top: 10px !important;
+}
+::ng-deep {
+    // .mat-select-panel {
+    //     min-width: 100% !important;
+    // }
+    .mat-filter {
+        padding: 12px 16px !important;
+        border-color: #e2e8f0 !important;
+    }
+    .noResultsMessage {
+        font-size: 14px !important;
+    }
 }

@@ -3,7 +3,6 @@ export interface Deliveries {
     businessPhone: number;
     vehicleNumber: string;
     vehicleColor: string;
-
     vehicleType: string;
     pickUpLocation: string;
     dropLocation: string;
@@ -13,13 +12,10 @@ export interface Deliveries {
 export const displayedColumns = [
     'businessName',
     'businessPhone',
-    'vehicleNumber',
-    'vehicleColor',
-
-    'vehicleType',
+    // 'vehicleNumber',
+    // 'vehicleColor',
+    // 'vehicleType',
     'pickUpLocation',
-
     'dropLocation',
-
     'actions',
 ];

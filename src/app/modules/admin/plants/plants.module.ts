@@ -13,6 +13,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectFilterModule } from 'mat-select-filter';
 
 const plantsRoutes: Route[] = [
     {
@@ -37,6 +40,9 @@ const plantsRoutes: Route[] = [
         MatSlideToggleModule,
         MatMenuModule,
         MatSidenavModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        MatSelectFilterModule,
     ],
 })
 export class PlantsModule {}
