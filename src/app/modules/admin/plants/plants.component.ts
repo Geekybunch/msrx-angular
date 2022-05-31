@@ -22,6 +22,8 @@ export class PlantsComponent implements OnInit {
     public filterApproved: boolean;
     public statusChange: any;
     public viewDetails: any;
+    public dropDownArray: any = [];
+    public dropDownlist: any;
 
     dataSource = new MatTableDataSource<Plants>();
 
@@ -35,6 +37,7 @@ export class PlantsComponent implements OnInit {
 
     ngOnInit(): void {
         this.getplantsData();
+        this.getDropDownlist();
     }
 
     ngAfterViewInit() {
@@ -48,9 +51,14 @@ export class PlantsComponent implements OnInit {
         let pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
         }`;
-
-        this.plantsServices.getplantsDetails(pageparams).subscribe(
+        let batchNumber = this.filterName
+            ? `&batchNumber=${this.filterName}`
+            : '';
+        let plantsType = this.filterType ? `&grower=${this.filterType}` : '';
+        let totalparams = `${pageparams + batchNumber + plantsType}`;
+        this.plantsServices.getplantsDetails(totalparams).subscribe(
             (response: any) => {
+                this.noRecords = response.data.result.results;
                 this.dataSource = response.data.result.results;
                 this.totalResults = response.data.result.totalResults;
                 console.log(response.data.result.results);
@@ -60,6 +68,42 @@ export class PlantsComponent implements OnInit {
             }
         );
     }
+    getDropDownlist() {
+        this.paginator.pageSize = this.paginator.pageSize
+            ? this.paginator.pageSize
+            : 20;
+        let pageparams = `?limit=${this.paginator.pageSize}&page=${
+            this.paginator.pageIndex + 1
+        }`;
+        this.plantsServices.getplantsDetails(pageparams).subscribe(
+            (response: any) => {
+                this.dropDownArray = response.data.result.results;
+                const filteredArr = this.dropDownArray.reduce(
+                    (thing, current) => {
+                        const x = thing.find(
+                            (item) =>
+                                item.grower.businessName ===
+                                current.grower.businessName
+                        );
+                        if (!x) {
+                            return thing.concat([current]);
+                        } else {
+                            return thing;
+                        }
+                    },
+                    []
+                );
+                this.dropDownlist = filteredArr;
+                console.log('dfddg', this.dropDownlist);
+                this.noRecords = response.data.result.results;
+                this.totalResults = response.data.result.totalResults;
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    }
+
     filterBytype(change: MatSelectChange): void {
         this.filterType = change.value;
         console.log(change.value);

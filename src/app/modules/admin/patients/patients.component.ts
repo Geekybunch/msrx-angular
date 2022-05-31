@@ -14,6 +14,7 @@ import { displayedColumns } from './patients.interfaces';
 export class PatientsComponent implements OnInit {
     public pageSize = 10;
     public totalResults: number;
+    public noRecords: any;
 
     dataSource = new MatTableDataSource<Patients>();
 
@@ -40,6 +41,7 @@ export class PatientsComponent implements OnInit {
             )
             .subscribe(
                 (response: any) => {
+                    this.noRecords = response.data.result.results;
                     this.dataSource = response.data.result.results;
                     this.totalResults = response.data.result.totalResults;
                     console.log(response.data.result.results);

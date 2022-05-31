@@ -1,7 +1,7 @@
 <div class="flex flex-col flex-auto w-full">
     <div class="w-full max-w-screen-xl mx-auto p-5">
         <div
-            class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-8 bg-card mb-5"
+            class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card mb-5 shadow rounded"
         >
             <div class="flex items-center">
                 <mat-form-field
@@ -10,7 +10,9 @@
                     <mat-select
                         (selectionChange)="filterBytype($event)"
                         placeholder="Select By Type"
+                        [value]="'All'"
                     >
+                        <mat-option [value]="''">All</mat-option>
                         <mat-option [value]="'Admin'">Admin</mat-option>
                         <mat-option [value]="'Employee'">Employee</mat-option>
                     </mat-select>
@@ -53,98 +55,105 @@
                 </div>
             </div>
         </div>
+        <div class="bg-card mb-5 shadow rounded py-1">
+            <table class="w-full" mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Employees Name</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.name }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef>Employees Type</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.type }}
+                    </td>
+                </ng-container>
 
-        <table class="w-full" mat-table [dataSource]="dataSource">
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Employees Name</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.name }}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef>Employees Type</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.type }}
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="idNumber">
+                    <th mat-header-cell *matHeaderCellDef>Employees ID</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.idNumber }}
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="idNumber">
-                <th mat-header-cell *matHeaderCellDef>Employees ID</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.idNumber }}
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="createdAt">
-                <th mat-header-cell *matHeaderCellDef>Created Date</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.createdAt | date: "short" }}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="isApproved">
-                <th mat-header-cell *matHeaderCellDef>Status</th>
-                <td mat-cell *matCellDef="let element">
-                    <span
-                        class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
-                        [ngClass]="
-                            element && element.isApproved
-                                ? 'bg-green-200 text-green-600'
-                                : 'bg-red-200 text-red-600'
-                        "
-                    >
-                        {{
-                            element && element.isApproved
-                                ? "Approved"
-                                : "Unapproved"
-                        }}
-                    </span>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button [matMenuTriggerFor]="overdueMenu">
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:dots-vertical'"
-                        ></mat-icon>
-                    </button>
-                    <mat-menu #overdueMenu="matMenu">
-                        <button mat-menu-item (click)="changeStatus(element)">
-                            <span class="flex items-center">
-                                <mat-icon
-                                    class="icon-size-5 mr-3"
-                                    [svgIcon]="'settings'"
-                                ></mat-icon>
-                                <span>Change Status</span>
-                            </span>
-                        </button>
-
-                        <button
-                            mat-menu-item
-                            (click)="deleteBusiness(element._id)"
+                <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.createdAt | date: "short" }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="isApproved">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let element">
+                        <span
+                            class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                            [ngClass]="
+                                element && element.isApproved
+                                    ? 'bg-green-200 text-green-600'
+                                    : 'bg-red-200 text-red-600'
+                            "
                         >
-                            <span class="flex items-center">
-                                <mat-icon
-                                    class="icon-size-5 mr-3"
-                                    [svgIcon]="'delete'"
-                                ></mat-icon>
-                                <span>Delete</span>
-                            </span>
+                            {{
+                                element && element.isApproved
+                                    ? "Approved"
+                                    : "Unapproved"
+                            }}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <button
+                            mat-icon-button
+                            [matMenuTriggerFor]="overdueMenu"
+                        >
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:dots-vertical'"
+                            ></mat-icon>
                         </button>
-                    </mat-menu>
-                </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="visibleColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: visibleColumns"></tr>
-        </table>
+                        <mat-menu #overdueMenu="matMenu">
+                            <button
+                                mat-menu-item
+                                (click)="changeStatus(element)"
+                            >
+                                <span class="flex items-center">
+                                    <mat-icon
+                                        class="icon-size-5 mr-3"
+                                        [svgIcon]="'settings'"
+                                    ></mat-icon>
+                                    <span>Change Status</span>
+                                </span>
+                            </button>
 
-        <mat-paginator
-            [pageSizeOptions]="[5, 10, 25, 30]"
-            [pageSize]="pageSize"
-            [length]="totalResults"
-            (page)="getemployeesList()"
-        >
-        </mat-paginator>
+                            <button
+                                mat-menu-item
+                                (click)="deleteBusiness(element._id)"
+                            >
+                                <span class="flex items-center">
+                                    <mat-icon
+                                        class="icon-size-5 mr-3"
+                                        [svgIcon]="'delete'"
+                                    ></mat-icon>
+                                    <span>Delete</span>
+                                </span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="visibleColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: visibleColumns"></tr>
+            </table>
+
+            <mat-paginator
+                [pageSizeOptions]="[5, 10, 25, 30]"
+                [pageSize]="pageSize"
+                [length]="totalResults"
+                (page)="getemployeesList()"
+            >
+            </mat-paginator>
+        </div>
     </div>
 </div>

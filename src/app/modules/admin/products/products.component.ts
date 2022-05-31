@@ -20,6 +20,7 @@ export class ProductsComponent implements OnInit {
     public filterName: string;
     public filterApproved: boolean;
     public viewDetails: any;
+    public noRecords: any;
 
     visibleColumns = displayedColumns;
 
@@ -52,6 +53,7 @@ export class ProductsComponent implements OnInit {
 
         this.productServices.getProductLists(totalparams).subscribe(
             (response: any) => {
+                this.noRecords = response.data.result.results;
                 this.dataSource = response.data.result.results;
                 this.totalResults = response.data.result.totalResults;
                 console.log(response.data.result.results);

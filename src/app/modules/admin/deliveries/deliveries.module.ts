@@ -9,6 +9,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 const deliveriesRoutes: Route[] = [
     {
@@ -29,6 +31,8 @@ const deliveriesRoutes: Route[] = [
         MatToolbarModule,
         MatIconModule,
         MatDividerModule,
+        MatInputModule,
+        MatSelectModule,
     ],
 })
 export class DeliveriesModule {}
