@@ -16,33 +16,9 @@
                                 >
                                 </ng-select> -->
 
-                                <mat-form-field
-                                    class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
-                                >
-                                    <mat-select
-                                        placeholder="Select By Business"
-                                        (selectionChange)="
-                                            filterByBusinesstype($event)
-                                        "
-                                        class="capitalize"
-                                    >
-                                        <mat-select-filter
-                                            [placeholder]="'Search..'"
-                                            [displayMember]="'businessName'"
-                                            [array]="dropDownlist"
-                                            (filteredReturn)="
-                                                filteredList5 = $event
-                                            "
-                                        ></mat-select-filter>
-                                        <mat-option
-                                            class="capitalize"
-                                            *ngFor="let item of filteredList5"
-                                            [value]="item._id"
-                                        >
-                                            {{ item.businessName }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                <ng-select placeholder="Select Business" (search)="onSearchBusiness($event)" [(ngModel)]="selectedBusiness" (change)="filterByBusiness()">
+                                    <ng-option *ngFor="let business of businesses" [value]="business._id">{{business.businessName}}</ng-option>
+                                </ng-select>
 
                                 <!-- <mat-form-field
                                     class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
@@ -306,7 +282,7 @@
                         [pageSizeOptions]="[5, 10, 20, 30]"
                         [pageSize]="pageSize"
                         [length]="totalResults"
-                        (page)="getplantsData()"
+                        (page)="getPlantsData()"
                     >
                     </mat-paginator>
                 </div>
