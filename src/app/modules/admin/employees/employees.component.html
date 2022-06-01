@@ -4,36 +4,32 @@
             class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card mb-5 shadow rounded"
         >
             <div class="flex items-center">
-                <mat-form-field
+                <ng-select
                     class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                    placeholder="Select Employee"
+                    [(ngModel)]="selectedEmployee"
+                    (change)="filterByEmployee()"
                 >
-                    <mat-select
-                        (selectionChange)="filterBytype($event)"
-                        placeholder="Select By Type"
-                        [value]="'All'"
+                    <ng-option
+                        *ngFor="let Employee of Employees"
+                        [value]="Employee"
+                        >{{ Employee }}</ng-option
                     >
-                        <mat-option [value]="''">All</mat-option>
-                        <mat-option [value]="'Admin'">Admin</mat-option>
-                        <mat-option [value]="'Employee'">Employee</mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field
-                    class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 sm:ml-4 fuse-mat-dense"
-                    [floatLabel]="'always'"
+                </ng-select>
+                <ng-select
+                    class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense sm:ml-4"
+                    placeholder="Select Business"
+                    (search)="onSearchBusiness($event)"
+                    [(ngModel)]="selectedBusiness"
+                    (change)="filterByBusiness()"
                 >
-                    <mat-icon
-                        matPrefix
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:search'"
-                    ></mat-icon>
-                    <input
-                        placeholder="Search by Name"
-                        (input)="filterByName(query.value)"
-                        matInput
-                        #query
-                    />
-                </mat-form-field>
+                    <ng-option
+                        *ngFor="let business of businesses"
+                        [value]="business._id"
+                        >{{ business.businessName }}</ng-option
+                    >
+                </ng-select>
+
                 <mat-slide-toggle
                     class="mt-8 ml-5 sm:mt-0"
                     [color]="'primary'"
@@ -151,7 +147,7 @@
                 [pageSizeOptions]="[5, 10, 25, 30]"
                 [pageSize]="pageSize"
                 [length]="totalResults"
-                (page)="getemployeesList()"
+                (page)="getEmployeesList()"
             >
             </mat-paginator>
         </div>

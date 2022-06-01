@@ -13,6 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const productsRoutes: Route[] = [
     {
@@ -37,6 +39,9 @@ const productsRoutes: Route[] = [
         MatSlideToggleModule,
         MatMenuModule,
         MatSidenavModule,
+        NgSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
 })
 export class ProductsModule {}

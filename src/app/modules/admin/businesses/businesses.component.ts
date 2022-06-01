@@ -14,6 +14,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
     styleUrls: ['./businesses.component.scss'],
 })
 export class BusinessesComponent implements OnInit {
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     public pageSize = 20;
     public totalResults: number;
     public noRecords: any;
@@ -21,12 +22,20 @@ export class BusinessesComponent implements OnInit {
     public filterName: string;
     public filterApproved: boolean;
     public statusChange: any;
-
+    public selectedBusiness;
     visibleColumns = displayedColumns;
-
     dataSource = new MatTableDataSource<Businesses>();
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+    public businesses: any = [
+        'Cultivator',
+        'Disposer',
+        'Distributor',
+        'Dispensary',
+        'Manufacturer',
+        'Processor',
+        'Tester',
+        'WellnessCenter',
+    ];
     constructor(
         private businessService: BusinessService,
         private _fuseConfirmationService: FuseConfirmationService
@@ -38,7 +47,6 @@ export class BusinessesComponent implements OnInit {
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
     }
-
     getBusinessList() {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
@@ -47,8 +55,8 @@ export class BusinessesComponent implements OnInit {
         let pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
         }`;
-        let businessType = this.filterType
-            ? `&businessType=${this.filterType}`
+        let businessType = this.selectedBusiness
+            ? `&businessType=${this.selectedBusiness}`
             : '';
         let businessName = this.filterName
             ? `&businessName=${this.filterName}`
@@ -73,9 +81,7 @@ export class BusinessesComponent implements OnInit {
         );
     }
 
-    filterBytype(change: MatSelectChange): void {
-        this.filterType = change.value;
-        console.log(change.value);
+    filterByBusiness(): void {
         this.getBusinessList();
     }
     filterByName(query: string): void {

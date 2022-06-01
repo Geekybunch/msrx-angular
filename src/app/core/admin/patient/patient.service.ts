@@ -1,19 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { adminUrls } from '../urls';
-import { AuthService } from 'app/core/auth/auth.service';
+
 @Injectable({
     providedIn: 'root',
 })
 export class PatientService {
     constructor(private http: HttpClient) {}
-    getPatientDetails(limit: number, page: number) {
-        let options = {
-            params: {
-                limit,
-                page,
-            },
-        };
-        return this.http.get<any>(adminUrls.patients, options);
+    getPatientDetails(payload: any) {
+        return this.http.get<any>(adminUrls.patients + payload);
     }
 }

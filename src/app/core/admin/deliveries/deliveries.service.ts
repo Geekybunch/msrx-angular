@@ -9,13 +9,7 @@ import { AuthService } from 'app/core/auth/auth.service';
 export class DeliveriesService {
     constructor(private http: HttpClient, private authService: AuthService) {}
 
-    getDeliveriesList(limit: number, page: number) {
-        let options = {
-            params: {
-                limit,
-                page,
-            },
-        };
-        return this.http.get<any>(adminUrls.deliveries, options);
+    getDeliveriesList(payload: any) {
+        return this.http.get<any>(adminUrls.deliveries + payload);
     }
 }

@@ -8,76 +8,19 @@
                     <div class="flex items-center">
                         <div class="">
                             <div class="flex items-center mb-3">
-                                <!-- <ng-select
-                                    class="mat-form-field-flex fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense ng-select"
-                                    [items]="dropDownlist"
-                                    bindLabel="businessName"
-                                    placeholder="Select city"
-                                >
-                                </ng-select> -->
-
-                                <mat-form-field
+                                <ng-select
                                     class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                                    placeholder="Select Business"
+                                    (search)="onSearchBusiness($event)"
+                                    [(ngModel)]="selectedBusiness"
+                                    (change)="filterByBusiness()"
                                 >
-                                    <mat-select
-                                        placeholder="Select By Business"
-                                        (selectionChange)="
-                                            filterByBusinesstype($event)
-                                        "
-                                        class="capitalize"
+                                    <ng-option
+                                        *ngFor="let business of businesses"
+                                        [value]="business._id"
+                                        >{{ business.businessName }}</ng-option
                                     >
-                                        <mat-select-filter
-                                            [placeholder]="'Search..'"
-                                            [displayMember]="'businessName'"
-                                            [array]="dropDownlist"
-                                            (filteredReturn)="
-                                                filteredDropDownlist = $event
-                                            "
-                                        ></mat-select-filter>
-                                        <mat-option [value]="''"
-                                            >All</mat-option
-                                        >
-
-                                        <mat-option
-                                            class="capitalize"
-                                            *ngFor="
-                                                let item of filteredDropDownlist
-                                            "
-                                            [value]="item._id"
-                                        >
-                                            {{ item.businessName }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-
-                                <!-- <mat-form-field
-                                    class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
-                                >
-                                    <mat-select
-                                        (selectionChange)="
-                                            filterByBusinesstype($event)
-                                        "
-                                        placeholder="Select By Business"
-                                        [value]="'All'"
-                                        class="capitalize"
-                                    >
-                                        <mat-select-filter
-                                            [array]="dropDownlist"
-                                            (filteredReturn)="
-                                                filteredList = $event
-                                            "
-                                        ></mat-select-filter>
-                                        <mat-option [value]="''"
-                                            >All</mat-option
-                                        >
-                                        <mat-option
-                                            class="capitalize"
-                                            *ngFor="let list of dropDownlist"
-                                            [value]="list._id"
-                                            >{{ list.businessName }}</mat-option
-                                        >
-                                    </mat-select>
-                                </mat-form-field> -->
+                                </ng-select>
 
                                 <mat-form-field
                                     class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 sm:ml-4 fuse-mat-dense"
@@ -99,56 +42,18 @@
                                 </mat-form-field>
                             </div>
                             <div class="flex items-center">
-                                <mat-form-field
+                                <ng-select
                                     class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                                    placeholder="Select By Genetic Stain "
+                                    [(ngModel)]="selectedGeneticStain"
+                                    (change)="filterByGeneticStain()"
                                 >
-                                    <mat-select
-                                        (selectionChange)="
-                                            filterGeneticStain($event)
-                                        "
-                                        placeholder="Select By Genetic Stain "
+                                    <ng-option
+                                        *ngFor="let type of geneticStainTypes"
+                                        [value]="type"
+                                        >{{ type }}</ng-option
                                     >
-                                        <mat-select-filter
-                                            [array]="geneticStainTypes"
-                                            (filteredReturn)="
-                                                filteredList = $event
-                                            "
-                                        ></mat-select-filter>
-                                        <mat-option [value]="''"
-                                            >All</mat-option
-                                        >
-                                        <mat-option
-                                            *ngFor="let item of filteredList"
-                                            [value]="item"
-                                        >
-                                            {{ item }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-
-                                <!-- <mat-form-field
-                                    class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
-                                >
-                                    <input
-                                        type="text"
-                                        placeholder="Pick one"
-                                        aria-label="Number"
-                                        matInput
-                                        [formControl]="myControl"
-                                        [matAutocomplete]="auto"
-                                    />
-                                    <mat-autocomplete #auto="matAutocomplete">
-                                        <mat-option
-                                            *ngFor="
-                                                let option of filteredOptions
-                                                    | async
-                                            "
-                                            [value]="option"
-                                        >
-                                            {{ option }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field> -->
+                                </ng-select>
 
                                 <mat-form-field
                                     class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 sm:ml-4 fuse-mat-dense"
@@ -312,7 +217,7 @@
                         [pageSizeOptions]="[5, 10, 20, 30]"
                         [pageSize]="pageSize"
                         [length]="totalResults"
-                        (page)="getplantsData()"
+                        (page)="getPlantsData()"
                     >
                     </mat-paginator>
                 </div>
@@ -493,8 +398,9 @@
                 <div class="text-xl mt-3 font-bold truncate mb-3">
                     Test Details
                 </div>
+
                 <div class="leading-6 mb-2">
-                    <span class="font-medium text-secondary">Status</span>
+                    <span class="font-medium text-secondary">Approved</span>
                     <span class="mx-2">:</span>
                     <span
                         class="font-medium"
@@ -511,13 +417,142 @@
                         }}</span
                     >
                 </div>
+                <ng-container *ngIf="viewDetails && viewDetails.plantTest">
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Coa</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">
+                            <a
+                                class="bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                href="{{
+                                    viewDetails &&
+                                    viewDetails.plantTest &&
+                                    viewDetails.plantTest.coa
+                                        ? viewDetails.plantTest.coa
+                                        : ''
+                                }}"
+                                target="_blank"
+                            >
+                                Download
+                            </a>
+                        </span>
+                    </div>
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary"
+                            >Discarded Weight</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">
+                            {{
+                                viewDetails &&
+                                viewDetails.plantTest &&
+                                viewDetails.plantTest.discardedWeight
+                                    ? viewDetails.plantTest.discardedWeight
+                                    : ""
+                            }}</span
+                        >
+                    </div>
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary">Notes</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">
+                            {{
+                                viewDetails &&
+                                viewDetails.plantTest &&
+                                viewDetails.plantTest.notes
+                                    ? viewDetails.plantTest.notes
+                                    : ""
+                            }}</span
+                        >
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            Employee
+                        </div>
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.employee.name
+                                ? viewDetails.plantTest.employee.name
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary">Type</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.employee.type
+                                ? viewDetails.plantTest.employee.type
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            Tester
+                        </div>
+                        <span class="font-medium text-secondary"
+                            >ID Number</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.tester.businessIDNumber
+                                ? viewDetails.plantTest.tester.businessIDNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.tester.businessName
+                                ? viewDetails.plantTest.tester.businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Phone</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.tester.businessPhone
+                                ? viewDetails.plantTest.tester.businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Addres</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.tester.businessAddress
+                                ? viewDetails.plantTest.tester.businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </ng-container>
             </div>
             <div class="flex flex-col border-t pt-4 mt-5">
                 <div class="text-xl mt-3 font-bold truncate mb-3">
                     Process Details
                 </div>
                 <div class="leading-6 mb-2">
-                    <span class="font-medium text-secondary">Status</span>
+                    <span class="font-medium text-secondary">Approved</span>
                     <span class="mx-2">:</span>
                     <span
                         class="font-medium"
@@ -534,6 +569,107 @@
                         }}</span
                     >
                 </div>
+                <ng-container *ngIf="viewDetails && viewDetails.plantProcess">
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary"
+                            >Discarded Weight</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">
+                            {{
+                                viewDetails &&
+                                viewDetails.plantProcess &&
+                                viewDetails.plantProcess.discardedWeight
+                                    ? viewDetails.plantProcess.discardedWeight
+                                    : ""
+                            }}</span
+                        >
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            Employee
+                        </div>
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.employee.name
+                                ? viewDetails.plantProcess.employee.name
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary">Type</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.employee.type
+                                ? viewDetails.plantProcess.employee.type
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            Processor
+                        </div>
+                        <span class="font-medium text-secondary"
+                            >ID Number</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.processor.businessIDNumber
+                                ? viewDetails.plantProcess.processor
+                                      .businessIDNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.processor.businessName
+                                ? viewDetails.plantProcess.processor
+                                      .businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Phone</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.processor.businessPhone
+                                ? viewDetails.plantProcess.processor
+                                      .businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Addres</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.processor.businessAddress
+                                ? viewDetails.plantProcess.processor
+                                      .businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </mat-sidenav>

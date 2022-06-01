@@ -6,43 +6,19 @@
                     class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card mb-5 shadow rounded"
                 >
                     <div class="flex items-center">
-                        <mat-form-field
+                        <ng-select
                             class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                            placeholder="Select Business"
+                            (search)="onSearchBusiness($event)"
+                            [(ngModel)]="selectedBusiness"
+                            (change)="filterByBusiness()"
                         >
-                            <mat-select
-                                (selectionChange)="filterBytype($event)"
-                                placeholder="Select By Type"
-                                [value]="'All'"
+                            <ng-option
+                                *ngFor="let business of businesses"
+                                [value]="business._id"
+                                >{{ business.businessName }}</ng-option
                             >
-                                <mat-option [value]="''"> All</mat-option>
-                                <mat-option [value]="'Manufacturer'">
-                                    Manufacturer</mat-option
-                                >
-                                <!-- <mat-option [value]="'Disposer'"
-                                    >Disposer</mat-option
-                                >
-                                <mat-option [value]="'Distributor'"
-                                    >Distributor</mat-option
-                                >
-                                <mat-option [value]="'Dispensary'"
-                                    >Dispensary</mat-option
-                                >
-                                <mat-option [value]="'Manufacturer'"
-                                    >Manufacturer</mat-option
-                                >
-                                <mat-option [value]="'Processor'"
-                                    >Processor</mat-option
-                                >
-
-                                <mat-option [value]="'Tester'"
-                                    >Tester</mat-option
-                                >
-
-                                <mat-option [value]="'WellnessCenter'"
-                                    >WellnessCenter</mat-option
-                                > -->
-                            </mat-select>
-                        </mat-form-field>
+                        </ng-select>
 
                         <mat-form-field
                             class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 sm:ml-4 fuse-mat-dense"

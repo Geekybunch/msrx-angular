@@ -15,6 +15,7 @@ export class PatientsComponent implements OnInit {
     public pageSize = 10;
     public totalResults: number;
     public noRecords: any;
+    public searchedPatient;
 
     dataSource = new MatTableDataSource<Patients>();
 
@@ -25,30 +26,38 @@ export class PatientsComponent implements OnInit {
     visibleColumns = displayedColumns;
 
     ngOnInit(): void {
-        this.getplantsData();
+        this.getPatientsList();
     }
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
     }
-    getplantsData() {
+    getPatientsList() {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
             : 10;
-        this.patientServices
-            .getPatientDetails(
-                this.paginator.pageSize,
-                this.paginator.pageIndex + 1
-            )
-            .subscribe(
-                (response: any) => {
-                    this.noRecords = response.data.result.results;
-                    this.dataSource = response.data.result.results;
-                    this.totalResults = response.data.result.totalResults;
-                    console.log(response.data.result.results);
-                },
-                (err: any) => {
-                    console.log(err);
-                }
-            );
+        const pageparams = `?limit=${this.paginator.pageSize}&page=${
+            this.paginator.pageIndex + 1
+        }`;
+        const searchedName = this.searchedPatient
+            ? `&name=${this.searchedPatient}`
+            : '';
+        const totalparams = `${pageparams + searchedName}`;
+
+        this.patientServices.getPatientDetails(totalparams).subscribe(
+            (response: any) => {
+                this.noRecords = response.data.result.results;
+                this.dataSource = response.data.result.results;
+                this.totalResults = response.data.result.totalResults;
+                console.log(response.data.result.results);
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    }
+    filterByPatientsName(query: string): void {
+        console.log(query);
+        this.searchedPatient = query;
+        this.getPatientsList();
     }
 }

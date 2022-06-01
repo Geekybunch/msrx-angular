@@ -6,41 +6,52 @@
                     class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card mb-5 shadow rounded"
                 >
                     <div class="flex items-center">
-                        <mat-form-field
+                        <ng-select
                             class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                            placeholder="Select Delivery Business"
+                            [(ngModel)]="selectedBusiness"
+                            (change)="filterByBusiness()"
                         >
-                            <mat-select
-                                (selectionChange)="filterBytype($event)"
-                                placeholder="Select By Type"
-                                [value]="'All'"
-                                class="capitalize"
+                            <ng-option
+                                *ngFor="let list of businesses"
+                                [value]="list.business._id"
+                                >{{ list.business.businessName }}</ng-option
                             >
-                                <mat-option [value]="''">All</mat-option>
-                                <!-- <mat-option
-                                    class="capitalize"
-                                    *ngFor="let list of dropDownlist"
-                                    [value]="list.grower._id"
-                                    >{{ list.grower.businessName }}</mat-option
-                                > -->
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field
-                            class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 sm:ml-4 fuse-mat-dense"
-                            [floatLabel]="'always'"
+                        </ng-select>
+                        <ng-select
+                            class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense sm:ml-4"
+                            placeholder="Select Delivery From Business"
+                            [(ngModel)]="selectedBusinessFrom"
+                            (change)="filterByBusinessFrom()"
                         >
-                            <mat-icon
-                                matPrefix
-                                class="icon-size-5"
-                                [svgIcon]="'heroicons_solid:search'"
-                            ></mat-icon>
-                            <input
-                                placeholder="Search by Name"
-                                (input)="filterByName(query.value)"
-                                matInput
-                                #query
-                            />
-                        </mat-form-field>
+                            <ng-option
+                                *ngFor="let business of businesses"
+                                [value]="business.from._id"
+                                >{{ business.from.businessName }}</ng-option
+                            >
+                        </ng-select>
+                        <ng-select
+                            class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense sm:ml-4"
+                            placeholder="Select Delivery To Business"
+                            [(ngModel)]="selectedBusinessTo"
+                            (change)="filterByBusinessTo()"
+                        >
+                            <ng-option
+                                *ngFor="let business of businesses"
+                                [value]="
+                                    business && business.to && business.to._id
+                                        ? business.to._id
+                                        : ''
+                                "
+                                >{{
+                                    business &&
+                                    business.to &&
+                                    business.to.businessName
+                                        ? business.to.businessName
+                                        : ""
+                                }}</ng-option
+                            >
+                        </ng-select>
                     </div>
                     <div class="flex flex-col items-center w-36">
                         <div
@@ -117,6 +128,12 @@
                             *matRowDef="let row; columns: visibleColumns"
                         ></tr>
                     </table>
+                    <div
+                        class="bg-card text-center p-4 border-b"
+                        *ngIf="noRecords && noRecords.length === 0"
+                    >
+                        No records found
+                    </div>
 
                     <mat-paginator
                         [pageSizeOptions]="[5, 10, 20, 30]"
@@ -236,6 +253,115 @@
                             : ""
                     }}</span>
                 </div>
+                <div class="flex flex-col mb-3">
+                    <div class="leading-6 mb-1">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            From Delivery
+                        </div>
+                        <span class="font-medium text-secondary"
+                            >Business Name</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            deliveryDetails && deliveryDetails.from.businessName
+                                ? deliveryDetails.from.businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary"
+                            >Business Phone</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            deliveryDetails &&
+                            deliveryDetails.from.businessPhone
+                                ? deliveryDetails.from.businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary"
+                            >Business Type</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            deliveryDetails && deliveryDetails.from.businessType
+                                ? deliveryDetails.from.businessType
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary"
+                            >Business Address</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            deliveryDetails &&
+                            deliveryDetails.from.businessAddress
+                                ? deliveryDetails.from.businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col mb-3">
+                    <div class="leading-6 mb-1">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            To Delivery
+                        </div>
+                        <span class="font-medium text-secondary"
+                            >Business Name</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            deliveryDetails &&
+                            deliveryDetails.to &&
+                            deliveryDetails.to.businessName
+                                ? deliveryDetails.to.businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary"
+                            >Business Phone</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            deliveryDetails &&
+                            deliveryDetails.to &&
+                            deliveryDetails.to.businessPhone
+                                ? deliveryDetails.to.businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary"
+                            >Business Type</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            deliveryDetails &&
+                            deliveryDetails.to &&
+                            deliveryDetails.to.businessType
+                                ? deliveryDetails.to.businessType
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary"
+                            >Business Address</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            deliveryDetails &&
+                            deliveryDetails.to &&
+                            deliveryDetails.to.businessAddress
+                                ? deliveryDetails.to.businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+
                 <div class="leading-6 mb-1">
                     <div class="text-xg mt-2 font-bold truncate mb-1">
                         Date of Delivery

@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const employeesRoutes: Route[] = [
     {
@@ -35,6 +37,9 @@ const employeesRoutes: Route[] = [
         MatSlideToggleModule,
         MatMenuModule,
         MatInputModule,
+        NgSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
 })
 export class EmployeesModule {}

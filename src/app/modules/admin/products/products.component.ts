@@ -4,7 +4,9 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
+import { BusinessService } from 'app/core/admin/business/business.service';
 import { ProductsService } from 'app/core/admin/products/products.service';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { Products } from './products.interfaces';
 import { displayedColumns } from './products.interfaces';
 
@@ -14,6 +16,8 @@ import { displayedColumns } from './products.interfaces';
     styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('sidenav') sideNav: MatSidenav;
     public pageSize = 10;
     public totalResults: number;
     public filterType: string;
@@ -21,17 +25,22 @@ export class ProductsComponent implements OnInit {
     public filterApproved: boolean;
     public viewDetails: any;
     public noRecords: any;
+    public selectedBusiness;
 
     visibleColumns = displayedColumns;
-
+    public businesses: string[] = [];
     dataSource = new MatTableDataSource<Products>();
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    @ViewChild('sidenav') sideNav: MatSidenav;
+    public businessInput = new Subject<string>();
 
-    constructor(private productServices: ProductsService) {}
+    constructor(
+        private productServices: ProductsService,
+        private businessService: BusinessService
+    ) {}
 
     ngOnInit(): void {
         this.getProductsData();
+        this.getBusinessDropDownlist();
+        this.searchBusiness();
     }
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
@@ -44,8 +53,8 @@ export class ProductsComponent implements OnInit {
         let pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
         }`;
-        let productType = this.filterType
-            ? `&manufacturer=${this.filterType}`
+        let productType = this.selectedBusiness
+            ? `&manufacturer=${this.selectedBusiness}`
             : '';
         let productName = this.filterName ? `&name=${this.filterName}` : '';
 
@@ -63,11 +72,45 @@ export class ProductsComponent implements OnInit {
             }
         );
     }
-    filterBytype(change: MatSelectChange): void {
-        this.filterType = change.value;
-        console.log(change.value);
+    getBusinessDropDownlist = (businessName?: string): void => {
+        console.log('get businesses');
+        let pageParams = '?limit=100&page=1&businessType=Manufacturer';
+        if (businessName) {
+            pageParams += '&businessName=' + businessName;
+        }
+        this.businessService.getBusinessDetails(pageParams).subscribe(
+            (response: any) => {
+                this.businesses = response.data.businesses.results.map(
+                    (obj: any) => ({
+                        _id: obj._id,
+                        businessName: obj.businessName,
+                    })
+                );
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    };
+
+    searchBusiness(): void {
+        this.businessInput
+            .pipe(debounceTime(500), distinctUntilChanged())
+            .subscribe((searchBusinessName) => {
+                console.log(searchBusinessName);
+                this.getBusinessDropDownlist(searchBusinessName);
+            });
+    }
+
+    onSearchBusiness(val): void {
+        this.businessInput.next(val.term);
+    }
+
+    filterByBusiness(): void {
+        console.log(this.selectedBusiness);
         this.getProductsData();
     }
+
     filterByName(query: string): void {
         this.filterName = query;
         this.getProductsData();

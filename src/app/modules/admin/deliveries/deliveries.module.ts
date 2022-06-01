@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const deliveriesRoutes: Route[] = [
     {
@@ -33,6 +35,9 @@ const deliveriesRoutes: Route[] = [
         MatDividerModule,
         MatInputModule,
         MatSelectModule,
+        NgSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
 })
 export class DeliveriesModule {}

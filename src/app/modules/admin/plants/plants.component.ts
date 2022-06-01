@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
@@ -7,7 +7,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { BusinessService } from 'app/core/admin/business/business.service';
 import { PlantsService } from 'app/core/admin/plants/plants.service';
-import { map, Observable, startWith } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { Plants } from './plants.interfaces';
 import { displayedColumns } from './plants.interfaces';
 
@@ -16,7 +16,9 @@ import { displayedColumns } from './plants.interfaces';
     templateUrl: './plants.component.html',
     styleUrls: ['./plants.component.scss'],
 })
-export class PlantsComponent implements OnInit {
+export class PlantsComponent implements OnInit, AfterViewInit {
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('sidenav') sideNav: MatSidenav;
     public pageSize = 10;
     public totalResults: number;
     public noRecords: any;
@@ -25,67 +27,62 @@ export class PlantsComponent implements OnInit {
     public filterPlantProcess: boolean;
     public statusChange: any;
     public viewDetails: any;
-    public dropDownArray: any = [];
-    public dropDownlist: string[] = [];
+    public businesses: string[] = [];
     public filtergeneticStainValue: any;
-    public filterbusinessValue: string;
     public filterCompany: string;
-    public businessLength: any;
-    public filteredDropDownlist: any;
-
+    public selectedBusiness;
+    public selectedGeneticStain;
+    public plantProcess: boolean = false;
+    public businessInput = new Subject<string>();
+    public geneticStainTypes = ['Indica', 'Sativa', 'Hybrid', 'Seedlings'];
+    public filteredList = this.geneticStainTypes.slice();
+    visibleColumns = displayedColumns;
     dataSource = new MatTableDataSource<Plants>();
-
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-    @ViewChild('sidenav') sideNav: MatSidenav;
 
     constructor(
         private plantsServices: PlantsService,
         private businessService: BusinessService
     ) {}
 
-    visibleColumns = displayedColumns;
-
-    public geneticStainTypes = ['Indica', 'Sativa', 'Hybrid', 'Seedlings'];
-    public filteredList = this.geneticStainTypes.slice();
-
     ngOnInit(): void {
-        this.getplantsData();
-        this.getBusinesslist();
+        this.getPlantsData();
+        this.getBusinessDropDownlist();
+        this.searchBusiness();
     }
 
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
     }
-    getplantsData() {
+
+    getPlantsData(): void {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
             : 20;
 
-        let pageparams = `?limit=${this.paginator.pageSize}&page=${
+        const pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
         }`;
 
-        let batchNumber = this.filterbatchNumberValue
+        const batchNumber = this.filterbatchNumberValue
             ? `&batchNumber=${this.filterbatchNumberValue}`
             : '';
-        let geneticStainTypes = this.filtergeneticStainValue
-            ? `&geneticStain=${this.filtergeneticStainValue}`
+        const geneticStainTypes = this.selectedGeneticStain
+            ? `&geneticStain=${this.selectedGeneticStain}`
             : '';
-        let businesstype = this.filterbusinessValue
-            ? `&grower=${this.filterbusinessValue}`
+        const businesstype = this.selectedBusiness
+            ? `&grower=${this.selectedBusiness}`
             : '';
-        let geneticCompanyName = this.filterCompany
+        const geneticCompanyName = this.filterCompany
             ? `&geneticCompany=${this.filterCompany}`
             : '';
-        let plantTest = this.filterPlantTest
+        const plantTest = this.filterPlantTest
             ? `&plantTest=${this.filterPlantTest}`
             : '';
-        let plantProcess = this.filterPlantProcess
+        const plantProcess = this.filterPlantProcess
             ? `&plantProcess=${this.filterPlantProcess}`
             : '';
 
-        let totalparams = `${
+        const totalparams = `${
             pageparams +
             batchNumber +
             geneticStainTypes +
@@ -96,7 +93,6 @@ export class PlantsComponent implements OnInit {
         }`;
         this.plantsServices.getplantsDetails(totalparams).subscribe(
             (response: any) => {
-                console.log('Data', response);
                 this.noRecords = response.data.result.results;
                 this.dataSource = response.data.result.results;
                 this.totalResults = response.data.result.totalResults;
@@ -106,92 +102,72 @@ export class PlantsComponent implements OnInit {
             }
         );
     }
-    getBusinesslist() {
-        this.paginator.pageSize = this.paginator.pageSize
-            ? this.paginator.pageSize
-            : 20;
-        let pageparams = `?limit=${this.paginator.pageSize}&page=${
-            this.paginator.pageIndex + 1
-        }`;
-        this.businessService.getBusinessDetails(pageparams).subscribe(
-            (response: any) => {
-                this.businessLength = response.data.businesses.totalResults;
 
-                this.getDropDownlist();
+    getBusinessDropDownlist = (businessName?: string): void => {
+        console.log('get businesses');
+        let pageParams = '?limit=5&page=1&businessType=Cultivator';
+        if (businessName) {
+            pageParams += '&businessName=' + businessName;
+        }
+        this.businessService.getBusinessDetails(pageParams).subscribe(
+            (response: any) => {
+                this.businesses = response.data.businesses.results.map(
+                    (obj: any) => ({
+                        _id: obj._id,
+                        businessName: obj.businessName,
+                    })
+                );
             },
             (err: any) => {
                 console.log(err);
             }
         );
-    }
-    getDropDownlist() {
-        this.paginator.pageSize = this.paginator.pageSize
-            ? this.paginator.pageSize
-            : this.businessLength;
-        let pageparams = `?limit=${this.businessLength}&page=${
-            this.paginator.pageIndex + 1
-        }`;
-        this.businessService.getBusinessDetails(pageparams).subscribe(
-            (response: any) => {
-                this.dropDownArray = response.data.businesses.results;
-                console.log('bisinessData', response);
-                let filteredArr = [];
-                this.dropDownArray.filter((element: any) => {
-                    if (element.businessType === 'Cultivator') {
-                        filteredArr.push(element);
-                    }
-                });
-                this.dropDownlist = filteredArr;
-                this.filteredDropDownlist = this.dropDownlist.slice();
+    };
 
-                // const filteredArr = this.dropDownArray.reduce(
-                //     (thing, current) => {
-                //         const x = thing.find(
-                //             (item) => item.businessType === current.businessType
-                //         );
-                //         if (!x) {
-                //             return thing.concat([current]);
-                //         } else {
-                //             return thing;
-                //         }
-                //     },
-                //     []
-                // );
-                // this.dropDownlist = filteredArr;
-                // console.log('dfddg', this.dropDownArray);
-            },
-            (err: any) => {
-                console.log(err);
-            }
-        );
+    searchBusiness(): void {
+        this.businessInput
+            .pipe(debounceTime(500), distinctUntilChanged())
+            .subscribe((searchBusinessName) => {
+                console.log(searchBusinessName);
+                this.getBusinessDropDownlist(searchBusinessName);
+            });
     }
 
-    filterByBusinesstype(change: MatSelectChange): void {
-        this.filterbusinessValue = change.value;
-        this.getplantsData();
+    onSearchBusiness(val): void {
+        this.businessInput.next(val.term);
     }
-    filterGeneticStain(change: MatSelectChange): void {
-        this.filtergeneticStainValue = change.value;
-        this.getplantsData();
+
+    filterByBusiness(): void {
+        console.log(this.selectedBusiness);
+        this.getPlantsData();
     }
+
+    filterByGeneticStain(): void {
+        console.log(this.selectedGeneticStain);
+        this.getPlantsData();
+    }
+
     filterByBatchNumber(query: string): void {
         this.filterbatchNumberValue = query;
-        this.getplantsData();
+        this.getPlantsData();
     }
+
     filterByCompany(query: string): void {
         this.filterCompany = query;
-        this.getplantsData();
+        this.getPlantsData();
     }
 
     toggleplantTest(change: MatSlideToggleChange): void {
         this.filterPlantTest = change.checked;
-        this.getplantsData();
+        this.getPlantsData();
     }
+
     toggleplantprocess(change: MatSlideToggleChange): void {
         this.filterPlantProcess = change.checked;
-        this.getplantsData();
+        this.getPlantsData();
     }
-    sideToggle(event) {
+
+    sideToggle(event): void {
         this.viewDetails = event;
         console.log(event);
         this.sideNav.toggle();
