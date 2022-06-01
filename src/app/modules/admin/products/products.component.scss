@@ -7,3 +7,9 @@
 .sm\:w-36 {
     width: 11rem !important;
 }
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+    padding: 5px 14px;
+}

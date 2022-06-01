@@ -31,7 +31,7 @@ export class PlantsComponent implements OnInit {
     public filterbusinessValue: string;
     public filterCompany: string;
     public businessLength: any;
-    public filteredList5: any;
+    public filteredDropDownlist: any;
 
     dataSource = new MatTableDataSource<Plants>();
 
@@ -96,6 +96,7 @@ export class PlantsComponent implements OnInit {
         }`;
         this.plantsServices.getplantsDetails(totalparams).subscribe(
             (response: any) => {
+                console.log('Data', response);
                 this.noRecords = response.data.result.results;
                 this.dataSource = response.data.result.results;
                 this.totalResults = response.data.result.totalResults;
@@ -115,7 +116,7 @@ export class PlantsComponent implements OnInit {
         this.businessService.getBusinessDetails(pageparams).subscribe(
             (response: any) => {
                 this.businessLength = response.data.businesses.totalResults;
-                console.log(this.businessLength);
+
                 this.getDropDownlist();
             },
             (err: any) => {
@@ -124,7 +125,6 @@ export class PlantsComponent implements OnInit {
         );
     }
     getDropDownlist() {
-        console.log(this.businessLength);
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
             : this.businessLength;
@@ -134,6 +134,7 @@ export class PlantsComponent implements OnInit {
         this.businessService.getBusinessDetails(pageparams).subscribe(
             (response: any) => {
                 this.dropDownArray = response.data.businesses.results;
+                console.log('bisinessData', response);
                 let filteredArr = [];
                 this.dropDownArray.filter((element: any) => {
                     if (element.businessType === 'Cultivator') {
@@ -141,8 +142,8 @@ export class PlantsComponent implements OnInit {
                     }
                 });
                 this.dropDownlist = filteredArr;
-                this.filteredList5 = this.dropDownlist.slice();
-                console.log('fgdgd', filteredArr);
+                this.filteredDropDownlist = this.dropDownlist.slice();
+
                 // const filteredArr = this.dropDownArray.reduce(
                 //     (thing, current) => {
                 //         const x = thing.find(

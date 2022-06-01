@@ -65,49 +65,7 @@
                                 {{ element.business.businessName }}
                             </td>
                         </ng-container>
-                        <ng-container matColumnDef="businessPhone">
-                            <th mat-header-cell *matHeaderCellDef>
-                                Business Phone
-                            </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ element.business.businessPhone }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="vehicleNumber">
-                            <th mat-header-cell *matHeaderCellDef>
-                                Vehicle Number
-                            </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ element.vehicle.vehicleNumber }}
-                            </td>
-                        </ng-container>
 
-                        <ng-container matColumnDef="vehicleColor">
-                            <th mat-header-cell *matHeaderCellDef>
-                                Vehicle Color
-                            </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ element.vehicle.vehicleColor }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="vehiclePermit">
-                            <th mat-header-cell *matHeaderCellDef>
-                                Vehicle Permit
-                            </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ element.vehicle.vehiclePermit }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="vehicleType">
-                            <th mat-header-cell *matHeaderCellDef>
-                                Vehicle Type
-                            </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ element.vehicle.vehicleType }}
-                            </td>
-                        </ng-container>
                         <ng-container matColumnDef="pickUpLocation">
                             <th mat-header-cell *matHeaderCellDef>
                                 PickUp Location
@@ -123,6 +81,14 @@
                             </th>
                             <td mat-cell *matCellDef="let element">
                                 {{ element.dropLocation }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="createdAt">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Date Of Delivery
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.createdAt | date: "short" }}
                             </td>
                         </ng-container>
 
@@ -175,14 +141,38 @@
                 <div class="text-xl mt-3 font-bold truncate mb-3">
                     Business Details
                 </div>
-                <div class="leading-6 mb-1">
+                <!-- <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Description</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        deliveryDetails && viewDetails.description
+                            ? viewDetails.description
+                            : ""
+                    }}</span>
+                </div> -->
+
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Name</span>
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.business.businessName
                             ? deliveryDetails.business.businessName
                             : ""
                     }}</span>
                 </div>
-                <div class="leading-6 mb-1">
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">ID Number</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        deliveryDetails &&
+                        deliveryDetails.business.businessIDNumber
+                            ? deliveryDetails.business.businessIDNumber
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Phone</span>
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.business.businessName
                             ? deliveryDetails.business.businessPhone
@@ -190,6 +180,8 @@
                     }}</span>
                 </div>
                 <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Type</span>
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.business.businessName
                             ? deliveryDetails.business.businessType
@@ -197,6 +189,8 @@
                     }}</span>
                 </div>
                 <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Address</span>
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.business.businessName
                             ? deliveryDetails.business.businessAddress
@@ -235,10 +229,20 @@
                             : ""
                     }}</span>
                 </div>
-                <div class="leading-6 mb-2">
+                <div class="leading-6 mb-4">
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.dropDateTime
                             ? (deliveryDetails.dropDateTime | date: "medium")
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-1">
+                    <div class="text-xg mt-2 font-bold truncate mb-1">
+                        Date of Delivery
+                    </div>
+                    <span class="font-medium">{{
+                        deliveryDetails && deliveryDetails.createdAt
+                            ? (deliveryDetails.createdAt | date: "medium")
                             : ""
                     }}</span>
                 </div>
@@ -247,14 +251,20 @@
                 <div class="text-xl mt-3 font-bold truncate mb-3">
                     Vehicle Details
                 </div>
-                <div class="leading-6 mb-1">
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Vehicle Id</span>
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.vehicle.vehicleId
                             ? deliveryDetails.vehicle.vehicleId
                             : ""
                     }}</span>
                 </div>
-                <div class="leading-6 mb-1">
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Vehicle Number</span
+                    >
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.vehicle.vehicleNumber
                             ? deliveryDetails.vehicle.vehicleNumber
@@ -262,6 +272,10 @@
                     }}</span>
                 </div>
                 <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Vehicle Color</span
+                    >
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.vehicle.vehicleColor
                             ? deliveryDetails.vehicle.vehicleColor
@@ -269,11 +283,19 @@
                     }}</span>
                 </div>
                 <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Vehicle Type</span>
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.vehicle.vehicleType
                             ? deliveryDetails.vehicle.vehicleType
                             : ""
                     }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Vehicle Permit</span
+                    >
+                    <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.vehicle.vehiclePermit
                             ? deliveryDetails.vehicle.vehiclePermit

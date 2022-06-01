@@ -1,6 +1,6 @@
 export interface Products {
     name: string;
-    businessType: string;
+    ingredients: string;
     sku: string;
     description: string;
     dosage: number;
@@ -10,8 +10,8 @@ export interface Products {
 
 export const displayedColumns = [
     'name',
-    'businessType',
     'sku',
+    'ingredients',
     'description',
     'dosage',
     'actions',

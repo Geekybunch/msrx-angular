@@ -31,12 +31,18 @@
                                             [displayMember]="'businessName'"
                                             [array]="dropDownlist"
                                             (filteredReturn)="
-                                                filteredList5 = $event
+                                                filteredDropDownlist = $event
                                             "
                                         ></mat-select-filter>
+                                        <mat-option [value]="''"
+                                            >All</mat-option
+                                        >
+
                                         <mat-option
                                             class="capitalize"
-                                            *ngFor="let item of filteredList5"
+                                            *ngFor="
+                                                let item of filteredDropDownlist
+                                            "
                                             [value]="item._id"
                                         >
                                             {{ item.businessName }}
