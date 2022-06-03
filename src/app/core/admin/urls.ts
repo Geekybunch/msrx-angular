@@ -7,6 +7,9 @@ class Urls {
         this.serverUrl = `${environment.apiUrl}/admin`;
     }
 
+    get dashboard() {
+        return this.serverUrl + '/stats';
+    }
     get plants() {
         return this.serverUrl + '/plants';
     }

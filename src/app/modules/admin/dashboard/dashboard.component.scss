@@ -1,0 +1,6 @@
+.md\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+}
+::ng-deep .apexcharts-toolbar {
+    display: none !important;
+}
