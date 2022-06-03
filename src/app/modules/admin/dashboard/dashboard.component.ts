@@ -168,6 +168,9 @@ export class DashboardComponent implements OnInit {
                     this.plantsStatsId
                 );
 
+                this.patientStatsId = [];
+                this.patientStatsCount = [];
+
                 this.patientStatsData.rangeStats.forEach((element) => {
                     this.patientStatsId.push(element._id);
                     this.patientStatsCount.push(element.count);
