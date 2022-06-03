@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmployeesService } from 'app/core/admin/employees/employees.service';
@@ -19,8 +18,6 @@ export class EmployeesComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     public pageSize = 10;
     public totalResults: number;
-    public filterType: string;
-    public filterEmployeeName: string;
     public filterApproved: boolean;
     public statusChange: any;
     public selectedEmployee;
@@ -78,7 +75,6 @@ export class EmployeesComponent implements OnInit {
         );
     }
     getBusinessDropDownlist = (businessName?: string): void => {
-        console.log('get businesses');
         let pageParams = '?limit=5&page=1&businessType=Cultivator';
         if (businessName) {
             pageParams += '&businessName=' + businessName;
@@ -113,10 +109,6 @@ export class EmployeesComponent implements OnInit {
         this.getEmployeesList();
     }
     filterByEmployee(): void {
-        this.getEmployeesList();
-    }
-    filterByEmployeeName(query: string): void {
-        this.filterEmployeeName = query;
         this.getEmployeesList();
     }
     toggleApproved(change: MatSlideToggleChange): void {

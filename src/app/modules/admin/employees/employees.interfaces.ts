@@ -12,7 +12,5 @@ export const displayedColumns = [
     'name',
     'type',
     'isApproved',
-
-    // 'createdAt',
     'actions',
 ];

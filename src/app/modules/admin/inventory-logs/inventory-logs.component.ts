@@ -1,51 +1,44 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSelectChange } from '@angular/material/select';
 import { MatSidenav } from '@angular/material/sidenav';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { BusinessService } from 'app/core/admin/business/business.service';
-import { ProductsService } from 'app/core/admin/products/products.service';
+import { InventoryLogsService } from 'app/core/admin/inventory-logs/inventory-logs.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { Products } from './products.interfaces';
-import { displayedColumns } from './products.interfaces';
+import { Businesses, displayedColumns } from './inventory-logs.interfaces';
 
 @Component({
-    selector: 'app-products',
-    templateUrl: './products.component.html',
-    styleUrls: ['./products.component.scss'],
+    selector: 'app-inventory-logs',
+    templateUrl: './inventory-logs.component.html',
+    styleUrls: ['./inventory-logs.component.scss'],
 })
-export class ProductsComponent implements OnInit {
+export class InventoryLogsComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild('sidenav') sideNav: MatSidenav;
-    public pageSize = 10;
+    public pageSize = 20;
     public totalResults: number;
-    public filterType: string;
-    public filterName: string;
-    public filterApproved: boolean;
-    public viewDetails: any;
     public noRecords: any;
+    public statusChange: any;
     public selectedBusiness;
-
-    visibleColumns = displayedColumns;
     public businesses: string[] = [];
-    dataSource = new MatTableDataSource<Products>();
     public businessInput = new Subject<string>();
+    public viewMoreDetails: any;
+    visibleColumns = displayedColumns;
+    dataSource = new MatTableDataSource<Businesses>();
 
     constructor(
-        private productServices: ProductsService,
+        private inventoryService: InventoryLogsService,
         private businessService: BusinessService
     ) {}
 
     ngOnInit(): void {
-        this.getProductsData();
+        this.getInventoryLogsList();
         this.getBusinessDropDownlist();
-        this.searchBusiness();
     }
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
     }
-    getProductsData() {
+    getInventoryLogsList() {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
             : 20;
@@ -53,19 +46,17 @@ export class ProductsComponent implements OnInit {
         let pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
         }`;
-        let productType = this.selectedBusiness
-            ? `&manufacturer=${this.selectedBusiness}`
+        let business = this.selectedBusiness
+            ? `&businessId=${this.selectedBusiness}`
             : '';
-        let productName = this.filterName ? `&name=${this.filterName}` : '';
 
-        let totalparams = `${pageparams + productType + productName}`;
-
-        this.productServices.getProductLists(totalparams).subscribe(
+        let totalparams = `${pageparams + business}`;
+        this.inventoryService.getInventoryLogs(totalparams).subscribe(
             (response: any) => {
-                this.noRecords = response.data.result.results;
-                this.dataSource = response.data.result.results;
-                this.totalResults = response.data.result.totalResults;
-                console.log(response.data.result.results);
+                console.log(response);
+                this.noRecords = response.data.quantity.results;
+                this.dataSource = response.data.quantity.results;
+                this.totalResults = response.data.quantity.totalResults;
             },
             (err: any) => {
                 console.log(err);
@@ -80,6 +71,7 @@ export class ProductsComponent implements OnInit {
         }
         this.businessService.getBusinessDetails(pageParams).subscribe(
             (response: any) => {
+                console.log(response);
                 this.businesses = response.data.businesses.results.map(
                     (obj: any) => ({
                         _id: obj._id,
@@ -92,7 +84,6 @@ export class ProductsComponent implements OnInit {
             }
         );
     };
-
     searchBusiness(): void {
         this.businessInput
             .pipe(debounceTime(500), distinctUntilChanged())
@@ -107,17 +98,11 @@ export class ProductsComponent implements OnInit {
     }
 
     filterByBusiness(): void {
-        console.log(this.selectedBusiness);
-        this.getProductsData();
+        this.getInventoryLogsList();
     }
 
-    filterByName(query: string): void {
-        this.filterName = query;
-        this.getProductsData();
-    }
-
-    sideToggle(event) {
-        this.viewDetails = event;
+    viewDetails(event) {
+        this.viewMoreDetails = event;
         console.log(event);
         this.sideNav.toggle();
     }

@@ -18,7 +18,6 @@ export class BusinessesComponent implements OnInit {
     public pageSize = 20;
     public totalResults: number;
     public noRecords: any;
-    public filterType: string;
     public filterName: string;
     public filterApproved: boolean;
     public statusChange: any;

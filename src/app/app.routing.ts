@@ -113,13 +113,6 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
-                path: 'example',
-                loadChildren: () =>
-                    import('app/modules/admin/example/example.module').then(
-                        (m) => m.ExampleModule
-                    ),
-            },
-            {
                 path: 'dashboard',
                 loadChildren: () =>
                     import('app/modules/admin/dashboard/dashboard.module').then(
@@ -167,6 +160,13 @@ export const appRoutes: Route[] = [
                     import(
                         'app/modules/admin/deliveries/deliveries.module'
                     ).then((m) => m.DeliveriesModule),
+            },
+            {
+                path: 'inventory-logs',
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/inventory-logs/inventory-logs.module'
+                    ).then((m) => m.InventoryLogsModule),
             },
         ],
     },

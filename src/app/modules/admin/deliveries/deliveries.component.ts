@@ -1,12 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSelectChange } from '@angular/material/select';
-import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
-import { BusinessService } from 'app/core/admin/business/business.service';
 import { DeliveriesService } from 'app/core/admin/deliveries/deliveries.service';
 import { Deliveries } from './deliveries.interfaces';
 import { displayedColumns } from './deliveries.interfaces';
@@ -21,23 +17,16 @@ export class DeliveriesComponent implements OnInit {
     public pageSize = 10;
     public totalResults: number;
     public deliveryDetails: any;
-    public filterType: string;
-    public filterName: string;
-    public filterApproved: boolean;
     public businesses: any[] = [];
     public selectedBusiness;
     public selectedBusinessFrom;
     public selectedBusinessTo;
     public noRecords: any;
-    public removeduplicateBusiness: string[] = [];
     visibleColumns = displayedColumns;
     dataSource = new MatTableDataSource<Deliveries>();
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-    constructor(
-        private deliveriesService: DeliveriesService,
-        private businessService: BusinessService
-    ) {}
+    constructor(private deliveriesService: DeliveriesService) {}
 
     ngOnInit(): void {
         this.getDeliveriesData();
@@ -73,8 +62,6 @@ export class DeliveriesComponent implements OnInit {
                 this.noRecords = response.data.deliveries.results;
                 this.dataSource = response.data.deliveries.results;
                 this.totalResults = response.data.deliveries.totalResults;
-
-                console.log(this.noRecords);
             },
             (err: any) => {
                 console.log(err);
@@ -83,9 +70,6 @@ export class DeliveriesComponent implements OnInit {
     }
     getBusinessDropDownlist = (businessName?: string): void => {
         let pageParams = '?limit=20&page=1';
-        // if (businessName) {
-        //     pageParams += '&businessName=' + businessName;
-        // }
         this.deliveriesService.getDeliveriesList(pageParams).subscribe(
             (response: any) => {
                 this.businesses = response.data.deliveries.results;
@@ -121,7 +105,6 @@ export class DeliveriesComponent implements OnInit {
     }
     viewDetails(event) {
         this.deliveryDetails = event;
-        console.log(event);
         this.sideNav.toggle();
     }
 }

@@ -1,79 +1,105 @@
-<div class="flex flex-col flex-auto w-full">
-    <div class="w-full max-w-screen-xl mx-auto p-5">
-        <div
-            class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card mb-5 shadow rounded"
-        >
-            <div class="flex items-center">
-                <mat-form-field
-                    class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 fuse-mat-dense"
-                    [floatLabel]="'always'"
-                >
-                    <mat-icon
-                        matPrefix
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:search'"
-                    ></mat-icon>
-                    <input
-                        placeholder="Search by Name"
-                        (input)="filterByPatientsName(query.value)"
-                        matInput
-                        #query
-                    />
-                </mat-form-field>
-            </div>
-            <div class="flex flex-col items-center w-36">
+<mat-sidenav-container class="example-container w-full">
+    <mat-sidenav-content>
+        <div class="flex flex-col flex-auto w-full">
+            <div class="w-full max-w-screen-xl mx-auto p-5">
                 <div
-                    class="text-7xl font-bold tracking-tight leading-none text-blue-500"
+                    class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card mb-5 shadow rounded"
                 >
-                    {{ totalResults }}
+                    <div class="flex items-center">
+                        <mat-form-field
+                            class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 fuse-mat-dense"
+                            [floatLabel]="'always'"
+                        >
+                            <mat-icon
+                                matPrefix
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:search'"
+                            ></mat-icon>
+                            <input
+                                placeholder="Search by Name"
+                                (input)="filterByPatientsName(query.value)"
+                                matInput
+                                #query
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="flex flex-col items-center w-36">
+                        <div
+                            class="text-7xl font-bold tracking-tight leading-none text-blue-500"
+                        >
+                            {{ totalResults }}
+                        </div>
+                        <div
+                            class="text-lg font-medium text-blue-600 dark:text-blue-500"
+                        >
+                            Total Results
+                        </div>
+                    </div>
                 </div>
-                <div
-                    class="text-lg font-medium text-blue-600 dark:text-blue-500"
-                >
-                    Total Results
-                </div>
-            </div>
-        </div>
 
-        <div class="bg-card mb-5 shadow rounded py-1">
-            <table class="w-full" mat-table [dataSource]="dataSource">
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef>Name</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.name }}
-                    </td>
-                </ng-container>
+                <div class="bg-card mb-5 shadow rounded py-1">
+                    <table class="w-full" mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Name</th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.name }}
+                            </td>
+                        </ng-container>
 
-                <ng-container matColumnDef="age">
-                    <th mat-header-cell *matHeaderCellDef>Age</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.age }}
-                    </td>
-                </ng-container>
+                        <ng-container matColumnDef="age">
+                            <th class="pl-5" mat-header-cell *matHeaderCellDef>
+                                Age
+                            </th>
+                            <td class="pl-5" mat-cell *matCellDef="let element">
+                                {{ element.age }}
+                            </td>
+                        </ng-container>
 
-                <ng-container matColumnDef="address">
-                    <th mat-header-cell *matHeaderCellDef>Address</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.address }}
-                    </td>
-                </ng-container>
+                        <ng-container matColumnDef="address">
+                            <th class="pl-5" mat-header-cell *matHeaderCellDef>
+                                Address
+                            </th>
+                            <td
+                                class="capitalize pl-5"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.address }}
+                            </td>
+                        </ng-container>
 
-                <ng-container matColumnDef="mobile">
-                    <th mat-header-cell *matHeaderCellDef>Mobile</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.mobile }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="createdAt">
-                    <th mat-header-cell *matHeaderCellDef>Created Date</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.createdAt | date: "MMM dd, y" }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
-                        <button
+                        <ng-container matColumnDef="mobile">
+                            <th mat-header-cell *matHeaderCellDef>Mobile</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.mobile }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="createdAt">
+                            <th class="pl-5" mat-header-cell *matHeaderCellDef>
+                                Created Date
+                            </th>
+                            <td class="pl-5" mat-cell *matCellDef="let element">
+                                {{ element.createdAt | date: "MMM dd, yyyy" }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="actions">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                class="w-10"
+                            ></th>
+                            <td mat-cell *matCellDef="let element">
+                                <button
+                                    (click)="viewPrescription(element)"
+                                    class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                >
+                                    Prescription
+                                </button>
+                                <!-- <button
                             mat-icon-button
                             [matMenuTriggerFor]="overdueMenu"
                         >
@@ -102,27 +128,174 @@
                                     <span>Delete</span>
                                 </span>
                             </button>
-                        </mat-menu>
-                    </td>
-                </ng-container>
+                        </mat-menu> -->
+                            </td>
+                        </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="visibleColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: visibleColumns"></tr>
-            </table>
-            <div
-                class="bg-card text-center p-4 border-b"
-                *ngIf="noRecords && noRecords.length === 0"
-            >
-                No records found
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="visibleColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: visibleColumns"
+                        ></tr>
+                    </table>
+                    <div
+                        class="bg-card text-center p-4 border-b"
+                        *ngIf="noRecords && noRecords.length === 0"
+                    >
+                        No records found
+                    </div>
+
+                    <mat-paginator
+                        [pageSizeOptions]="[5, 10, 20, 30]"
+                        [pageSize]="pageSize"
+                        [length]="totalResults"
+                        (page)="getPatientsList()"
+                    >
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-content>
+    <mat-sidenav position="end" #sidenav class="sm:w-128">
+        <div class="p-6">
+            <div class="flex items-center justify-between absolute right-6">
+                <button mat-icon-button (click)="sidenav.close()">
+                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
             </div>
 
-            <mat-paginator
-                [pageSizeOptions]="[5, 10, 20, 30]"
-                [pageSize]="pageSize"
-                [length]="totalResults"
-                (page)="getPatientsList()"
-            >
-            </mat-paginator>
+            <div class="flex flex-col">
+                <div class="text-xl mt-3 font-bold truncate mb-5">
+                    Booking Details
+                </div>
+                <div class="flex items-center">
+                    <div class="w-30 mr-4 rounded-full">
+                        <img
+                            src="{{
+                                viewMoreDetails &&
+                                viewMoreDetails.booking.patient.profilePic
+                                    ? viewMoreDetails.booking.patient.profilePic
+                                    : ''
+                            }}"
+                            alt=""
+                        />
+                    </div>
+                    <div>
+                        <div class="leading-6 mb-1">
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">{{
+                                viewMoreDetails &&
+                                viewMoreDetails.booking.patient.name
+                                    ? viewMoreDetails.booking.patient.name
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-1">
+                            <span class="font-medium text-secondary">Age</span>
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">{{
+                                viewMoreDetails &&
+                                viewMoreDetails.booking.patient.age
+                                    ? viewMoreDetails.booking.patient.age
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-1">
+                            <span class="font-medium text-secondary"
+                                >Phone</span
+                            >
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">{{
+                                viewMoreDetails &&
+                                viewMoreDetails.booking.patient.mobile
+                                    ? viewMoreDetails.booking.patient.mobile
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-1">
+                            <span class="font-medium text-secondary"
+                                >Address</span
+                            >
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">{{
+                                viewMoreDetails &&
+                                viewMoreDetails.booking.patient.address
+                                    ? viewMoreDetails.booking.patient.address
+                                    : ""
+                            }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col mt-6">
+                <div class="leading-6 mb-3">
+                    <span class="font-medium text-secondary">Booking Date</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewMoreDetails && viewMoreDetails.booking.bookingDate
+                            ? (viewMoreDetails.booking.bookingDate
+                              | date: "medium")
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-3">
+                    <span class="font-medium text-secondary"
+                        >Patient Visited Time</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewMoreDetails &&
+                        viewMoreDetails.booking.patientVisitedTime
+                            ? (viewMoreDetails.booking.patientVisitedTime
+                              | date: "medium")
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-3">
+                    <span class="font-medium text-secondary"
+                        >Patient Arrival Time</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewMoreDetails &&
+                        viewMoreDetails.booking.patientArrivalTime
+                            ? (viewMoreDetails.booking.patientArrivalTime
+                              | date: "medium")
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-3">
+                    <span class="font-medium text-secondary">Status</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium text-green-600">{{
+                        viewMoreDetails && viewMoreDetails.booking.status
+                            ? viewMoreDetails.booking.status
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-3">
+                    <span class="font-medium text-secondary">Dosage</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewMoreDetails && viewMoreDetails.dosage
+                            ? viewMoreDetails.dosage
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-3">
+                    <span class="font-medium text-secondary">Description</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewMoreDetails && viewMoreDetails.description
+                            ? viewMoreDetails.description
+                            : ""
+                    }}</span>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </mat-sidenav>
+</mat-sidenav-container>

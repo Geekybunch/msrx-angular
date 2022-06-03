@@ -16,35 +16,6 @@
                         >{{ business }}</ng-option
                     >
                 </ng-select>
-
-                <!-- <mat-form-field
-                    class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
-                >
-                    <mat-select placeholder="Select By Type" [value]="'All'">
-                        <mat-option [value]="''">All</mat-option>
-                        <mat-option [value]="'Cultivator'"
-                            >Cultivator</mat-option
-                        >
-                        <mat-option [value]="'Disposer'">Disposer</mat-option>
-                        <mat-option [value]="'Distributor'"
-                            >Distributor</mat-option
-                        >
-                        <mat-option [value]="'Dispensary'"
-                            >Dispensary</mat-option
-                        >
-                        <mat-option [value]="'Manufacturer'"
-                            >Manufacturer</mat-option
-                        >
-                        <mat-option [value]="'Processor'">Processor</mat-option>
-
-                        <mat-option [value]="'Tester'">Tester</mat-option>
-
-                        <mat-option [value]="'WellnessCenter'"
-                            >WellnessCenter</mat-option
-                        >
-                    </mat-select>
-                </mat-form-field> -->
-
                 <mat-form-field
                     class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 sm:ml-4 fuse-mat-dense"
                     [floatLabel]="'always'"
@@ -86,34 +57,54 @@
             <table class="w-full" mat-table [dataSource]="dataSource">
                 <ng-container matColumnDef="businessIDNumber">
                     <th mat-header-cell *matHeaderCellDef>Business ID</th>
-                    <td mat-cell *matCellDef="let element">
+                    <td class="capitalize" mat-cell *matCellDef="let element">
                         {{ element.businessIDNumber }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="businessName">
-                    <th mat-header-cell *matHeaderCellDef>Business Name</th>
-                    <td mat-cell *matCellDef="let element">
+                    <th class="pl-5" mat-header-cell *matHeaderCellDef>
+                        Business Name
+                    </th>
+                    <td
+                        class="capitalize pl-5"
+                        mat-cell
+                        *matCellDef="let element"
+                    >
                         {{ element.businessName }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="businessType">
-                    <th mat-header-cell *matHeaderCellDef>Business Type</th>
-                    <td mat-cell *matCellDef="let element">
+                    <th class="pl-5" mat-header-cell *matHeaderCellDef>
+                        Business Type
+                    </th>
+                    <td
+                        class="capitalize pl-5"
+                        mat-cell
+                        *matCellDef="let element"
+                    >
                         {{ element.businessType }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="businessPhone">
-                    <th mat-header-cell *matHeaderCellDef>Phone</th>
-                    <td mat-cell *matCellDef="let element">
+                    <th class="pl-5" mat-header-cell *matHeaderCellDef>
+                        Phone
+                    </th>
+                    <td class="pl-5" mat-cell *matCellDef="let element">
                         {{ element.businessPhone }}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="businessAddress">
-                    <th mat-header-cell *matHeaderCellDef>Address</th>
-                    <td mat-cell *matCellDef="let element">
+                    <th class="pl-5" mat-header-cell *matHeaderCellDef>
+                        Address
+                    </th>
+                    <td
+                        class="capitalize pl-5"
+                        mat-cell
+                        *matCellDef="let element"
+                    >
                         {{ element.businessAddress }}
                     </td>
                 </ng-container>

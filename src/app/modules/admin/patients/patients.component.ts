@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { PatientService } from 'app/core/admin/patient/patient.service';
 import { PlantsService } from 'app/core/admin/plants/plants.service';
 import { Patients } from './patients.interfaces';
@@ -12,17 +14,18 @@ import { displayedColumns } from './patients.interfaces';
     styleUrls: ['./patients.component.scss'],
 })
 export class PatientsComponent implements OnInit {
+    @ViewChild('sidenav') sideNav: MatSidenav;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     public pageSize = 10;
     public totalResults: number;
     public noRecords: any;
     public searchedPatient;
-
+    public viewMoreDetails: any;
     dataSource = new MatTableDataSource<Patients>();
-
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-    constructor(private patientServices: PatientService) {}
-
+    constructor(
+        private patientServices: PatientService,
+        private _fuseConfirmationService: FuseConfirmationService
+    ) {}
     visibleColumns = displayedColumns;
 
     ngOnInit(): void {
@@ -59,5 +62,31 @@ export class PatientsComponent implements OnInit {
         console.log(query);
         this.searchedPatient = query;
         this.getPatientsList();
+    }
+    viewPrescription(event) {
+        this.patientServices.prescription(event._id).subscribe(
+            (response: any) => {
+                this.viewMoreDetails = response.data.prescription;
+                console.log(this.viewMoreDetails);
+                this.sideNav.toggle();
+            },
+            (error) => {
+                this._fuseConfirmationService.open({
+                    title: error.error.code,
+                    message: error.error.message,
+                    actions: {
+                        confirm: {
+                            show: false,
+                            label: 'Confirm',
+                            color: 'warn',
+                        },
+                        cancel: {
+                            show: true,
+                            label: 'Cancel',
+                        },
+                    },
+                });
+            }
+        );
     }
 }

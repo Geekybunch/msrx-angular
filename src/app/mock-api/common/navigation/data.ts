@@ -52,6 +52,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/employees',
     },
     {
+        id: 'inventory-logs',
+        title: 'Inventory Logs',
+        type: 'basic',
+        icon: 'assignment',
+        link: '/inventory-logs',
+    },
+    {
         id: 'logout',
         title: 'Logout',
         type: 'basic',

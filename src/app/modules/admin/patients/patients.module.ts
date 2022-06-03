@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 const patientsRoutes: Route[] = [
     {
@@ -29,6 +30,7 @@ const patientsRoutes: Route[] = [
         MatIconModule,
         MatFormFieldModule,
         MatInputModule,
+        MatSidenavModule,
     ],
 })
 export class PatientsModule {}

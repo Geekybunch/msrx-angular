@@ -28,5 +28,8 @@ class Urls {
     get businesses() {
         return this.serverUrl + '/businesses';
     }
+    get inventoryLogs() {
+        return this.serverUrl + '/inventory/logs';
+    }
 }
 export const adminUrls = new Urls();

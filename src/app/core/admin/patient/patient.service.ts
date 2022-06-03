@@ -10,4 +10,9 @@ export class PatientService {
     getPatientDetails(payload: any) {
         return this.http.get<any>(adminUrls.patients + payload);
     }
+    prescription(id: number) {
+        return this.http.get<any>(
+            adminUrls.patients + '/' + id + '/prescription'
+        );
+    }
 }
