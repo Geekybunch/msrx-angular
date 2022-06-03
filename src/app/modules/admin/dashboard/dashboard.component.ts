@@ -72,6 +72,8 @@ export class DashboardComponent implements OnInit {
     public productsStatsId = [];
     public productsStatsCount = [];
 
+    public currentMonth: any;
+
     constructor(private dashboardService: DashboardService) {}
 
     ngOnInit(): void {
@@ -83,16 +85,35 @@ export class DashboardComponent implements OnInit {
         this.plantsStatsChartoption([], []);
         this.patientStatsChartoption([], []);
     }
+    getDates() {
+        let d = new Date();
+        this.endDate = new DatePipe('en-US').transform(
+            d.toLocaleDateString(),
+            'yyyy-MM-dd'
+        );
+        d.setMonth(d.getMonth() - 1);
+        this.startDate = new DatePipe('en-US').transform(
+            d.toLocaleDateString(),
+            'yyyy-MM-dd'
+        );
+    }
 
-    getDashboardData() {
-        let start = this.startDate ? `?from=${this.startDate}` : '';
-        let end = this.endDate ? `&to=${this.endDate}` : '';
-        const params = start + end;
-
+    getDashboardData(start?: any, end?: any) {
+        this.getDates();
+        let params: any;
+        if (start && end) {
+            params = `?from=${start}&to=${end}`;
+        } else {
+            params = `?from=${this.startDate}&to=${this.endDate}`;
+        }
+        // let start = this.startDate ? `?from=${this.startDate}` : '';
+        // let end = this.endDate ? `&to=${this.endDate}` : '';
+        // let params = `?from=${this.startDate}&to=${this.endDate}`;
+        // const params = start + end;
         this.dashboardService
             .getDashboardData(params)
             .subscribe((respose: any) => {
-                console.log('dgdfgd', respose.data.deliveriesStats);
+                console.log('dgdfgd', respose);
                 this.businessStatsData = respose.data.businessStats;
                 this.deliveriesStatsData = respose.data.deliveriesStats;
                 this.patientStatsData = respose.data.patientStats;
@@ -161,15 +182,16 @@ export class DashboardComponent implements OnInit {
     filterByStartDate(event) {
         this.startDate = new DatePipe('en-US').transform(
             event.value,
-            'yyyy/MM/dd'
+            'yyyy-MM-dd'
         );
+        this.getDashboardData(this.startDate, this.endDate);
     }
     filterByEndDate(event) {
         this.endDate = new DatePipe('en-US').transform(
             event.value,
-            'yyyy/MM/dd'
+            'yyyy-MM-dd'
         );
-        this.getDashboardData();
+        this.getDashboardData(this.startDate, this.endDate);
     }
 
     businessStatsChartoption(series: number[], labels): void {

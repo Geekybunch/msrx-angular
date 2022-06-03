@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { FormsModule } from '@angular/forms';
 
 const dashboardRoutes: Route[] = [
     {
@@ -37,6 +38,7 @@ const dashboardRoutes: Route[] = [
         MatFormFieldModule,
         MatNativeDateModule,
         NgApexchartsModule,
+        FormsModule,
     ],
 })
 export class DashboardModule {}

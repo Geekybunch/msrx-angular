@@ -8,8 +8,8 @@ import { adminUrls } from '../urls';
 export class DashboardService {
     constructor(private http: HttpClient) {}
 
-    getDashboardData(payload?: any) {
-        let options = payload ? payload : '';
-        return this.http.get<any>(adminUrls.dashboard + options);
+    getDashboardData(payload: any) {
+        // let options = payload ? payload : '';
+        return this.http.get<any>(adminUrls.dashboard + payload);
     }
 }
