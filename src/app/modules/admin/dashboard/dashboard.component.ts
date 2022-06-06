@@ -106,10 +106,6 @@ export class DashboardComponent implements OnInit {
         } else {
             params = `?from=${this.startDate}&to=${this.endDate}`;
         }
-        // let start = this.startDate ? `?from=${this.startDate}` : '';
-        // let end = this.endDate ? `&to=${this.endDate}` : '';
-        // let params = `?from=${this.startDate}&to=${this.endDate}`;
-        // const params = start + end;
         this.dashboardService
             .getDashboardData(params)
             .subscribe((respose: any) => {

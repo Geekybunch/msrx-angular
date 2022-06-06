@@ -99,36 +99,6 @@
                                 >
                                     Prescription
                                 </button>
-                                <!-- <button
-                            mat-icon-button
-                            [matMenuTriggerFor]="overdueMenu"
-                        >
-                            <mat-icon
-                                class="icon-size-5"
-                                [svgIcon]="'heroicons_solid:dots-vertical'"
-                            ></mat-icon>
-                        </button>
-                        <mat-menu #overdueMenu="matMenu">
-                            <button mat-menu-item>
-                                <span class="flex items-center">
-                                    <mat-icon
-                                        class="icon-size-5 mr-3"
-                                        [svgIcon]="'assignment'"
-                                    ></mat-icon>
-                                    <span>View Prescription</span>
-                                </span>
-                            </button>
-
-                            <button mat-menu-item>
-                                <span class="flex items-center">
-                                    <mat-icon
-                                        class="icon-size-5 mr-3"
-                                        [svgIcon]="'delete'"
-                                    ></mat-icon>
-                                    <span>Delete</span>
-                                </span>
-                            </button>
-                        </mat-menu> -->
                             </td>
                         </ng-container>
 
@@ -160,20 +130,49 @@
         </div>
     </mat-sidenav-content>
     <mat-sidenav position="end" #sidenav class="sm:w-128">
-        <div class="p-6">
+        <div class="p-6 bg-primary">
             <div class="flex items-center justify-between absolute right-6">
                 <button mat-icon-button (click)="sidenav.close()">
-                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    <mat-icon
+                        [svgIcon]="'heroicons_outline:x'"
+                        class="text-white"
+                    ></mat-icon>
                 </button>
             </div>
 
-            <div class="flex flex-col">
-                <div class="text-xl mt-3 font-bold truncate mb-5">
-                    Booking Details
+            <div class="flex flex-col text-white">
+                <div class="text-xl mt-3 font-bold truncate mb-4">
+                    <span class="font-bold">Patient Name</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-bold">{{
+                        viewMoreDetails && viewMoreDetails.booking.patient.name
+                            ? viewMoreDetails.booking.patient.name
+                            : ""
+                    }}</span>
                 </div>
                 <div class="flex items-center">
-                    <div class="w-30 mr-4 rounded-full">
+                    <div class="w-24 mr-6">
                         <img
+                            *ngIf="
+                                viewMoreDetails &&
+                                viewMoreDetails.booking.patient.profilePic ===
+                                    undefined
+                            "
+                            width="96"
+                            height="96"
+                            class="rounded-full"
+                            src="assets/images/avatars/avatar-img.png"
+                            alt=""
+                        />
+                        <img
+                            *ngIf="
+                                viewMoreDetails &&
+                                viewMoreDetails.booking.patient.profilePic !==
+                                    undefined
+                            "
+                            width="96"
+                            height="96"
+                            class="rounded-full"
                             src="{{
                                 viewMoreDetails &&
                                 viewMoreDetails.booking.patient.profilePic
@@ -184,18 +183,8 @@
                         />
                     </div>
                     <div>
-                        <div class="leading-6 mb-1">
-                            <span class="font-medium text-secondary">Name</span>
-                            <span class="mx-2">:</span>
-                            <span class="font-medium">{{
-                                viewMoreDetails &&
-                                viewMoreDetails.booking.patient.name
-                                    ? viewMoreDetails.booking.patient.name
-                                    : ""
-                            }}</span>
-                        </div>
-                        <div class="leading-6 mb-1">
-                            <span class="font-medium text-secondary">Age</span>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium">Age</span>
                             <span class="mx-2">:</span>
                             <span class="font-medium">{{
                                 viewMoreDetails &&
@@ -204,10 +193,8 @@
                                     : ""
                             }}</span>
                         </div>
-                        <div class="leading-6 mb-1">
-                            <span class="font-medium text-secondary"
-                                >Phone</span
-                            >
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium">Phone</span>
                             <span class="mx-2">:</span>
                             <span class="font-medium">{{
                                 viewMoreDetails &&
@@ -216,10 +203,8 @@
                                     : ""
                             }}</span>
                         </div>
-                        <div class="leading-6 mb-1">
-                            <span class="font-medium text-secondary"
-                                >Address</span
-                            >
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium">Address</span>
                             <span class="mx-2">:</span>
                             <span class="font-medium">{{
                                 viewMoreDetails &&
@@ -231,54 +216,32 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col mt-6">
-                <div class="leading-6 mb-3">
-                    <span class="font-medium text-secondary">Booking Date</span>
-                    <span class="mx-2">:</span>
-                    <span class="font-medium">{{
-                        viewMoreDetails && viewMoreDetails.booking.bookingDate
-                            ? (viewMoreDetails.booking.bookingDate
-                              | date: "medium")
-                            : ""
-                    }}</span>
+        </div>
+        <div class="p-6">
+            <div class="flex flex-col border-b mb-5 pb-5">
+                <div
+                    class="flex flex-col"
+                    *ngFor="
+                        let list of viewMoreDetails && viewMoreDetails.signedBy;
+                        let i = index
+                    "
+                >
+                    <div class="text-lg mt-2 truncate">
+                        <span class="font-medium text-secondary"
+                            >Signature {{ i + 1 }}</span
+                        >
+                        <span class="mx-2">:</span
+                        ><span class="font-bold">{{ list.name }}</span>
+                    </div>
+
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium"></span>
+                    </div>
                 </div>
-                <div class="leading-6 mb-3">
-                    <span class="font-medium text-secondary"
-                        >Patient Visited Time</span
-                    >
-                    <span class="mx-2">:</span>
-                    <span class="font-medium">{{
-                        viewMoreDetails &&
-                        viewMoreDetails.booking.patientVisitedTime
-                            ? (viewMoreDetails.booking.patientVisitedTime
-                              | date: "medium")
-                            : ""
-                    }}</span>
-                </div>
-                <div class="leading-6 mb-3">
-                    <span class="font-medium text-secondary"
-                        >Patient Arrival Time</span
-                    >
-                    <span class="mx-2">:</span>
-                    <span class="font-medium">{{
-                        viewMoreDetails &&
-                        viewMoreDetails.booking.patientArrivalTime
-                            ? (viewMoreDetails.booking.patientArrivalTime
-                              | date: "medium")
-                            : ""
-                    }}</span>
-                </div>
-                <div class="leading-6 mb-3">
-                    <span class="font-medium text-secondary">Status</span>
-                    <span class="mx-2">:</span>
-                    <span class="font-medium text-green-600">{{
-                        viewMoreDetails && viewMoreDetails.booking.status
-                            ? viewMoreDetails.booking.status
-                            : ""
-                    }}</span>
-                </div>
-                <div class="leading-6 mb-3">
-                    <span class="font-medium text-secondary">Dosage</span>
+            </div>
+            <div class="flex flex-col mb-3">
+                <div class="leading-6">
+                    <span class="font-medium text-secondary">Total Dosage</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         viewMoreDetails && viewMoreDetails.dosage
@@ -286,7 +249,22 @@
                             : ""
                     }}</span>
                 </div>
-                <div class="leading-6 mb-3">
+            </div>
+            <div class="flex flex-col mb-3">
+                <div class="leading-6">
+                    <span class="font-medium text-secondary"
+                        >Prescribed On</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewMoreDetails && viewMoreDetails.createdAt
+                            ? (viewMoreDetails.createdAt | date: "mediumDate")
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col mb-3">
+                <div class="leading-6">
                     <span class="font-medium text-secondary">Description</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
@@ -294,6 +272,95 @@
                             ? viewMoreDetails.description
                             : ""
                     }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col border-t mt-5 pt-5">
+                <div
+                    class="flex flex-col border-b pb-5 mb-5"
+                    *ngFor="
+                        let item of viewMoreDetails &&
+                            viewMoreDetails.dispensaryDetails;
+                        let i = index
+                    "
+                >
+                    <div class="text-lg mt-2 font-bold truncate mb-4">
+                        {{ i + 1 }} . Dispensary Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            item.dispensary.name
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-4">
+                        <span class="font-medium text-secondary">About</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            item.dispensary.about
+                        }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="mt-2 font-bold truncate mb-2">
+                            Product Details
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Name</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.name
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Dosage</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.dosage
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Quantity</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].quantity
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Allergies</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.allergies
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Ingredients</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.ingredients
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Description</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.description
+                                }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

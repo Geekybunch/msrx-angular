@@ -16,7 +16,7 @@ import { displayedColumns } from './patients.interfaces';
 export class PatientsComponent implements OnInit {
     @ViewChild('sidenav') sideNav: MatSidenav;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    public pageSize = 10;
+    public pageSize = 20;
     public totalResults: number;
     public noRecords: any;
     public searchedPatient;
@@ -37,7 +37,7 @@ export class PatientsComponent implements OnInit {
     getPatientsList() {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
-            : 10;
+            : 20;
         const pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
         }`;

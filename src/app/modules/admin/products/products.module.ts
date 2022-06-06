@@ -16,6 +16,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MatDialogModule } from '@angular/material/dialog';
+
 const productsRoutes: Route[] = [
     {
         path: '',
@@ -42,6 +44,7 @@ const productsRoutes: Route[] = [
         NgSelectModule,
         FormsModule,
         ReactiveFormsModule,
+        MatDialogModule,
     ],
 })
 export class ProductsModule {}

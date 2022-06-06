@@ -1,12 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { BusinessService } from 'app/core/admin/business/business.service';
+import { PlantsService } from 'app/core/admin/plants/plants.service';
 import { ProductsService } from 'app/core/admin/products/products.service';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { cloneDeep } from 'lodash';
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 import { Products } from './products.interfaces';
 import { displayedColumns } from './products.interfaces';
 
@@ -27,14 +30,22 @@ export class ProductsComponent implements OnInit {
     public noRecords: any;
     public selectedBusiness;
 
+    plantsData: any;
+    filteredPlants: any = [];
+    plantId: any;
+
     visibleColumns = displayedColumns;
     public businesses: string[] = [];
     dataSource = new MatTableDataSource<Products>();
     public businessInput = new Subject<string>();
 
+    plantId$: Observable<number[]>;
+
     constructor(
         private productServices: ProductsService,
-        private businessService: BusinessService
+        private businessService: BusinessService,
+        private matDialog: MatDialog,
+        private plantsServices: PlantsService
     ) {}
 
     ngOnInit(): void {
@@ -120,5 +131,30 @@ export class ProductsComponent implements OnInit {
         this.viewDetails = event;
         console.log(event);
         this.sideNav.toggle();
+    }
+    getPlantsDetails(id: number) {
+        this.plantId = id;
+        const pageparams = ``;
+        this.plantsServices.getplantsDetails(pageparams).subscribe(
+            (response: any) => {
+                console.log('plants data', response);
+                this.plantsData = response.data.result.results;
+                console.log(this.plantsData);
+                this.getFilteredPlant();
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    }
+
+    getFilteredPlant() {
+        this.filteredPlants = [];
+        this.plantsData.filter((element: any) => {
+            if (element._id === this.plantId) {
+                this.filteredPlants.push(element);
+            }
+        });
+        console.log(this.filteredPlants);
     }
 }

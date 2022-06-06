@@ -212,6 +212,23 @@
                             : ""
                     }}</span>
                 </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Plants</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium"
+                        ><button
+                            (click)="
+                                sidenav2.toggle(); getPlantsDetails(plants)
+                            "
+                            *ngFor="
+                                let plants of viewDetails && viewDetails.plants
+                            "
+                            class="bg-primary-50 w-auto mb-2 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                        >
+                            {{ plants }}
+                        </button></span
+                    >
+                </div>
             </div>
             <div class="flex flex-col border-t pt-4 mt-5">
                 <div class="text-xl mt-3 font-bold truncate mb-3">
@@ -293,6 +310,470 @@
                             ? viewDetails.manufacturer.businessAddress
                             : ""
                     }}</span>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav position="end" #sidenav2 class="sm:w-128">
+        <div class="p-6">
+            <div class="flex items-end justify-end absolute right-6">
+                <button mat-icon-button (click)="sidenav2.toggle()">
+                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
+            </div>
+
+            <div *ngFor="let filter of filteredPlants">
+                <div class="flex flex-col">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Plant Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Batch Number</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.batchNumber
+                                ? filter.batchNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Genetic Company</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.geneticCompany
+                                ? filter.geneticCompany
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Genetic Stain</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.geneticStain
+                                ? filter.geneticStain
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Nutrient Manufacture</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.nutrientManufacture
+                                ? filter.nutrientManufacture
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Dry Weight</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            filter && filter.dryWeight ? filter.dryWeight : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Discarded Weight</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            filter && filter.discardedWeight
+                                ? filter.discardedWeight
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Wet Weight</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            filter && filter.wetWeight ? filter.wetWeight : ""
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col border-t pt-4 mt-5">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Employee Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Id Number</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.employee.idNumber
+                                ? filter.employee.idNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.employee.name
+                                ? filter.employee.name
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Type</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.employee.type
+                                ? filter.employee.type
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col border-t pt-4 mt-5">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Grower Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.grower.businessName
+                                ? filter.grower.businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >ID Number</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.grower.businessIDNumber
+                                ? filter.grower.businessIDNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Type</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.grower.businessType
+                                ? filter.grower.businessType
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Phone</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.grower.businessPhone
+                                ? filter.grower.businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Address</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            filter && filter.grower.businessAddress
+                                ? filter.grower.businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col border-t pt-4 mt-5">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Test Details
+                    </div>
+
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Approved</span>
+                        <span class="mx-2">:</span>
+                        <span
+                            class="font-medium"
+                            [ngClass]="
+                                filter && !filter.plantTest
+                                    ? 'text-red-600'
+                                    : ' text-green-600'
+                            "
+                        >
+                            {{
+                                filter && !filter.plantTest ? "Pending" : "Done"
+                            }}</span
+                        >
+                    </div>
+                    <ng-container *ngIf="filter && filter.plantTest">
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary">Coa</span>
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">
+                                <a
+                                    class="bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                    href="{{
+                                        filter &&
+                                        filter.plantTest &&
+                                        filter.plantTest.coa
+                                            ? filter.plantTest.coa
+                                            : ''
+                                    }}"
+                                    target="_blank"
+                                >
+                                    Download
+                                </a>
+                            </span>
+                        </div>
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary"
+                                >Discarded Weight</span
+                            >
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">
+                                {{
+                                    filter &&
+                                    filter.plantTest &&
+                                    filter.plantTest.discardedWeight
+                                        ? filter.plantTest.discardedWeight
+                                        : ""
+                                }}</span
+                            >
+                        </div>
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary"
+                                >Notes</span
+                            >
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">
+                                {{
+                                    filter &&
+                                    filter.plantTest &&
+                                    filter.plantTest.notes
+                                        ? filter.plantTest.notes
+                                        : ""
+                                }}</span
+                            >
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <div class="text-xg mt-2 font-bold truncate mb-1">
+                                Employee
+                            </div>
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantTest &&
+                                filter.plantTest.employee.name
+                                    ? filter.plantTest.employee.name
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary">Type</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantTest &&
+                                filter.plantTest.employee.type
+                                    ? filter.plantTest.employee.type
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <div class="text-xg mt-2 font-bold truncate mb-1">
+                                Tester
+                            </div>
+                            <span class="font-medium text-secondary"
+                                >ID Number</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantTest &&
+                                filter.plantTest.tester.businessIDNumber
+                                    ? filter.plantTest.tester.businessIDNumber
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantTest &&
+                                filter.plantTest.tester.businessName
+                                    ? filter.plantTest.tester.businessName
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary"
+                                >Phone</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantTest &&
+                                filter.plantTest.tester.businessPhone
+                                    ? filter.plantTest.tester.businessPhone
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary"
+                                >Addres</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantTest &&
+                                filter.plantTest.tester.businessAddress
+                                    ? filter.plantTest.tester.businessAddress
+                                    : ""
+                            }}</span>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="flex flex-col border-t pt-4 mt-5">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Process Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Approved</span>
+                        <span class="mx-2">:</span>
+                        <span
+                            class="font-medium"
+                            [ngClass]="
+                                filter && !filter.plantProcess
+                                    ? 'text-red-600'
+                                    : ' text-green-600'
+                            "
+                        >
+                            {{
+                                filter && !filter.plantProcess
+                                    ? "Pending"
+                                    : "Done"
+                            }}</span
+                        >
+                    </div>
+                    <ng-container *ngIf="filter && filter.plantProcess">
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary"
+                                >Discarded Weight</span
+                            >
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">
+                                {{
+                                    filter &&
+                                    filter.plantProcess &&
+                                    filter.plantProcess.discardedWeight
+                                        ? filter.plantProcess.discardedWeight
+                                        : ""
+                                }}</span
+                            >
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <div class="text-xg mt-2 font-bold truncate mb-1">
+                                Employee
+                            </div>
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantProcess &&
+                                filter.plantProcess.employee.name
+                                    ? filter.plantProcess.employee.name
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary">Type</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantProcess &&
+                                filter.plantProcess.employee.type
+                                    ? filter.plantProcess.employee.type
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <div class="text-xg mt-2 font-bold truncate mb-1">
+                                Processor
+                            </div>
+                            <span class="font-medium text-secondary"
+                                >ID Number</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantProcess &&
+                                filter.plantProcess.processor.businessIDNumber
+                                    ? filter.plantProcess.processor
+                                          .businessIDNumber
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantProcess &&
+                                filter.plantProcess.processor.businessName
+                                    ? filter.plantProcess.processor.businessName
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary"
+                                >Phone</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantProcess &&
+                                filter.plantProcess.processor.businessPhone
+                                    ? filter.plantProcess.processor
+                                          .businessPhone
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary"
+                                >Addres</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                filter &&
+                                filter.plantProcess &&
+                                filter.plantProcess.processor.businessAddress
+                                    ? filter.plantProcess.processor
+                                          .businessAddress
+                                    : ""
+                            }}</span>
+                        </div>
+                    </ng-container>
                 </div>
             </div>
         </div>
