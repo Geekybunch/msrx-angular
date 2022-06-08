@@ -4,5 +4,5 @@
 
 export const environment = {
     production: false,
-    apiUrl: 'http://3.236.202.151/api/v1',
+    apiUrl: 'https://api.smartcannabisplatform.com/api/v1',
 };

@@ -49,13 +49,19 @@ export class AuthSignInComponent implements OnInit {
         this.showAlert = false;
 
         this._authService.signIn(this.signInForm.value).subscribe(
-            () => {
-                const redirectURL =
-                    this._activatedRoute.snapshot.queryParamMap.get(
-                        'redirectURL'
-                    ) || '/signed-in-redirect';
+            (res) => {
+                if (res.data.user.onModel === 'Employee') {
+                    this._router.navigateByUrl('cultivator/dashboard');
+                } else {
+                    this._router.navigateByUrl('admin/dashboard');
+                }
 
-                this._router.navigateByUrl(redirectURL);
+                // const redirectURL =
+                //     this._activatedRoute.snapshot.queryParamMap.get(
+                //         'redirectURL'
+                //     ) || '/signed-in-redirect';
+
+                // this._router.navigateByUrl(redirectURL);
             },
             (response) => {
                 // Re-enable the form

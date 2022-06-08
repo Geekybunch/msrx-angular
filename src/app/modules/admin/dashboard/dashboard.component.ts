@@ -77,6 +77,7 @@ export class DashboardComponent implements OnInit {
     constructor(private dashboardService: DashboardService) {}
 
     ngOnInit(): void {
+        this.getDates();
         this.userDetails = JSON.parse(localStorage.getItem('userData'));
         this.getDashboardData();
         this.businessStatsChartoption([], []);
@@ -99,91 +100,99 @@ export class DashboardComponent implements OnInit {
     }
 
     getDashboardData(start?: any, end?: any) {
-        this.getDates();
+        console.log('start date', start);
+        console.log('end date', end);
+
         let params: any;
-        if (start && end) {
-            params = `?from=${start}&to=${end}`;
+
+        if (start && !end) {
+            // alert('no end');
         } else {
-            params = `?from=${this.startDate}&to=${this.endDate}`;
+            if (start && end) {
+                params = `?from=${start}&to=${end}`;
+            } else {
+                params = `?from=${this.startDate}&to=${this.endDate}`;
+            }
+            this.dashboardService
+                .getDashboardData(params)
+                .subscribe((respose: any) => {
+                    console.log('dashboard', respose);
+                    this.businessStatsData = respose.data.businessStats;
+                    this.deliveriesStatsData = respose.data.deliveriesStats;
+                    this.patientStatsData = respose.data.patientStats;
+                    this.plantsStatsData = respose.data.plantsStats;
+                    this.productsStatsData = respose.data.productsStats;
+
+                    this.businessStatsId = [];
+                    this.businessStatsCount = [];
+
+                    this.businessStatsData.rangeStats.forEach((element) => {
+                        this.businessStatsId.push(element._id);
+                        this.businessStatsCount.push(element.count);
+                    });
+                    this.businessStatsChartoption(
+                        this.businessStatsCount,
+                        this.businessStatsId
+                    );
+
+                    this.deliveriesStatsId = [];
+                    this.deliveriesStatsCount = [];
+
+                    this.deliveriesStatsData.deliveries.forEach((element) => {
+                        this.deliveriesStatsId.push(element._id);
+                        this.deliveriesStatsCount.push(element.count);
+                    });
+                    this.deliveriesStatsChartoption(
+                        this.deliveriesStatsCount,
+                        this.deliveriesStatsId
+                    );
+
+                    this.productsStatsId = [];
+                    this.productsStatsCount = [];
+
+                    this.productsStatsData.rangeStats.forEach((element) => {
+                        this.productsStatsId.push(element._id);
+                        this.productsStatsCount.push(element.count);
+                    });
+                    this.productsStatsChartoption(
+                        this.productsStatsCount,
+                        this.productsStatsId
+                    );
+
+                    this.plantsStatsId = [];
+                    this.plantsStatsCount = [];
+
+                    this.plantsStatsData.rangeStats.forEach((element) => {
+                        this.plantsStatsId.push(element._id);
+                        this.plantsStatsCount.push(element.count);
+                    });
+                    this.plantsStatsChartoption(
+                        this.plantsStatsCount,
+                        this.plantsStatsId
+                    );
+
+                    this.patientStatsId = [];
+                    this.patientStatsCount = [];
+
+                    this.patientStatsData.rangeStats.forEach((element) => {
+                        this.patientStatsId.push(element._id);
+                        this.patientStatsCount.push(element.count);
+                    });
+
+                    this.patientStatsChartoption(
+                        this.patientStatsCount,
+                        this.patientStatsId
+                    );
+                });
         }
-        this.dashboardService
-            .getDashboardData(params)
-            .subscribe((respose: any) => {
-                console.log('dgdfgd', respose);
-                this.businessStatsData = respose.data.businessStats;
-                this.deliveriesStatsData = respose.data.deliveriesStats;
-                this.patientStatsData = respose.data.patientStats;
-                this.plantsStatsData = respose.data.plantsStats;
-                this.productsStatsData = respose.data.productsStats;
-
-                this.businessStatsId = [];
-                this.businessStatsCount = [];
-
-                this.businessStatsData.rangeStats.forEach((element) => {
-                    this.businessStatsId.push(element._id);
-                    this.businessStatsCount.push(element.count);
-                });
-                this.businessStatsChartoption(
-                    this.businessStatsCount,
-                    this.businessStatsId
-                );
-
-                this.deliveriesStatsId = [];
-                this.deliveriesStatsCount = [];
-
-                this.deliveriesStatsData.deliveries.forEach((element) => {
-                    this.deliveriesStatsId.push(element._id);
-                    this.deliveriesStatsCount.push(element.count);
-                });
-                this.deliveriesStatsChartoption(
-                    this.deliveriesStatsCount,
-                    this.deliveriesStatsId
-                );
-
-                this.productsStatsId = [];
-                this.productsStatsCount = [];
-
-                this.productsStatsData.rangeStats.forEach((element) => {
-                    this.productsStatsId.push(element._id);
-                    this.productsStatsCount.push(element.count);
-                });
-                this.productsStatsChartoption(
-                    this.productsStatsCount,
-                    this.productsStatsId
-                );
-
-                this.plantsStatsId = [];
-                this.plantsStatsCount = [];
-
-                this.plantsStatsData.rangeStats.forEach((element) => {
-                    this.plantsStatsId.push(element._id);
-                    this.plantsStatsCount.push(element.count);
-                });
-                this.plantsStatsChartoption(
-                    this.plantsStatsCount,
-                    this.plantsStatsId
-                );
-
-                this.patientStatsId = [];
-                this.patientStatsCount = [];
-
-                this.patientStatsData.rangeStats.forEach((element) => {
-                    this.patientStatsId.push(element._id);
-                    this.patientStatsCount.push(element.count);
-                });
-
-                this.patientStatsChartoption(
-                    this.patientStatsCount,
-                    this.patientStatsId
-                );
-            });
     }
     filterByStartDate(event) {
         this.startDate = new DatePipe('en-US').transform(
             event.value,
             'yyyy-MM-dd'
         );
-        this.getDashboardData(this.startDate, this.endDate);
+
+        this.getDashboardData(this.startDate, null);
     }
     filterByEndDate(event) {
         this.endDate = new DatePipe('en-US').transform(

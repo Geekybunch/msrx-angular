@@ -1,0 +1,654 @@
+<mat-sidenav-container class="example-container w-full">
+    <mat-sidenav-content>
+        <div class="flex flex-col flex-auto w-full">
+            <div class="w-full max-w-screen-xl mx-auto p-5">
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-4 px-6 bg-card mb-5 shadow rounded"
+                >
+                    <div class="flex items-center">
+                        <mat-form-field
+                            class="fuse-mat-no-subscript w-full sm:w-60 mt-4 sm:mt-0 fuse-mat-dense"
+                            [floatLabel]="'always'"
+                        >
+                            <mat-icon
+                                matPrefix
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:search'"
+                            ></mat-icon>
+                            <input
+                                placeholder="Search by Batch Number"
+                                (input)="filterByBatchNumber(query.value)"
+                                matInput
+                                #query
+                            />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="fuse-mat-no-subscript w-full sm:w-60 mt-4 sm:mt-0 sm:ml-4 fuse-mat-dense"
+                            [floatLabel]="'always'"
+                        >
+                            <mat-icon
+                                matPrefix
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:search'"
+                            ></mat-icon>
+                            <input
+                                placeholder="Search by Genetic Company"
+                                matInput
+                            />
+                        </mat-form-field>
+                        <mat-slide-toggle
+                            class="mt-8 ml-6 sm:mt-0"
+                            [color]="'primary'"
+                            (change)="toggleplantTest($event)"
+                        >
+                            Plant Test
+                        </mat-slide-toggle>
+                        <mat-slide-toggle
+                            class="mt-8 ml-10 sm:mt-0"
+                            [color]="'primary'"
+                            (change)="toggleplantprocess($event)"
+                        >
+                            Plant Process
+                        </mat-slide-toggle>
+                    </div>
+                    <div class="flex flex-col items-center w-36">
+                        <div
+                            class="text-7xl font-bold tracking-tight leading-none text-blue-500"
+                        >
+                            {{ totalResults }}
+                        </div>
+                        <div
+                            class="text-lg font-medium text-blue-600 dark:text-blue-500"
+                        >
+                            Total Results
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card mb-5 shadow rounded py-1">
+                    <table class="w-full" mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="batchNumber">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Batch Number
+                            </th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.batchNumber }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="geneticStain">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Genetic Stain
+                            </th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.geneticStain }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="geneticCompany">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Genetic Company
+                            </th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.geneticCompany }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="grower">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Grower Name
+                            </th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.grower.businessName }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="plantTest">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Test Status
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                    [ngClass]="
+                                        element && !element.plantTest
+                                            ? 'bg-red-200 text-red-600'
+                                            : 'bg-green-200 text-green-600'
+                                    "
+                                    >{{
+                                        element && !element.plantTest
+                                            ? "Pending"
+                                            : "Done"
+                                    }}</span
+                                >
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="plantProcess">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Process Status
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                    [ngClass]="
+                                        element && !element.plantProcess
+                                            ? 'bg-red-200 text-red-600'
+                                            : 'bg-green-200 text-green-600'
+                                    "
+                                    >{{
+                                        element && !element.plantProcess
+                                            ? "Pending"
+                                            : "Done"
+                                    }}</span
+                                >
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                class="w-10"
+                            ></th>
+                            <td mat-cell *matCellDef="let element">
+                                <button
+                                    (click)="sideToggle(element)"
+                                    class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                >
+                                    View Details
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="visibleColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: visibleColumns"
+                        ></tr>
+                    </table>
+                    <div
+                        class="bg-card text-center p-4 border-b"
+                        *ngIf="noRecords && noRecords.length === 0"
+                    >
+                        No records found
+                    </div>
+                    <mat-paginator
+                        [pageSizeOptions]="[5, 10, 20, 30]"
+                        [pageSize]="pageSize"
+                        [length]="totalResults"
+                        (page)="getPlantsData()"
+                    >
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-content>
+    <mat-sidenav position="end" #sidenav class="sm:w-128">
+        <div class="p-6">
+            <div class="flex items-end justify-end absolute right-6">
+                <button mat-icon-button (click)="sidenav.close()">
+                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Plant Details
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Batch Number</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.batchNumber
+                            ? viewDetails.batchNumber
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Genetic Company</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.geneticCompany
+                            ? viewDetails.geneticCompany
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Genetic Stain</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.geneticStain
+                            ? viewDetails.geneticStain
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Nutrient Manufacture</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.nutrientManufacture
+                            ? viewDetails.nutrientManufacture
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Dry Weight</span>
+                    <span class="mx-2">:</span>
+
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.dryWeight
+                            ? viewDetails.dryWeight
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Discarded Weight</span
+                    >
+                    <span class="mx-2">:</span>
+
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.discardedWeight
+                            ? viewDetails.discardedWeight
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Wet Weight</span>
+                    <span class="mx-2">:</span>
+
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.wetWeight
+                            ? viewDetails.wetWeight
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col border-t pt-4 mt-5">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Employee Details
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Id Number</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.employee.idNumber
+                            ? viewDetails.employee.idNumber
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Name</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.employee.name
+                            ? viewDetails.employee.name
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Type</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.employee.type
+                            ? viewDetails.employee.type
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col border-t pt-4 mt-5">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Grower Details
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Name</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.grower.businessName
+                            ? viewDetails.grower.businessName
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">ID Number</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.grower.businessIDNumber
+                            ? viewDetails.grower.businessIDNumber
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Type</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.grower.businessType
+                            ? viewDetails.grower.businessType
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Phone</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.grower.businessPhone
+                            ? viewDetails.grower.businessPhone
+                            : ""
+                    }}</span>
+                </div>
+
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Address</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        viewDetails && viewDetails.grower.businessAddress
+                            ? viewDetails.grower.businessAddress
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col border-t pt-4 mt-5">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Test Details
+                </div>
+
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Approved</span>
+                    <span class="mx-2">:</span>
+                    <span
+                        class="font-medium"
+                        [ngClass]="
+                            viewDetails && !viewDetails.plantTest
+                                ? 'text-red-600'
+                                : ' text-green-600'
+                        "
+                    >
+                        {{
+                            viewDetails && !viewDetails.plantTest
+                                ? "Pending"
+                                : "Done"
+                        }}</span
+                    >
+                </div>
+                <ng-container *ngIf="viewDetails && viewDetails.plantTest">
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Coa</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">
+                            <a
+                                class="bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                href="{{
+                                    viewDetails &&
+                                    viewDetails.plantTest &&
+                                    viewDetails.plantTest.coa
+                                        ? viewDetails.plantTest.coa
+                                        : ''
+                                }}"
+                                target="_blank"
+                            >
+                                Download
+                            </a>
+                        </span>
+                    </div>
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary"
+                            >Discarded Weight</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">
+                            {{
+                                viewDetails &&
+                                viewDetails.plantTest &&
+                                viewDetails.plantTest.discardedWeight
+                                    ? viewDetails.plantTest.discardedWeight
+                                    : ""
+                            }}</span
+                        >
+                    </div>
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary">Notes</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">
+                            {{
+                                viewDetails &&
+                                viewDetails.plantTest &&
+                                viewDetails.plantTest.notes
+                                    ? viewDetails.plantTest.notes
+                                    : ""
+                            }}</span
+                        >
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            Employee
+                        </div>
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.employee.name
+                                ? viewDetails.plantTest.employee.name
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary">Type</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.employee.type
+                                ? viewDetails.plantTest.employee.type
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            Tester
+                        </div>
+                        <span class="font-medium text-secondary"
+                            >ID Number</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.tester.businessIDNumber
+                                ? viewDetails.plantTest.tester.businessIDNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.tester.businessName
+                                ? viewDetails.plantTest.tester.businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Phone</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.tester.businessPhone
+                                ? viewDetails.plantTest.tester.businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Addres</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantTest &&
+                            viewDetails.plantTest.tester.businessAddress
+                                ? viewDetails.plantTest.tester.businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="flex flex-col border-t pt-4 mt-5">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Process Details
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Approved</span>
+                    <span class="mx-2">:</span>
+                    <span
+                        class="font-medium"
+                        [ngClass]="
+                            viewDetails && !viewDetails.plantProcess
+                                ? 'text-red-600'
+                                : ' text-green-600'
+                        "
+                    >
+                        {{
+                            viewDetails && !viewDetails.plantProcess
+                                ? "Pending"
+                                : "Done"
+                        }}</span
+                    >
+                </div>
+                <ng-container *ngIf="viewDetails && viewDetails.plantProcess">
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary"
+                            >Discarded Weight</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">
+                            {{
+                                viewDetails &&
+                                viewDetails.plantProcess &&
+                                viewDetails.plantProcess.discardedWeight
+                                    ? viewDetails.plantProcess.discardedWeight
+                                    : ""
+                            }}</span
+                        >
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            Employee
+                        </div>
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.employee.name
+                                ? viewDetails.plantProcess.employee.name
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-3">
+                        <span class="font-medium text-secondary">Type</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.employee.type
+                                ? viewDetails.plantProcess.employee.type
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            Processor
+                        </div>
+                        <span class="font-medium text-secondary"
+                            >ID Number</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.processor.businessIDNumber
+                                ? viewDetails.plantProcess.processor
+                                      .businessIDNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.processor.businessName
+                                ? viewDetails.plantProcess.processor
+                                      .businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Phone</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.processor.businessPhone
+                                ? viewDetails.plantProcess.processor
+                                      .businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Addres</span>
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            viewDetails &&
+                            viewDetails.plantProcess &&
+                            viewDetails.plantProcess.processor.businessAddress
+                                ? viewDetails.plantProcess.processor
+                                      .businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </mat-sidenav>
+</mat-sidenav-container>

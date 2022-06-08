@@ -1,8 +1,14 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    TemplateRef,
+    ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
-import { MatSidenav } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { BusinessService } from 'app/core/admin/business/business.service';
@@ -21,6 +27,8 @@ import { displayedColumns } from './products.interfaces';
 export class ProductsComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild('sidenav') sideNav: MatSidenav;
+    @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
+    @Input() position: 'start' | 'end';
     public pageSize = 10;
     public totalResults: number;
     public filterType: string;

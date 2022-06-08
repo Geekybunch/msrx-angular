@@ -1,0 +1,124 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="flex-auto p-6 sm:p-10">
+        <div class="max-w-3xl">
+            <form
+                [formGroup]="createPalntsForm"
+                class="flex flex-col p-10 bg-card rounded-xl shadow overflow-hidden"
+            >
+                <div
+                    class="flex flex-col sm:flex-row items-start justify-between mb-8"
+                >
+                    <div
+                        class="text-xl font-medium tracking-tight leading-6 truncate"
+                    >
+                        Add Plants
+                    </div>
+                </div>
+
+                <div class="flex flex-row gt-xs:flex-row">
+                    <mat-form-field class="flex-auto gt-xs:pr-3 fuse-mat-dense">
+                        <mat-label>#Batch Number</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'batchNumber'"
+                            (keypress)="onlyNumber($event)"
+                        />
+                        <mat-hint class="mt-2">*Allow numbers only</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field
+                        class="flex-auto gt-xs:pl-3 fuse-mat-dense ml-5"
+                    >
+                        <mat-label> Genetic Stain</mat-label>
+                        <mat-select
+                            placeholder="Select Stain"
+                            [formControlName]="'geneticStain'"
+                        >
+                            <mat-option [value]="'Indica'">Indica</mat-option>
+                            <mat-option [value]="'Sativa'">Sativa</mat-option>
+                            <mat-option [value]="'Hybrid'">Hybrid</mat-option>
+                            <mat-option [value]="'Clone'">Clone</mat-option>
+                            <mat-option [value]="'Seedlings'"
+                                >Seedlings</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-row gt-md:flex-row">
+                    <mat-form-field
+                        class="fuse-mat-textarea flex-auto fuse-mat-dense"
+                    >
+                        <mat-label> Genetic Company</mat-label>
+                        <input matInput [formControlName]="'geneticCompany'" />
+                    </mat-form-field>
+                    <mat-form-field
+                        class="flex-auto gt-md:pr-3 fuse-mat-dense ml-5"
+                    >
+                        <mat-label>Nutrient Manufacturer</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'nutrientManufacture'"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-row gt-md:flex-row">
+                    <mat-form-field class="flex-auto gt-md:pl-3 fuse-mat-dense">
+                        <mat-label>Phase</mat-label>
+                        <mat-select
+                            [placeholder]="'Select Stain'"
+                            [formControlName]="'phase'"
+                        >
+                            <mat-option [value]="'Veg'">Veg</mat-option>
+                            <mat-option [value]="'Flower'">Flower</mat-option>
+                            <mat-option [value]="'Harvest'">Harvest</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="flex-auto fuse-mat-dense ml-5"
+                    >
+                        <mat-label>Wet Weight(gm)</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'wetWeight'"
+                            (keypress)="onlyNumber($event)"
+                        />
+                        <mat-hint class="mt-2">*Allow numbers only</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-row gt-md:flex-row">
+                    <mat-form-field class="flex-auto fuse-mat-dense">
+                        <mat-label>Dry Weight(gm)</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'dryWeight'"
+                            (keypress)="onlyNumber($event)"
+                        />
+                        <mat-hint class="mt-2">*Allow numbers only</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto fuse-mat-dense ml-5">
+                        <mat-label>Discarded Weight(gm)</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'discardedWeight'"
+                            (keypress)="onlyNumber($event)"
+                        />
+                        <mat-hint class="mt-2">*Allow numbers only</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-col gt-md:flex-row mt-3">
+                    <button
+                        (click)="addPlant()"
+                        class="max-w-50"
+                        mat-raised-button
+                        color="primary"
+                    >
+                        Save Plants
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

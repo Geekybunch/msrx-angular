@@ -57,7 +57,7 @@ export class AuthService {
         }
 
         return this._httpClient
-            .post(`${environment.apiUrl}/auth/login`, credentials)
+            .post(`${environment.apiUrl}/auth/login/`, credentials)
             .pipe(
                 switchMap((response: any) => {
                     console.log(response);

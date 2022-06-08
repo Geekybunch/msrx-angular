@@ -11,6 +11,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
 
 const InventoryLogsRoutes: Route[] = [
     {
@@ -34,6 +35,7 @@ const InventoryLogsRoutes: Route[] = [
         ReactiveFormsModule,
         MatMenuModule,
         MatSidenavModule,
+        MatButtonModule,
     ],
 })
 export class InventoryLogsModule {}

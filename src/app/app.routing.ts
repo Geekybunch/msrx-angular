@@ -3,11 +3,17 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
+import { EmployeeGuard } from './core/auth/guards/employee.guard';
+import { AdminGuard } from './core/auth/guards/admin.guards';
 
 export const appRoutes: Route[] = [
-    { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+    { path: '', pathMatch: 'full', redirectTo: 'admin/dashboard' },
 
-    { path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'dashboard' },
+    // {
+    //     path: 'signed-in-redirect',
+    //     pathMatch: 'full',
+    //     redirectTo: 'admin/dashboard',
+    // },
 
     // Auth routes for guests
     {
@@ -54,6 +60,8 @@ export const appRoutes: Route[] = [
                         (m) => m.AuthSignUpModule
                     ),
             },
+            // { path: '', pathMatch: 'full', redirectTo: 'sign-in' },
+            // { path: '**', redirectTo: 'sign-in' },
         ],
     },
 
@@ -113,61 +121,75 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
-                path: 'dashboard',
-                loadChildren: () =>
-                    import('app/modules/admin/dashboard/dashboard.module').then(
-                        (m) => m.DashboardModule
-                    ),
-            },
-            {
-                path: 'plants',
-                loadChildren: () =>
-                    import('app/modules/admin/plants/plants.module').then(
-                        (m) => m.PlantsModule
-                    ),
-            },
-            {
-                path: 'products',
-                loadChildren: () =>
-                    import('app/modules/admin/products/products.module').then(
-                        (m) => m.ProductsModule
-                    ),
-            },
-            {
-                path: 'businesses',
-                loadChildren: () =>
-                    import(
-                        'app/modules/admin/businesses/businesses.module'
-                    ).then((m) => m.BusinessesModule),
-            },
-            {
-                path: 'patients',
-                loadChildren: () =>
-                    import('app/modules/admin/patients/patients.module').then(
-                        (m) => m.PatientsModule
-                    ),
-            },
-            {
-                path: 'employees',
-                loadChildren: () =>
-                    import('app/modules/admin/employees/employees.module').then(
-                        (m) => m.EmployeesModule
-                    ),
-            },
-            {
-                path: 'deliveries',
-                loadChildren: () =>
-                    import(
-                        'app/modules/admin/deliveries/deliveries.module'
-                    ).then((m) => m.DeliveriesModule),
-            },
-            {
-                path: 'inventory-logs',
-                loadChildren: () =>
-                    import(
-                        'app/modules/admin/inventory-logs/inventory-logs.module'
-                    ).then((m) => m.InventoryLogsModule),
+                path: 'admin',
+                canActivate: [AdminGuard],
+                children: [
+                    {
+                        path: 'dashboard',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboard/dashboard.module'
+                            ).then((m) => m.DashboardModule),
+                    },
+                    {
+                        path: 'plants',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/plants/plants.module'
+                            ).then((m) => m.PlantsModule),
+                    },
+                    {
+                        path: 'products',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/products/products.module'
+                            ).then((m) => m.ProductsModule),
+                    },
+                    {
+                        path: 'businesses',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/businesses/businesses.module'
+                            ).then((m) => m.BusinessesModule),
+                    },
+                    {
+                        path: 'patients',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/patients/patients.module'
+                            ).then((m) => m.PatientsModule),
+                    },
+                    {
+                        path: 'employees',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/employees/employees.module'
+                            ).then((m) => m.EmployeesModule),
+                    },
+                    {
+                        path: 'deliveries',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/deliveries/deliveries.module'
+                            ).then((m) => m.DeliveriesModule),
+                    },
+                    {
+                        path: 'inventory-logs',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/inventory-logs/inventory-logs.module'
+                            ).then((m) => m.InventoryLogsModule),
+                    },
+                ],
             },
         ],
+    },
+    {
+        path: 'cultivator',
+        canActivate: [EmployeeGuard],
+        loadChildren: () =>
+            import('app/modules/employee/employee.module').then(
+                (m) => m.EmployeeModule
+            ),
     },
 ];
