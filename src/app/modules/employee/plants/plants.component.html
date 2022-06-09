@@ -168,11 +168,63 @@
                             ></th>
                             <td mat-cell *matCellDef="let element">
                                 <button
+                                    mat-icon-button
+                                    [matMenuTriggerFor]="overdueMenu"
+                                >
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="
+                                            'heroicons_solid:dots-vertical'
+                                        "
+                                    ></mat-icon>
+                                </button>
+                                <mat-menu #overdueMenu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        (click)="deletePlant(element._id)"
+                                    >
+                                        <span class="flex items-center">
+                                            <mat-icon
+                                                class="icon-size-5 mr-3"
+                                                [svgIcon]="'delete'"
+                                            ></mat-icon>
+                                            <span>Delete</span>
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        mat-menu-item
+                                        (click)="openPlantDialog(element)"
+                                    >
+                                        <span class="flex items-center">
+                                            <mat-icon
+                                                class="icon-size-5 mr-3"
+                                                [svgIcon]="'edit'"
+                                            ></mat-icon>
+                                            <span>Edit</span>
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        mat-menu-item
+                                        (click)="sideToggle(element)"
+                                    >
+                                        <span class="flex items-center">
+                                            <mat-icon
+                                                class="icon-size-5 mr-3"
+                                                [svgIcon]="'info'"
+                                            ></mat-icon>
+                                            <span>Details</span>
+                                        </span>
+                                    </button>
+                                </mat-menu>
+
+                                <!-- <button
                                     (click)="sideToggle(element)"
                                     class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
                                 >
                                     View Details
-                                </button>
+                                </button> -->
                             </td>
                         </ng-container>
 

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { PlantsComponent } from './plants.component';
 import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
-
 const plantsdRoutes: Route[] = [
     {
         path: '',

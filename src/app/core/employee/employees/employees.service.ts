@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { cultivatorUrls } from '../urls';
 import { AuthService } from 'app/core/auth/auth.service';
+import { CreateEmployeRequest } from './employess.interface';
 @Injectable({
     providedIn: 'root',
 })
@@ -17,7 +18,17 @@ export class EmployeesService {
             data
         );
     }
-    deleteEmployee(id: number) {
+    saveEmployee(request: CreateEmployeRequest) {
+        return this.http.post(cultivatorUrls.employees, request);
+    }
+
+    deleteEmployee(id: string) {
         return this.http.delete<any>(cultivatorUrls.employees + '/' + id);
+    }
+    updateEmploye(employeeId: string, request: CreateEmployeRequest) {
+        return this.http.put(
+            cultivatorUrls.employees + '/' + employeeId,
+            request
+        );
     }
 }

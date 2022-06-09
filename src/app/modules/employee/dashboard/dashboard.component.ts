@@ -3,28 +3,30 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from 'app/core/employee/dashboard/dashboard.service';
 
 import {
-    ChartComponent,
     ApexAxisChartSeries,
     ApexChart,
-    ApexFill,
-    ApexYAxis,
-    ApexTooltip,
-    ApexMarkers,
-    ApexXAxis,
+    ChartComponent,
+    ApexDataLabels,
     ApexPlotOptions,
+    ApexYAxis,
+    ApexLegend,
+    ApexStroke,
+    ApexXAxis,
+    ApexFill,
+    ApexTooltip,
 } from 'ng-apexcharts';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
     chart: ApexChart;
-    xaxis: ApexXAxis;
-    yaxis: ApexYAxis | ApexYAxis[];
-    labels: string[];
-    stroke: any; // ApexStroke;
-    markers: ApexMarkers;
+    dataLabels: ApexDataLabels;
     plotOptions: ApexPlotOptions;
+    yaxis: ApexYAxis;
+    xaxis: ApexXAxis;
     fill: ApexFill;
     tooltip: ApexTooltip;
+    stroke: ApexStroke;
+    legend: ApexLegend;
 };
 
 @Component({
@@ -40,19 +42,28 @@ export class DashboardComponent implements OnInit {
     public endDate;
     public plantProcessCount: number;
     public plantTestedCount: number;
-    public businessStatsData: any;
+    public plantsTestedData: any;
+    public plantsProcessedData: any;
+    public plantsAddedData: any;
 
-    public businessStatsId = [];
-    public businessStatsCount = [];
+    public plantsTestedId = [];
+    public plantsTestedCount = [];
+
+    public plantsProcessedId = [];
+    public plantsProcessedCount = [];
+
+    public plantsAddedId = [];
+    public plantsAddedCount = [];
 
     public currentMonth: any;
 
     constructor(private dashboardService: DashboardService) {}
 
     ngOnInit(): void {
+        this.getDates();
         this.userDetails = JSON.parse(localStorage.getItem('userData'));
         this.getDashboardData();
-        this.businessStatsChartoption([], []);
+        this.analyticsChartOptions([], []);
     }
     getDates() {
         let d = new Date();
@@ -68,40 +79,67 @@ export class DashboardComponent implements OnInit {
     }
 
     getDashboardData(start?: any, end?: any) {
-        this.getDates();
         let params: any;
-        if (start && end) {
-            params = `?from=${start}&to=${end}`;
+        if (start && !end) {
         } else {
-            params = `?from=${this.startDate}&to=${this.endDate}`;
+            if (start && end) {
+                params = `?from=${start}&to=${end}`;
+            } else {
+                params = `?from=${this.startDate}&to=${this.endDate}`;
+            }
+            this.dashboardService
+                .getDashboardData(params)
+                .subscribe((respose: any) => {
+                    console.log('dgdfgd', respose);
+                    this.plantProcessCount = respose.data.plantCount;
+                    this.plantTestedCount = respose.data.plantTestedCount;
+                    this.plantsTestedData = respose.data.plantsAdded;
+                    this.plantsProcessedData = respose.data.plantsProcessed;
+                    this.plantsAddedData = respose.data.plantsTested;
+                    // this.businessStatsData = respose.data.businessStats;
+
+                    this.plantsTestedId = [];
+                    this.plantsTestedCount = [];
+
+                    this.plantsProcessedId = [];
+                    this.plantsProcessedCount = [];
+
+                    this.plantsAddedId = [];
+                    this.plantsAddedCount = [];
+
+                    this.plantsTestedData.forEach((element) => {
+                        this.plantsTestedId.push(element._id);
+                        this.plantsTestedCount.push(element.count);
+                    });
+
+                    this.plantsProcessedData.forEach((element) => {
+                        this.plantsProcessedId.push(element._id);
+                        this.plantsProcessedCount.push(element.count);
+                    });
+
+                    this.plantsAddedData.forEach((element) => {
+                        this.plantsAddedId.push(element._id);
+                        this.plantsAddedCount.push(element.count);
+                    });
+
+                    this.analyticsChartOptions(
+                        this.plantsTestedId,
+                        this.plantsTestedCount
+                        // this.plantsProcessedId,
+                        // this.plantsProcessedCount,
+                        // this.plantsAddedId,
+                        // this.plantsAddedCount
+                    );
+                });
         }
-        this.dashboardService
-            .getDashboardData(params)
-            .subscribe((respose: any) => {
-                console.log('dgdfgd', respose);
-                this.plantProcessCount = respose.data.plantProcessCount;
-                this.plantTestedCount = respose.data.plantTestedCount;
-                this.businessStatsData = respose.data.businessStats;
-
-                this.businessStatsId = [];
-                this.businessStatsCount = [];
-
-                // this.businessStatsData.rangeStats.forEach((element) => {
-                //     this.businessStatsId.push(element._id);
-                //     this.businessStatsCount.push(element.count);
-                // });
-                // this.businessStatsChartoption(
-                //     this.businessStatsCount,
-                //     this.businessStatsId
-                // );
-            });
     }
     filterByStartDate(event) {
         this.startDate = new DatePipe('en-US').transform(
             event.value,
             'yyyy-MM-dd'
         );
-        this.getDashboardData(this.startDate, this.endDate);
+
+        this.getDashboardData(this.startDate, null);
     }
     filterByEndDate(event) {
         this.endDate = new DatePipe('en-US').transform(
@@ -111,68 +149,53 @@ export class DashboardComponent implements OnInit {
         this.getDashboardData(this.startDate, this.endDate);
     }
 
-    businessStatsChartoption(series: number[], labels): void {
+    analyticsChartOptions(series: number[], labels): void {
         this.chartOptions = {
             series: [
                 {
-                    name: 'Business',
-                    type: 'column',
-                    data: series,
+                    name: 'Tested',
+                    data: this.plantsAddedId,
+                },
+                {
+                    name: 'Grown',
+                    data: this.plantsTestedCount,
+                },
+                {
+                    name: 'Processed',
+                    data: this.plantsProcessedId,
                 },
             ],
             chart: {
+                type: 'bar',
                 height: 350,
-                type: 'line',
-                stacked: false,
-                zoom: {
-                    enabled: false,
-                },
-            },
-
-            stroke: {
-                width: [0, 2],
-                curve: 'smooth',
             },
             plotOptions: {
                 bar: {
-                    columnWidth: '10%',
+                    horizontal: false,
+                    columnWidth: '55%',
                 },
             },
-
-            fill: {
-                opacity: [0.85, 0.25, 1],
-                gradient: {
-                    inverseColors: false,
-                    shade: 'light',
-                    type: 'vertical',
-                    opacityFrom: 0.85,
-                    opacityTo: 0.55,
-                    stops: [0, 100, 100, 100],
-                },
+            dataLabels: {
+                enabled: false,
             },
-            labels: labels,
-            markers: {
-                size: 0,
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent'],
             },
             xaxis: {
-                type: 'datetime',
+                categories: this.plantsTestedId,
             },
             yaxis: {
-                show: false,
-                title: {
-                    text: '',
-                },
-                min: 0,
+                title: {},
+            },
+            fill: {
+                opacity: 1,
             },
             tooltip: {
-                shared: true,
-                intersect: false,
                 y: {
-                    formatter: function (y) {
-                        if (typeof y !== 'undefined') {
-                            return y.toFixed(0) + ' points';
-                        }
-                        return y;
+                    formatter: function (val) {
+                        return ' ' + val + ' count';
                     },
                 },
             },

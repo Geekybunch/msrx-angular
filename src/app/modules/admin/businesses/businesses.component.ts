@@ -7,6 +7,7 @@ import { displayedColumns } from './businesses.interfaces';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-businesses',
@@ -37,7 +38,8 @@ export class BusinessesComponent implements OnInit {
     ];
     constructor(
         private businessService: BusinessService,
-        private _fuseConfirmationService: FuseConfirmationService
+        private _fuseConfirmationService: FuseConfirmationService,
+        private snackBar: MatSnackBar
     ) {}
 
     ngOnInit(): void {
@@ -102,6 +104,9 @@ export class BusinessesComponent implements OnInit {
         };
         this.businessService.changeBusinessStatus(business._id, obj).subscribe(
             (response: any) => {
+                this.snackBar.open('Status Changed Successfully..!', 'Close', {
+                    duration: 2500,
+                });
                 this.getBusinessList();
             },
             (err: any) => {

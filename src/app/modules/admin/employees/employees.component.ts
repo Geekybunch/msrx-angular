@@ -8,6 +8,7 @@ import { displayedColumns } from './employees.interfaces';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { BusinessService } from 'app/core/admin/business/business.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-employees',
@@ -29,7 +30,8 @@ export class EmployeesComponent implements OnInit {
     constructor(
         private employeesService: EmployeesService,
         private _fuseConfirmationService: FuseConfirmationService,
-        private businessService: BusinessService
+        private businessService: BusinessService,
+        private snackBar: MatSnackBar
     ) {}
 
     visibleColumns = displayedColumns;
@@ -126,6 +128,9 @@ export class EmployeesComponent implements OnInit {
         };
         this.employeesService.changeEmployeeStatus(business._id, obj).subscribe(
             (response: any) => {
+                this.snackBar.open('Status Changed Successfully..!', 'Close', {
+                    duration: 2500,
+                });
                 this.getEmployeesList();
             },
             (err: any) => {

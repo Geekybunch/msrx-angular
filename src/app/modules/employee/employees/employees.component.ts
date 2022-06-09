@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,7 +8,11 @@ import { EmployeesService } from 'app/core/employee/employees/employees.service'
 import {
     EmployeesList,
     DisplayedEmployees,
+    EmployeeI,
 } from 'app/core/employee/employees/employess.interface';
+import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs';
+import { CreateEmplyeeComponent } from './create-emplyee/create-emplyee.component';
 
 @Component({
     selector: 'app-employees',
@@ -17,6 +22,7 @@ import {
 export class EmployeesComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild('sidenav') sideNav: MatSidenav;
+    employee$: Observable<EmployeeI[]>;
     public pageSize = 10;
     public totalResults: number;
     public noRecords: any;
@@ -31,7 +37,8 @@ export class EmployeesComponent implements OnInit {
     public Employees: any = ['Admin', 'Employee'];
     constructor(
         private employeeService: EmployeesService,
-        private _fuseConfirmationService: FuseConfirmationService
+        private _fuseConfirmationService: FuseConfirmationService,
+        private matDialog: MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -107,17 +114,28 @@ export class EmployeesComponent implements OnInit {
                 },
             },
         });
-        confirmation.afterClosed().subscribe((result) => {
-            if (result === 'confirmed') {
-                this.employeeService.deleteEmployee(id).subscribe(
-                    (response: any) => {
-                        this.getEmployeesList();
-                    },
-                    (err: any) => {
-                        console.log(err);
-                    }
-                );
-            }
+        // confirmation.afterClosed().subscribe((result) => {
+        //     if (result === 'confirmed') {
+        //         this.employeeService.deleteEmployee(id).subscribe(
+        //             (response: any) => {
+        //                 this.getEmployeesList();
+        //             },
+        //             (err: any) => {
+        //                 console.log(err);
+        //             }
+        //         );
+        //     }
+        // });
+    }
+    openEmplyeeDialog(employee: EmployeeI) {
+        let createEmp = this.matDialog.open(CreateEmplyeeComponent, {
+            autoFocus: false,
+            data: {
+                employeeData: cloneDeep(employee),
+            },
+        });
+        createEmp.afterClosed().subscribe((result) => {
+            this.getEmployeesList(); // Pizza!
         });
     }
 }

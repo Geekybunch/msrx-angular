@@ -14,6 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     imports: [CommonModule, FormsModule, ReactiveFormsModule],
@@ -34,6 +35,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MatNativeDateModule,
         MatSelectModule,
         MatSnackBarModule,
+        MatDialogModule,
     ],
 })
 export class SharedModule {}

@@ -11,9 +11,15 @@ export class GrowerService {
     constructor(private http: HttpClient, private authService: AuthService) {}
 
     getplantsDetails(payload: any) {
-        return this.http.get<any>(cultivatorUrls.plants + payload);
+        return this.http.get<any>(cultivatorUrls.growerPlants + payload);
     }
     createGrowerPlant(request: CreatePlantRequest) {
-        return this.http.post(cultivatorUrls.plants, request);
+        return this.http.post(cultivatorUrls.growerPlants, request);
+    }
+    updatePlant(id: string, request: CreatePlantRequest) {
+        return this.http.put(cultivatorUrls.growerPlants + '/' + id, request);
+    }
+    deleteGrowerPlant(id: string) {
+        return this.http.delete(cultivatorUrls.growerPlants + '/' + id);
     }
 }

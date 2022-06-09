@@ -106,7 +106,6 @@ export class DashboardComponent implements OnInit {
         let params: any;
 
         if (start && !end) {
-            // alert('no end');
         } else {
             if (start && end) {
                 params = `?from=${start}&to=${end}`;
@@ -138,7 +137,7 @@ export class DashboardComponent implements OnInit {
                     this.deliveriesStatsId = [];
                     this.deliveriesStatsCount = [];
 
-                    this.deliveriesStatsData.deliveries.forEach((element) => {
+                    this.deliveriesStatsData.rangeStats.forEach((element) => {
                         this.deliveriesStatsId.push(element._id);
                         this.deliveriesStatsCount.push(element.count);
                     });
@@ -226,7 +225,7 @@ export class DashboardComponent implements OnInit {
             },
             plotOptions: {
                 bar: {
-                    columnWidth: '10%',
+                    columnWidth: '45%',
                 },
             },
 
@@ -294,7 +293,7 @@ export class DashboardComponent implements OnInit {
             },
             plotOptions: {
                 bar: {
-                    columnWidth: '10%',
+                    columnWidth: '95%',
                 },
             },
 

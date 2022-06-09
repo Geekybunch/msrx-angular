@@ -99,12 +99,15 @@
                                 <span class="flex items-center">
                                     <mat-icon
                                         class="icon-size-5 mr-3"
-                                        [svgIcon]="'settings'"
+                                        [svgIcon]="'emoji_emotions'"
                                     ></mat-icon>
                                     <span>Change Status</span>
                                 </span>
                             </button>
-                            <button mat-menu-item>
+                            <button
+                                mat-menu-item
+                                (click)="openEmplyeeDialog(element)"
+                            >
                                 <span class="flex items-center">
                                     <mat-icon
                                         class="icon-size-5 mr-3"

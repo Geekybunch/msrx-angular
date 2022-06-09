@@ -10,7 +10,7 @@ class Urls {
     get dashboard() {
         return this.serverUrl + '/grower/stats';
     }
-    get plants() {
+    get growerPlants() {
         return this.serverUrl + '/grower/plants';
     }
     get patients() {

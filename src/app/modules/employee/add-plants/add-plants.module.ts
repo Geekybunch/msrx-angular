@@ -4,6 +4,7 @@ import { AddPlantsComponent } from './add-plants.component';
 import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { FuseHighlightModule } from '@fuse/components/highlight';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 const addPlantsRoutes: Route[] = [
     {
@@ -19,6 +20,10 @@ const addPlantsRoutes: Route[] = [
         RouterModule.forChild(addPlantsRoutes),
         SharedModule,
         FuseHighlightModule,
+    ],
+    providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
     ],
 })
 export class AddPlantsModule {}

@@ -14,6 +14,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'app/shared/shared.module';
 
 const employeesRoutes: Route[] = [
     {
@@ -40,6 +41,7 @@ const employeesRoutes: Route[] = [
         NgSelectModule,
         FormsModule,
         ReactiveFormsModule,
+        SharedModule,
     ],
 })
 export class EmployeesModule {}
