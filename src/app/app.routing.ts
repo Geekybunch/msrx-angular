@@ -192,4 +192,11 @@ export const appRoutes: Route[] = [
                 (m) => m.EmployeeModule
             ),
     },
+    {
+        path: 'tester',
+        loadChildren: () =>
+            import('app/modules/employee/employee.module').then(
+                (m) => m.EmployeeModule
+            ),
+    },
 ];

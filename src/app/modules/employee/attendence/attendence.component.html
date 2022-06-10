@@ -1,16 +1,84 @@
 <div class="flex flex-col flex-auto min-w-0">
     <div class="flex-auto p-6 sm:p-10">
         <div
-            class="flex flex-col p-10 bg-card rounded-xl shadow overflow-hidden"
+            class="flex flex-col bg-card rounded-xl shadow overflow-hidden mb-8 px-8"
+        >
+            <div class="flex flex-row sm:flex-row items-center">
+                <div
+                    class="text-2xl font-medium tracking-tight leading-6 truncate py-5"
+                >
+                    Leave Graph
+                </div>
+                <div class="leave-chart">
+                    <apx-chart
+                        [series]="chartOptions.series"
+                        [chart]="chartOptions.chart"
+                        [labels]="chartOptions.labels"
+                        [responsive]="chartOptions.responsive"
+                        [colors]="chartOptions.colors"
+                    ></apx-chart>
+                </div>
+            </div>
+        </div>
+        <div
+            class="flex flex-col p-7 bg-card rounded-xl shadow overflow-hidden"
         >
             <div
-                class="flex flex-col sm:flex-row items-start justify-between mb-8"
+                class="flex flex-col sm:flex-row items-start justify-between mb-8 pt-3"
             >
                 <div
-                    class="text-xl font-medium tracking-tight leading-6 truncate"
+                    class="text-2xl font-medium tracking-tight leading-6 truncate"
                 >
                     Attendance Calender
                 </div>
+            </div>
+            <div class="flex flex-row justify-between mb-6">
+                <button
+                    mat-menu-item
+                    class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                    mwlCalendarPreviousView
+                    [view]="view"
+                    [(viewDate)]="viewDate"
+                    (viewDateChange)="getAttendance()"
+                >
+                    <span class="flex items-center">
+                        <mat-icon
+                            class="icon-size-4 mr-2 text-primary-700"
+                            [svgIcon]="'heroicons_solid:arrow-narrow-left'"
+                        ></mat-icon>
+                        <span> Previous</span>
+                    </span>
+                </button>
+                <h3
+                    class="text-lg font-medium tracking-tight leading-6 truncate"
+                >
+                    {{ viewDate | calendarDate: view + "ViewTitle":"en" }}
+                </h3>
+
+                <button
+                    mat-menu-item
+                    class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                    mwlCalendarNextView
+                    [view]="view"
+                    [(viewDate)]="viewDate"
+                    (viewDateChange)="getAttendance()"
+                >
+                    <span class="flex items-center justify-center">
+                        <span> Next</span>
+                        <mat-icon
+                            class="icon-size-4 ml-2 mr-0 text-primary-700"
+                            [svgIcon]="'heroicons_solid:arrow-narrow-right'"
+                        ></mat-icon>
+                    </span>
+                </button>
+            </div>
+            <div>
+                <mwl-calendar-month-view
+                    class="attendance-calender"
+                    [viewDate]="viewDate"
+                    [events]="events"
+                >
+                </mwl-calendar-month-view>
             </div>
         </div>
     </div>

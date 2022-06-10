@@ -5,7 +5,7 @@ import { FuseMockApiService } from '@fuse/lib/mock-api';
 import {
     employeeNavigation,
     defaultNavigation,
-    futuristicNavigation,
+    TesterNavigation,
     horizontalNavigation,
 } from 'app/mock-api/common/navigation/data';
 
@@ -18,7 +18,7 @@ export class NavigationMockApi {
     private readonly _defaultNavigation: FuseNavigationItem[] =
         defaultNavigation;
     private readonly _futuristicNavigation: FuseNavigationItem[] =
-        futuristicNavigation;
+        TesterNavigation;
     private readonly _horizontalNavigation: FuseNavigationItem[] =
         horizontalNavigation;
 

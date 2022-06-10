@@ -218,13 +218,6 @@
                                         </span>
                                     </button>
                                 </mat-menu>
-
-                                <!-- <button
-                                    (click)="sideToggle(element)"
-                                    class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
-                                >
-                                    View Details
-                                </button> -->
                             </td>
                         </ng-container>
 
@@ -247,7 +240,7 @@
                         [pageSizeOptions]="[5, 10, 20, 30]"
                         [pageSize]="pageSize"
                         [length]="totalResults"
-                        (page)="getPlantsData()"
+                        (page)="getPlants()"
                     >
                     </mat-paginator>
                 </div>

@@ -53,44 +53,24 @@
                 class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-full min-w-0 mb-8"
             >
                 <div
+                    *ngFor="let card of cardCount"
                     class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden"
                 >
                     <div class="flex flex-col items-center mt-2">
                         <div
                             class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500 mb-2"
                         >
-                            {{ plantProcessCount }}
+                            {{ card.value }}
                         </div>
-                        <div
-                            class="text-4xl font-semibold text-blue-600 dark:text-blue-500"
-                        >
-                            Total Plants
-                        </div>
-                        <div
-                            class="flex items-baseline justify-center w-full mt-1 text-secondary"
-                        >
-                            <div class="ml-1.5 text-lg font-medium">Grown</div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden"
-                >
-                    <div class="flex flex-col items-center mt-2">
-                        <div
-                            class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500 mb-2"
-                        >
-                            {{ plantTestedCount }}
-                        </div>
-                        <div
-                            class="text-4xl font-semibold text-blue-600 dark:text-blue-500"
-                        >
-                            Total Plants
+                        <div class="text-3xl font-bold text-blue-500">
+                            {{ materialType }}
                         </div>
                         <div
                             class="flex items-baseline justify-center w-full mt-1 text-secondary"
                         >
-                            <div class="ml-1.5 text-lg font-medium">Tested</div>
+                            <div class="ml-1.5 text-lg font-medium">
+                                {{ card.label }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -112,18 +92,9 @@
                         </div>
                     </div>
                     <div class="flex flex-col flex-auto mt-6">
-                        <apx-chart
-                            [series]="chartOptions.series"
-                            [chart]="chartOptions.chart"
-                            [dataLabels]="chartOptions.dataLabels"
-                            [plotOptions]="chartOptions.plotOptions"
-                            [yaxis]="chartOptions.yaxis"
-                            [legend]="chartOptions.legend"
-                            [fill]="chartOptions.fill"
-                            [stroke]="chartOptions.stroke"
-                            [tooltip]="chartOptions.tooltip"
-                            [xaxis]="chartOptions.xaxis"
-                        ></apx-chart>
+                        <app-widget-large-chart
+                            [seriesRaw]="userSessionsSeries"
+                        ></app-widget-large-chart>
                     </div>
                 </div>
             </div>

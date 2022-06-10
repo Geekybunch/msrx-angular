@@ -2,8 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EmployeesService } from 'app/core/employee/employees/employees.service';
-import { EmployeeI } from 'app/core/employee/employees/employess.interface';
+import { EmployeeI } from 'app/core/auth/auth.interface';
+import { EmployeeAdminService } from 'app/core/employee-admin/employee-admin.service';
+
 import { Observable, Subject } from 'rxjs';
 
 @Component({
@@ -16,7 +17,7 @@ export class CreateEmplyeeComponent implements OnInit {
     createForm: FormGroup;
 
     constructor(
-        private employeesService: EmployeesService,
+        private employeService: EmployeeAdminService,
         private snackBar: MatSnackBar,
         @Inject(MAT_DIALOG_DATA) private data: { employeeData: EmployeeI },
         private matDialogRef: MatDialogRef<CreateEmplyeeComponent>
@@ -34,7 +35,7 @@ export class CreateEmplyeeComponent implements OnInit {
         console.log(this.data.employeeData);
     }
     saveEmployee() {
-        this.employeesService
+        this.employeService
             .updateEmploye(this.data.employeeData._id, this.createForm.value)
             .subscribe(
                 (res: any) => {

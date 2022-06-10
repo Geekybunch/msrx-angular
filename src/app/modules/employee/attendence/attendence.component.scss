@@ -1,0 +1,29 @@
+.bg-primary-50 {
+    width: 115px;
+    padding: 5px 14px 4px;
+    font-size: 14px;
+    font-weight: 600;
+    height: 32px;
+    line-height: 20px;
+}
+.leave-chart {
+    max-width: 400px;
+    padding: 0;
+}
+
+.attendance-calender
+    ::ng-deep
+    .cal-month-view
+    .cal-day-cell.cal-in-month.cal-has-events {
+    background: rgba(237, 91, 110, 0.9);
+}
+.attendance-calender ::ng-deep .cal-month-view .cal-day-cell.cal-in-month {
+    background: rgba(125, 242, 0, 0.8);
+}
+
+.attendance-calender
+    ::ng-deep
+    .cal-month-view
+    .cal-day-cell.cal-in-month.cal-weekend {
+    background: rgba(159, 161, 168, 0.8);
+}

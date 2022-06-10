@@ -50,9 +50,18 @@ export class AuthSignInComponent implements OnInit {
 
         this._authService.signIn(this.signInForm.value).subscribe(
             (res) => {
-                if (res.data.user.onModel === 'Employee') {
+                if (
+                    res.data.user.modelId?.employer?.businessType ===
+                    'Cultivator'
+                ) {
                     this._router.navigateByUrl('cultivator/dashboard');
-                } else {
+                }
+                if (
+                    res.data.user.modelId?.employer?.businessType === 'Tester'
+                ) {
+                    this._router.navigateByUrl('tester/dashboard');
+                }
+                if (res.data.user.onModel === 'Admin') {
                     this._router.navigateByUrl('admin/dashboard');
                 }
 

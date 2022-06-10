@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { CreatePlantRequest } from 'app/core/employee/grower/grower.interface';
-import { GrowerService } from 'app/core/employee/grower/grower.service';
+import { CreatePlantRequest } from 'app/core/grower/grower.interface';
+import { GrowerService } from 'app/core/grower/grower.service';
 import moment from 'moment';
 
 @Component({

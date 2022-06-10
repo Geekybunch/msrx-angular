@@ -174,13 +174,43 @@ export const employeeNavigation: FuseNavigationItem[] = [
         link: '/sign-out',
     },
 ];
-export const futuristicNavigation: FuseNavigationItem[] = [
+export const TesterNavigation: FuseNavigationItem[] = [
     {
-        id: 'example',
-        title: 'Example',
+        id: 'tester.dashboard',
+        title: 'Dashboard',
         type: 'basic',
-        icon: 'heroicons_outline:chart-pie',
-        link: '/example',
+        icon: 'dashboard',
+        link: '/tester/dashboard',
+    },
+    {
+        id: 'tester.plants',
+        title: 'Tests',
+        type: 'basic',
+        icon: 'yard',
+        link: '/tester/plants',
+    },
+
+    {
+        id: 'tester.attendence',
+        title: 'Attendence',
+        type: 'basic',
+        icon: 'event_available',
+        link: '/tester/attendence',
+    },
+
+    {
+        id: 'tester.employees',
+        title: 'Employee',
+        type: 'basic',
+        icon: 'people_alt',
+        link: '/tester/employees',
+    },
+    {
+        id: 'logout',
+        title: 'Logout',
+        type: 'basic',
+        icon: 'heroicons_outline:logout',
+        link: '/sign-out',
     },
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [

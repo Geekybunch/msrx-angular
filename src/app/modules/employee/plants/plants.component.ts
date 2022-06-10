@@ -2,15 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
-import { GrowerService } from 'app/core/employee/grower/grower.service';
 
-import { GrowerPlant } from 'app/core/employee/grower/grower.interface';
-import { DisplayedPlant } from 'app/core/employee/grower/grower.interface';
+import { GrowerPlant } from 'app/core/grower/grower.interface';
+import { DisplayedPlant } from 'app/core/grower/grower.interface';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash';
 import { AddPlantsComponent } from '../add-plants/add-plants.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GrowerService } from 'app/core/grower/grower.service';
+import { TesterService } from 'app/core/tester/tester.service';
 
 @Component({
     selector: 'app-plants',
@@ -26,41 +27,59 @@ export class PlantsComponent implements OnInit {
     public viewDetails: any;
     public filterbatchNumber: string;
     public geneticStainTypes: any;
+    public userInfo: any;
     dataSource = new MatTableDataSource<GrowerPlant>();
     visibleColumns = DisplayedPlant;
+    authServices: any;
+    testeractions: boolean = false;
     constructor(
-        private plantsServices: GrowerService,
+        private growerService: GrowerService,
         private matDialog: MatDialog,
+        private testerService: TesterService,
         private snackBar: MatSnackBar
-    ) {}
+    ) {
+        this.userInfo = JSON.parse(localStorage.getItem('userData'));
+    }
 
     ngOnInit(): void {
-        this.getPlantsData();
+        this.getPlants();
+
+        console.log(this.userInfo.modelId.employer.businessType);
     }
-    getPlantsData(): void {
-        this.paginator.pageSize = this.paginator.pageSize
-            ? this.paginator.pageSize
-            : 20;
+    getPlants(): void {
+        if (this.userInfo.modelId.employer.businessType === 'Cultivator') {
+            this.paginator.pageSize = this.paginator.pageSize
+                ? this.paginator.pageSize
+                : 20;
 
-        const pageparams = `?limit=${this.paginator.pageSize}&page=${
-            this.paginator.pageIndex + 1
-        }`;
-        const batchNumber = this.filterbatchNumber
-            ? `&batchNumber=${this.filterbatchNumber}`
-            : '';
-        const totalparams = `${pageparams + batchNumber}`;
+            const pageparams = `?limit=${this.paginator.pageSize}&page=${
+                this.paginator.pageIndex + 1
+            }`;
+            const batchNumber = this.filterbatchNumber
+                ? `&batchNumber=${this.filterbatchNumber}`
+                : '';
+            const totalparams = `${pageparams + batchNumber}`;
 
-        this.plantsServices.getplantsDetails(totalparams).subscribe(
-            (response: any) => {
-                console.log(response);
-                this.noRecords = response.data.result.results;
-                this.dataSource = response.data.result.results;
-                this.totalResults = response.data.result.totalResults;
-            },
-            (err: any) => {
-                console.log(err);
-            }
-        );
+            this.growerService.getGrowerPlants(totalparams).subscribe(
+                (response: any) => {
+                    console.log(response);
+                    this.noRecords = response.data.result.results;
+                    this.dataSource = response.data.result.results;
+                    this.totalResults = response.data.result.totalResults;
+                },
+                (err: any) => {
+                    console.log(err);
+                }
+            );
+        } else {
+            this.testerService
+                .getTestResultList()
+                .subscribe((response: any) => {
+                    this.noRecords = response.data.plants.results;
+                    this.dataSource = response.data.plants.results;
+                    this.totalResults = response.data.plants.totalResults;
+                });
+        }
     }
 
     sideToggle(event): void {
@@ -71,18 +90,18 @@ export class PlantsComponent implements OnInit {
 
     filterByBatchNumber(query: string): void {
         this.filterbatchNumber = query;
-        this.getPlantsData();
+        this.getPlants();
     }
 
     filterByCompany(query: string): void {
-        this.getPlantsData();
+        this.getPlants();
     }
     toggleplantTest(change: MatSlideToggleChange): void {
-        this.getPlantsData();
+        this.getPlants();
     }
 
     toggleplantprocess(change: MatSlideToggleChange): void {
-        this.getPlantsData();
+        this.getPlants();
     }
     openPlantDialog(plantData: any) {
         let EditPlant = this.matDialog.open(AddPlantsComponent, {
@@ -92,14 +111,14 @@ export class PlantsComponent implements OnInit {
             },
         });
         EditPlant.afterClosed().subscribe((result) => {
-            this.getPlantsData(); // Pizza!
+            this.getPlants(); // Pizza!
         });
     }
     deletePlant(plantId: any) {
-        this.plantsServices.deleteGrowerPlant(plantId).subscribe(
+        this.growerService.deleteGrowerPlant(plantId).subscribe(
             (res) => {
                 console.log(res);
-                this.getPlantsData();
+                this.getPlants();
                 this.snackBar.open('Plant Deleted Successfully..!', 'Close', {
                     duration: 2000,
                 });

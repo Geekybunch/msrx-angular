@@ -4,12 +4,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { EmployeesService } from 'app/core/employee/employees/employees.service';
 import {
-    EmployeesList,
     DisplayedEmployees,
     EmployeeI,
-} from 'app/core/employee/employees/employess.interface';
+    EmployeesList,
+} from 'app/core/auth/auth.interface';
+import { AuthService } from 'app/core/auth/auth.service';
+import { EmployeeAdminService } from 'app/core/employee-admin/employee-admin.service';
+
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { CreateEmplyeeComponent } from './create-emplyee/create-emplyee.component';
@@ -36,15 +38,17 @@ export class EmployeesComponent implements OnInit {
     visibleColumns = DisplayedEmployees;
     public Employees: any = ['Admin', 'Employee'];
     constructor(
-        private employeeService: EmployeesService,
+        private employeService: EmployeeAdminService,
+        private authServices: AuthService,
         private _fuseConfirmationService: FuseConfirmationService,
         private matDialog: MatDialog
     ) {}
 
     ngOnInit(): void {
-        this.getEmployeesList();
+        this.getEmployeList();
     }
-    getEmployeesList(): void {
+
+    getEmployeList(): void {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
             : 20;
@@ -57,7 +61,7 @@ export class EmployeesComponent implements OnInit {
             : '';
         const totalparams = `${pageparams + batchNumber}`;
 
-        this.employeeService.getemployeesDetails(totalparams).subscribe(
+        this.employeService.getEmployeList(totalparams).subscribe(
             (response: any) => {
                 console.log(response);
                 this.noRecords = response.data.employees.results;
@@ -81,22 +85,20 @@ export class EmployeesComponent implements OnInit {
 
     filterByBatchNumber(query: string): void {
         this.filterbatchNumber = query;
-        this.getEmployeesList();
+        this.getEmployeList();
     }
     filterByEmployee() {}
 
-    changeStatus(business: any) {
-        if (business.isApproved === true) {
-            this.statusChange = false;
+    changeStatus(employee: any, status: boolean) {
+        if (employee.isApproved === true) {
+            status = false;
         } else {
-            this.statusChange = true;
+            status = true;
         }
-        let obj = {
-            isApproved: this.statusChange,
-        };
-        this.employeeService.changeEmployeeStatus(business._id, obj).subscribe(
+
+        this.employeService.updateStatus(employee._id, status).subscribe(
             (response: any) => {
-                this.getEmployeesList();
+                this.getEmployeList();
             },
             (err: any) => {
                 console.log(err);
@@ -135,7 +137,7 @@ export class EmployeesComponent implements OnInit {
             },
         });
         createEmp.afterClosed().subscribe((result) => {
-            this.getEmployeesList(); // Pizza!
+            this.getEmployeList(); // Pizza!
         });
     }
 }

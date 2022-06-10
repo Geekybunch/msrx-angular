@@ -1,7 +1,7 @@
 <fuse-loading-bar></fuse-loading-bar>
 
 <fuse-vertical-navigation
-    *ngIf="role === 'Admin'"
+    *ngIf="role.onModel === 'Admin'"
     class="dark bg-gray-900 print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
@@ -18,11 +18,27 @@
 </fuse-vertical-navigation>
 
 <fuse-vertical-navigation
-    *ngIf="role === 'Employee'"
+    *ngIf="role.modelId?.employer?.businessType === 'Cultivator'"
     class="dark bg-gray-900 print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
     [navigation]="navigation.compact"
+    [opened]="!isScreenSmall"
+>
+    <ng-container fuseVerticalNavigationContentHeader>
+        <div class="flex items-center w-full p-6 pl-6 pb-5 justify-center">
+            <div class="flex items-center justify-center">
+                <img class="w-30" src="assets/images/logo/logo01.png" />
+            </div>
+        </div>
+    </ng-container>
+</fuse-vertical-navigation>
+<fuse-vertical-navigation
+    *ngIf="role.modelId?.employer?.businessType === 'Tester'"
+    class="dark bg-gray-900 print:hidden"
+    [mode]="isScreenSmall ? 'over' : 'side'"
+    [name]="'mainNavigation'"
+    [navigation]="navigation.futuristic"
     [opened]="!isScreenSmall"
 >
     <ng-container fuseVerticalNavigationContentHeader>

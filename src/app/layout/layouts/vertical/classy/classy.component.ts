@@ -56,7 +56,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         this.userDetails = JSON.parse(localStorage.getItem('userData'));
-        this.role = this.userDetails.onModel;
+        this.role = this.userDetails;
 
         // Subscribe to navigation data
         this._navigationService.navigation$
