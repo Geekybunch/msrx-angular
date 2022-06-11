@@ -17,6 +17,7 @@ export class AddPlantsComponent implements OnInit {
     formFieldHelpers: string[] = [''];
     modify = false;
     public editPlantData = this.data;
+    phaseValue;
     constructor(
         private growerService: GrowerService,
         private snackBar: MatSnackBar,
@@ -35,6 +36,11 @@ export class AddPlantsComponent implements OnInit {
             wetWeight: new FormControl(null, Validators.required),
             dryWeight: new FormControl(null, Validators.required),
             discardedWeight: new FormControl(null, Validators.required),
+        });
+        this.createPalntsForm.controls.phase.valueChanges.subscribe((value) => {
+            if (value) {
+                this.phaseValue = value;
+            }
         });
         if (this.editPlantData.plantData) {
             console.log(
@@ -62,20 +68,29 @@ export class AddPlantsComponent implements OnInit {
         }
         const req: CreatePlantRequest = this.createPalntsForm.value;
 
-        const phase = this.editPlantData.plantData?.phase || {};
-        const phaseAdd = this.createPalntsForm.value.phase || {};
+        // const phase = this.editPlantData.plantData?.phase || {};
+        // const phaseAdd = this.createPalntsForm.value.phase || {};
 
         // phase[(req as any).phase] = moment().format('YYYY-MM-DD');
-        let ex;
-        if (this.editPlantData.plantData) {
-            ex = {
-                [phase]: moment().format('YYYY-MM-DD'),
-            };
-        } else {
-            ex = {
-                [phaseAdd]: moment().format('YYYY-MM-DD'),
-            };
+        if (!this.phaseValue) {
+            this.phaseValue = this.createPalntsForm.value.phase;
         }
+        let ex = {
+            [this.phaseValue]: moment().format('YYYY-MM-DD'),
+        };
+        ex;
+        // if (this.editPlantData.plantData) {
+        //     alert('here');
+        //     ex = {
+        //         [phase]: moment().format('YYYY-MM-DD'),
+        //     };
+        //     console.log('ex', this.editPlantData.plantData);
+        // } else {
+        //     ex = {
+        //         [phaseAdd]: moment().format('YYYY-MM-DD'),
+        //     };
+        // }
+
         req.phase = ex;
 
         if (this.modify) {

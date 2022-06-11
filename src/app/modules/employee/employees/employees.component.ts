@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import {
@@ -33,6 +34,7 @@ export class EmployeesComponent implements OnInit {
     public geneticStainTypes: any;
     public selectedEmployee;
     public statusChange: any;
+    public filterApproved: boolean;
     dataSource = new MatTableDataSource<EmployeesList>();
 
     visibleColumns = DisplayedEmployees;
@@ -53,14 +55,17 @@ export class EmployeesComponent implements OnInit {
             ? this.paginator.pageSize
             : 20;
 
-        const pageparams = `?limit=${this.paginator.pageSize}&page=${
+        let pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
         }`;
-        const batchNumber = this.filterbatchNumber
-            ? `&batchNumber=${this.filterbatchNumber}`
+        let employeeType = this.selectedEmployee
+            ? `&type=${this.selectedEmployee}`
             : '';
-        const totalparams = `${pageparams + batchNumber}`;
 
+        let isApproved = this.filterApproved
+            ? `&isApproved=${this.filterApproved}`
+            : '';
+        let totalparams = `${pageparams + employeeType + isApproved}`;
         this.employeService.getEmployeList(totalparams).subscribe(
             (response: any) => {
                 console.log(response);
@@ -76,18 +81,19 @@ export class EmployeesComponent implements OnInit {
     // getPhase(phase: GrowerPlant) {
     //     return Object.keys(phase.phase)[0];
     // }
-    toggleApproved(event: any) {}
     sideToggle(event): void {
         this.viewDetails = event;
         console.log(event);
         this.sideNav.toggle();
     }
 
-    filterByBatchNumber(query: string): void {
-        this.filterbatchNumber = query;
+    filterByEmployee(): void {
         this.getEmployeList();
     }
-    filterByEmployee() {}
+    toggleApproved(change: MatSlideToggleChange): void {
+        this.filterApproved = change.checked;
+        this.getEmployeList();
+    }
 
     changeStatus(employee: any, status: boolean) {
         if (employee.isApproved === true) {

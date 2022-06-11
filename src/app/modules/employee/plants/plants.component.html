@@ -33,6 +33,9 @@
                             ></mat-icon>
                             <input
                                 placeholder="Search by Genetic Company"
+                                (input)="filterByCompany(query1.value)"
+                                matInput
+                                #query1
                                 matInput
                             />
                         </mat-form-field>
@@ -248,6 +251,7 @@
         </div>
     </mat-sidenav-content>
     <mat-sidenav position="end" #sidenav class="sm:w-128">
+        <!-- <app-plant-details></app-plant-details> -->
         <div class="p-6">
             <div class="flex items-end justify-end absolute right-6">
                 <button mat-icon-button (click)="sidenav.close()">
@@ -342,7 +346,9 @@
                     <span class="font-medium text-secondary">Id Number</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
-                        viewDetails && viewDetails.employee.idNumber
+                        viewDetails &&
+                        viewDetails.employee &&
+                        viewDetails.employee.idNumber
                             ? viewDetails.employee.idNumber
                             : ""
                     }}</span>
@@ -351,7 +357,9 @@
                     <span class="font-medium text-secondary">Name</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
-                        viewDetails && viewDetails.employee.name
+                        viewDetails &&
+                        viewDetails.employee &&
+                        viewDetails.employee.name
                             ? viewDetails.employee.name
                             : ""
                     }}</span>
@@ -360,7 +368,9 @@
                     <span class="font-medium text-secondary">Type</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
-                        viewDetails && viewDetails.employee.type
+                        viewDetails &&
+                        viewDetails.employee &&
+                        viewDetails.employee.type
                             ? viewDetails.employee.type
                             : ""
                     }}</span>
@@ -374,7 +384,9 @@
                     <span class="font-medium text-secondary">Name</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
-                        viewDetails && viewDetails.grower.businessName
+                        viewDetails &&
+                        viewDetails.employee &&
+                        viewDetails.grower.businessName
                             ? viewDetails.grower.businessName
                             : ""
                     }}</span>

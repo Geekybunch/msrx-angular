@@ -11,6 +11,7 @@ import {
     ApexGrid,
     ApexTitleSubtitle,
     ApexLegend,
+    ApexPlotOptions,
 } from 'ng-apexcharts';
 import moment from 'moment';
 
@@ -26,6 +27,7 @@ export type ChartOptions = {
     grid: ApexGrid;
     legend: ApexLegend;
     title: ApexTitleSubtitle;
+    plotOptions: ApexPlotOptions;
 };
 
 @Component({
@@ -48,7 +50,13 @@ export class WidgetLargeChartComponent implements OnInit {
                     show: false,
                 },
                 height: 350,
-                type: 'line',
+                type: 'bar',
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '95%',
+                },
             },
             dataLabels: {
                 enabled: false,
@@ -56,7 +64,6 @@ export class WidgetLargeChartComponent implements OnInit {
             stroke: {
                 width: 5,
                 curve: 'straight',
-                dashArray: [0, 8, 5],
             },
             title: {
                 align: 'left',

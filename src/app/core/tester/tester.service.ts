@@ -35,8 +35,8 @@ export class TesterService {
         );
     }
 
-    getTestResultList() {
-        return this.http.get<TestListResponse>(applicationUrls.plantTest, {
+    getTestResultList(payload: any) {
+        return this.http.get<any>(applicationUrls.plantTest + payload, {
             params: {
                 populate: DEFAULT_POPULATED_FIELDS.join(),
             },

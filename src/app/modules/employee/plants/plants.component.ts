@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,11 +27,15 @@ export class PlantsComponent implements OnInit {
     public viewDetails: any;
     public filterbatchNumber: string;
     public geneticStainTypes: any;
+    public filterPlantTest: boolean;
+    public filterPlantProcess: boolean;
+    public filterCompany: string;
     public userInfo: any;
     dataSource = new MatTableDataSource<GrowerPlant>();
     visibleColumns = DisplayedPlant;
     authServices: any;
     testeractions: boolean = false;
+
     constructor(
         private growerService: GrowerService,
         private matDialog: MatDialog,
@@ -47,19 +51,34 @@ export class PlantsComponent implements OnInit {
         console.log(this.userInfo.modelId.employer.businessType);
     }
     getPlants(): void {
+        this.paginator.pageSize = this.paginator.pageSize
+            ? this.paginator.pageSize
+            : 20;
+
+        const pageparams = `?limit=${this.paginator.pageSize}&page=${
+            this.paginator.pageIndex + 1
+        }`;
+        const batchNumber = this.filterbatchNumber
+            ? `&batchNumber=${this.filterbatchNumber}`
+            : '';
+        const geneticCompanyName = this.filterCompany
+            ? `&geneticCompany=${this.filterCompany}`
+            : '';
+
+        const plantTest = this.filterPlantTest
+            ? `&plantTest=${this.filterPlantTest}`
+            : '';
+        const plantProcess = this.filterPlantProcess
+            ? `&plantProcess=${this.filterPlantProcess}`
+            : '';
+        const totalparams = `${
+            pageparams +
+            batchNumber +
+            plantTest +
+            plantProcess +
+            geneticCompanyName
+        }`;
         if (this.userInfo.modelId.employer.businessType === 'Cultivator') {
-            this.paginator.pageSize = this.paginator.pageSize
-                ? this.paginator.pageSize
-                : 20;
-
-            const pageparams = `?limit=${this.paginator.pageSize}&page=${
-                this.paginator.pageIndex + 1
-            }`;
-            const batchNumber = this.filterbatchNumber
-                ? `&batchNumber=${this.filterbatchNumber}`
-                : '';
-            const totalparams = `${pageparams + batchNumber}`;
-
             this.growerService.getGrowerPlants(totalparams).subscribe(
                 (response: any) => {
                     console.log(response);
@@ -73,7 +92,7 @@ export class PlantsComponent implements OnInit {
             );
         } else {
             this.testerService
-                .getTestResultList()
+                .getTestResultList(totalparams)
                 .subscribe((response: any) => {
                     this.noRecords = response.data.plants.results;
                     this.dataSource = response.data.plants.results;
@@ -84,7 +103,7 @@ export class PlantsComponent implements OnInit {
 
     sideToggle(event): void {
         this.viewDetails = event;
-        console.log(event);
+        console.log(this.viewDetails);
         this.sideNav.toggle();
     }
 
@@ -94,13 +113,16 @@ export class PlantsComponent implements OnInit {
     }
 
     filterByCompany(query: string): void {
+        this.filterCompany = query;
         this.getPlants();
     }
     toggleplantTest(change: MatSlideToggleChange): void {
+        this.filterPlantTest = change.checked;
         this.getPlants();
     }
 
     toggleplantprocess(change: MatSlideToggleChange): void {
+        this.filterPlantProcess = change.checked;
         this.getPlants();
     }
     openPlantDialog(plantData: any) {
@@ -111,7 +133,7 @@ export class PlantsComponent implements OnInit {
             },
         });
         EditPlant.afterClosed().subscribe((result) => {
-            this.getPlants(); // Pizza!
+            this.getPlants();
         });
     }
     deletePlant(plantId: any) {
