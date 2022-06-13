@@ -1,11 +1,10 @@
 <fuse-loading-bar></fuse-loading-bar>
 
 <fuse-vertical-navigation
-    *ngIf="role.onModel === 'Admin'"
     class="dark bg-gray-900 print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
-    [navigation]="navigation.default"
+    [navigation]="navigation.compact"
     [opened]="!isScreenSmall"
 >
     <ng-container fuseVerticalNavigationContentHeader>
@@ -17,7 +16,7 @@
     </ng-container>
 </fuse-vertical-navigation>
 
-<fuse-vertical-navigation
+<!-- <fuse-vertical-navigation
     *ngIf="role.modelId?.employer?.businessType === 'Cultivator'"
     class="dark bg-gray-900 print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
@@ -31,6 +30,22 @@
                 <img class="w-30" src="assets/images/logo/logo01.png" />
             </div>
         </div>
+        <fuse-vertical-navigation-basic-item>
+            <div class="fuse-vertical-navigation-item-wrapper">
+                <button
+                    (click)="openDialog()"
+                    class="mat-tooltip-trigger fuse-vertical-navigation-item"
+                    style="width: 100%"
+                >
+                    <mat-icon
+                        class="mat-icon notranslate fuse-vertical-navigation-item-icon mat-icon-no-color ng-star-inserted"
+                        [svgIcon]="'heroicons_solid:qrcode'"
+                    ></mat-icon>
+
+                    Scan QR Code
+                </button>
+            </div></fuse-vertical-navigation-basic-item
+        >
     </ng-container>
 </fuse-vertical-navigation>
 <fuse-vertical-navigation
@@ -48,7 +63,7 @@
             </div>
         </div>
     </ng-container>
-</fuse-vertical-navigation>
+</fuse-vertical-navigation> -->
 
 <div class="flex flex-col flex-auto w-full min-w-0">
     <div
@@ -67,3 +82,47 @@
         <router-outlet *ngIf="true"></router-outlet>
     </div>
 </div>
+
+<ng-template #scanQRCodeDialog>
+    <div class="p-3" style="width: 22rem !important">
+        <h2 matDialogTitle>Scan QR Code</h2>
+        <form class="mb-3" [formGroup]="scanQRForm">
+            <div class="flex flex-col">
+                <mat-form-field
+                    [ngClass]="formFieldHelpers"
+                    class="flex-auto fuse-mat-dense"
+                >
+                    <input
+                        matInput
+                        [formControlName]="'planId'"
+                        placeholder="Enter Plant ID"
+                    />
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col">
+                <button
+                    class="flex items-center justify-center rounded"
+                    style="border: 1px dashed rgb(203 213 225); padding: 10px"
+                >
+                    <mat-icon
+                        svgIcon="qr_code_scanner"
+                        class="mat-icon notranslate icon-size-5 mr-3 mat-icon-no-color"
+                    ></mat-icon>
+                    Scan QR Code
+                </button>
+            </div>
+        </form>
+        <mat-dialog-actions>
+            <button
+                (click)="plantDetails()"
+                mat-button
+                mat-raised-button
+                color="primary"
+                class="px-8"
+            >
+                Done
+            </button>
+            <button mat-button matDialogClose="no">Cancel</button>
+        </mat-dialog-actions>
+    </div>
+</ng-template>

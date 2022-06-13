@@ -4,7 +4,7 @@ import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { environment } from '../../../environments/environment';
-import { User } from './auth.interface';
+import { Employer, User } from './auth.interface';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +25,7 @@ export class AuthService {
         return localStorage.getItem('accessToken') ?? '';
     }
 
-    get userData(): User {
+    get userRole(): Employer {
         return JSON.parse(localStorage.getItem('userData'));
     }
     // -----------------------------------------------------------------------------------------------------

@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class EmployeeGuard implements CanActivate {
+export class TesterGuard implements CanActivate {
     getUser: any;
     constructor(private router: Router) {
         this.getUser = JSON.parse(localStorage.getItem('userData'));
@@ -30,25 +30,17 @@ export class EmployeeGuard implements CanActivate {
     checkEmployee(): boolean {
         if (
             this.getUser &&
-            this.getUser.modelId.employer.businessType == 'Employee'
+            this.getUser.modelId.employer.businessType == 'Tester'
         ) {
-            console.log('employee');
+            console.log('Tester');
             return true;
         } else {
             if (this.getUser) {
                 let role = this.getUser.modelId.employer.businessType;
                 let redirect = role.toLowerCase();
                 this.router.navigateByUrl(`/${redirect}/dashboard`);
-            } else if (this.getUser) {
-                let role = this.getUser.modelId.employer.businessType;
-                let redirect =
-                    role.toLowerCase() == 'tester'
-                        ? 'tester'
-                        : role.toLowerCase();
-
-                this.router.navigateByUrl(`/${redirect}/dashboard`);
             }
-
+            console.log('else');
             return false;
         }
     }

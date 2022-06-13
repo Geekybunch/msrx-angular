@@ -129,7 +129,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     //     link: '/sign-out',
     // },
 ];
-export const employeeNavigation: FuseNavigationItem[] = [
+export const cultivatorNavigation: FuseNavigationItem[] = [
     {
         id: 'cultivator.dashboard',
         title: 'Dashboard',
@@ -204,6 +204,45 @@ export const TesterNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'people_alt',
         link: '/tester/employees',
+    },
+    {
+        id: 'logout',
+        title: 'Logout',
+        type: 'basic',
+        icon: 'heroicons_outline:logout',
+        link: '/sign-out',
+    },
+];
+export const processorNavigation: FuseNavigationItem[] = [
+    {
+        id: 'processor.dashboard',
+        title: 'Dashboard',
+        type: 'basic',
+        icon: 'dashboard',
+        link: '/processor/dashboard',
+    },
+    {
+        id: 'processor.plants',
+        title: 'Processed Results',
+        type: 'basic',
+        icon: 'yard',
+        link: '/processor/plants',
+    },
+
+    {
+        id: 'processor.attendence',
+        title: 'Attendence',
+        type: 'basic',
+        icon: 'event_available',
+        link: '/processor/attendence',
+    },
+
+    {
+        id: 'processor.employees',
+        title: 'Employee',
+        type: 'basic',
+        icon: 'people_alt',
+        link: '/processor/employees',
     },
     {
         id: 'logout',

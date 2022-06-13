@@ -5,6 +5,7 @@ import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { EmployeeGuard } from './core/auth/guards/employee.guard';
 import { AdminGuard } from './core/auth/guards/admin.guards';
+import { TesterGuard } from './core/auth/guards/tester.guard';
 
 export const appRoutes: Route[] = [
     { path: '', pathMatch: 'full', redirectTo: 'admin/dashboard' },
@@ -186,7 +187,6 @@ export const appRoutes: Route[] = [
     },
     {
         path: 'cultivator',
-        canActivate: [EmployeeGuard],
         loadChildren: () =>
             import('app/modules/employee/employee.module').then(
                 (m) => m.EmployeeModule
@@ -194,9 +194,24 @@ export const appRoutes: Route[] = [
     },
     {
         path: 'tester',
+
         loadChildren: () =>
             import('app/modules/employee/employee.module').then(
                 (m) => m.EmployeeModule
             ),
     },
+    {
+        path: 'processor',
+        loadChildren: () =>
+            import('app/modules/employee/employee.module').then(
+                (m) => m.EmployeeModule
+            ),
+    },
+    // {
+    //     path: 'cultivator/test-details',
+    //     loadChildren: () =>
+    //         import('app/modules/pages/test-details/test-details.module').then(
+    //             (m) => m.TestDetailsModule
+    //         ),
+    // },
 ];

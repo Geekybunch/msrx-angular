@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
-import { EmployeeGuard } from 'app/core/auth/guards/employee.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
-import { EmployeesComponent } from '../admin/employees/employees.component';
 
 const routes: Routes = [
     {
@@ -49,6 +47,13 @@ const routes: Routes = [
                     import(
                         'app/modules/employee/employees/employees.module'
                     ).then((m) => m.EmployeesModule),
+            },
+            {
+                path: 'test-details',
+                loadChildren: () =>
+                    import(
+                        'app/modules/employee/test-details/test-details.module'
+                    ).then((m) => m.TestDetailsModule),
             },
         ],
     },

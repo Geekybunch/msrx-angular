@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash-es';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { FuseMockApiService } from '@fuse/lib/mock-api';
 import {
-    employeeNavigation,
+    cultivatorNavigation,
     defaultNavigation,
     TesterNavigation,
     horizontalNavigation,
@@ -14,7 +14,7 @@ import {
 })
 export class NavigationMockApi {
     private readonly _compactNavigation: FuseNavigationItem[] =
-        employeeNavigation;
+        cultivatorNavigation;
     private readonly _defaultNavigation: FuseNavigationItem[] =
         defaultNavigation;
     private readonly _futuristicNavigation: FuseNavigationItem[] =

@@ -12,6 +12,7 @@ import { AddPlantsComponent } from '../add-plants/add-plants.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GrowerService } from 'app/core/grower/grower.service';
 import { TesterService } from 'app/core/tester/tester.service';
+import { ProcessorService } from 'app/core/processor/processor.service';
 
 @Component({
     selector: 'app-plants',
@@ -35,11 +36,13 @@ export class PlantsComponent implements OnInit {
     visibleColumns = DisplayedPlant;
     authServices: any;
     testeractions: boolean = false;
+    qrBase64: string;
 
     constructor(
         private growerService: GrowerService,
         private matDialog: MatDialog,
         private testerService: TesterService,
+        private processorService: ProcessorService,
         private snackBar: MatSnackBar
     ) {
         this.userInfo = JSON.parse(localStorage.getItem('userData'));
@@ -90,10 +93,21 @@ export class PlantsComponent implements OnInit {
                     console.log(err);
                 }
             );
-        } else {
+        } else if (this.userInfo.modelId.employer.businessType === 'Tester') {
             this.testerService
                 .getTestResultList(totalparams)
                 .subscribe((response: any) => {
+                    this.noRecords = response.data.plants.results;
+                    this.dataSource = response.data.plants.results;
+                    this.totalResults = response.data.plants.totalResults;
+                });
+        } else if (
+            this.userInfo.modelId.employer.businessType === 'Processor'
+        ) {
+            this.processorService
+                .getTestResultList(totalparams)
+                .subscribe((response: any) => {
+                    console.log('dgdgff', response);
                     this.noRecords = response.data.plants.results;
                     this.dataSource = response.data.plants.results;
                     this.totalResults = response.data.plants.totalResults;

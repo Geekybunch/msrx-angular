@@ -50,27 +50,23 @@ export class AuthSignInComponent implements OnInit {
 
         this._authService.signIn(this.signInForm.value).subscribe(
             (res) => {
-                if (
+                if (res.data.user.onModel === 'Admin') {
+                    this._router.navigateByUrl('admin/dashboard');
+                } else if (
                     res.data.user.modelId?.employer?.businessType ===
                     'Cultivator'
                 ) {
                     this._router.navigateByUrl('cultivator/dashboard');
-                }
-                if (
+                } else if (
                     res.data.user.modelId?.employer?.businessType === 'Tester'
                 ) {
                     this._router.navigateByUrl('tester/dashboard');
+                } else if (
+                    res.data.user.modelId?.employer?.businessType ===
+                    'Processor'
+                ) {
+                    this._router.navigateByUrl('processor/dashboard');
                 }
-                if (res.data.user.onModel === 'Admin') {
-                    this._router.navigateByUrl('admin/dashboard');
-                }
-
-                // const redirectURL =
-                //     this._activatedRoute.snapshot.queryParamMap.get(
-                //         'redirectURL'
-                //     ) || '/signed-in-redirect';
-
-                // this._router.navigateByUrl(redirectURL);
             },
             (response) => {
                 // Re-enable the form

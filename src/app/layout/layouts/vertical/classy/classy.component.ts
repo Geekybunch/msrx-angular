@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    OnDestroy,
+    OnInit,
+    TemplateRef,
+    ViewChild,
+    ViewEncapsulation,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
@@ -10,6 +17,17 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { MatDialog } from '@angular/material/dialog';
+
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { th } from 'date-fns/locale';
+import { AuthService } from 'app/core/auth/auth.service';
+import {
+    cultivatorNavigation,
+    defaultNavigation,
+    processorNavigation,
+    TesterNavigation,
+} from 'app/mock-api/common/navigation/data';
 
 @Component({
     selector: 'classy-layout',
@@ -22,7 +40,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     user: User;
     public userDetails: any;
     public role: any;
+    scanQRForm: FormGroup;
+    plantId: string;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
 
     /**
      * Constructor
@@ -33,7 +54,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _navigationService: NavigationService,
         private _userService: UserService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fuseNavigationService: FuseNavigationService
+        private _fuseNavigationService: FuseNavigationService,
+        private dialog: MatDialog,
+        private router: Router,
+        private authService: AuthService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -55,14 +79,26 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.userDetails = JSON.parse(localStorage.getItem('userData'));
-        this.role = this.userDetails;
+        this.scanQRForm = new FormGroup({
+            planId: new FormControl(null, Validators.required),
+        });
+        this.role = this.authService.userRole;
 
-        // Subscribe to navigation data
         this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((navigation: Navigation) => {
                 this.navigation = navigation;
+                if (this.role.onModel === 'Admin') {
+                    this.navigation.compact = defaultNavigation;
+                } else if (
+                    this.role.modelId.employer?.businessType === 'Tester'
+                ) {
+                    this.navigation.compact = TesterNavigation;
+                } else if (
+                    this.role.modelId.employer.businessType === 'Processor'
+                ) {
+                    this.navigation.compact = processorNavigation;
+                }
             });
 
         // Subscribe to the user service
@@ -110,5 +146,19 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
             // Toggle the opened status
             navigation.toggle();
         }
+    }
+    openDialog() {
+        this.dialog.open(this.scanQRCodeDialog);
+    }
+    plantDetails() {
+        if (this.scanQRForm.invalid) {
+            return;
+        }
+        console.log(this.scanQRForm.value.planId);
+        this.router.navigate([
+            '/cultivator/test-details',
+            this.scanQRForm.value.planId,
+        ]);
+        this.dialog.closeAll();
     }
 }

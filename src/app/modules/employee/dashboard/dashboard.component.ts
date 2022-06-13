@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { AuthService } from 'app/core/auth/auth.service';
 
 import { GrowerService } from 'app/core/grower/grower.service';
+import { ProcessorService } from 'app/core/processor/processor.service';
 import { TesterService } from 'app/core/tester/tester.service';
 
 @Component({
@@ -17,6 +19,10 @@ export class DashboardComponent implements OnInit {
     dashboardLoaded = false;
     materialType = 'Plants';
     userInfo: any;
+    public grownPlantCount: number;
+    public testedPlantCount: number;
+    public plantTestedCount: number;
+    public plantProcessed: number;
 
     userSessionsSeries: ApexAxisChartSeries = [];
     cardCount: {
@@ -26,7 +32,9 @@ export class DashboardComponent implements OnInit {
 
     constructor(
         private growerService: GrowerService,
-        private testerService: TesterService
+        private testerService: TesterService,
+        private processorService: ProcessorService,
+        private authServies: AuthService
     ) {
         this.userInfo = JSON.parse(localStorage.getItem('userData'));
     }
@@ -73,6 +81,8 @@ export class DashboardComponent implements OnInit {
                     .getDashboardData(params)
                     .subscribe((res: any) => {
                         console.log(res);
+                        this.grownPlantCount = res.data.plantCount;
+                        this.testedPlantCount = res.data.plantTestedCount;
                         this.cardCount.push({
                             label: 'Grown',
                             value: 0,
@@ -97,7 +107,7 @@ export class DashboardComponent implements OnInit {
                         this.dashboardLoaded = true;
                     });
             }
-        } else {
+        } else if (this.userInfo.modelId.employer.businessType === 'Tester') {
             let params: any;
             if (start && !end) {
             } else {
@@ -110,6 +120,7 @@ export class DashboardComponent implements OnInit {
                     .getDashboardData(params)
                     .subscribe((res: any) => {
                         console.log(res);
+                        this.plantTestedCount = res.data.plantTestedCount;
 
                         this.countTimer(0, res.data.plantTestedCount);
 
@@ -121,6 +132,40 @@ export class DashboardComponent implements OnInit {
                         this.countTimer(1, res.data.plantTestedCount);
                         this.userSessionsSeries = [
                             { name: 'Tested', data: res.data.plantsTested },
+                        ];
+                        this.dashboardLoaded = true;
+                    });
+            }
+        } else if (
+            this.userInfo.modelId.employer.businessType === 'Processor'
+        ) {
+            let params: any;
+            if (start && !end) {
+            } else {
+                if (start && end) {
+                    params = `?from=${start}&to=${end}`;
+                } else {
+                    params = `?from=${this.startDate}&to=${this.endDate}`;
+                }
+                this.processorService
+                    .getDashboardData(params)
+                    .subscribe((res: any) => {
+                        console.log(res);
+                        this.plantProcessed = res.data.plantProcessedCount;
+
+                        this.countTimer(0, res.data.plantTestedCount);
+
+                        this.cardCount.push({
+                            label: 'Processor',
+                            value: 0,
+                        });
+
+                        this.countTimer(1, res.data.plantTestedCount);
+                        this.userSessionsSeries = [
+                            {
+                                name: 'Processor',
+                                data: res.data.plantProcessed,
+                            },
                         ];
                         this.dashboardLoaded = true;
                     });
