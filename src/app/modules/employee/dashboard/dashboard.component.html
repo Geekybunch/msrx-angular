@@ -12,7 +12,10 @@
                             >
                                 Welcome back,
                                 <span class="text-blue-500"
-                                    >{{ userDetails.email }}..!</span
+                                    >{{
+                                        userDetails.email.split("@")[0]
+                                            | titlecase
+                                    }}..!</span
                                 >
                             </div>
                         </ng-container>
@@ -142,6 +145,54 @@
                             <div class="ml-1.5 text-lg font-medium">
                                 Processor
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                *ngIf="
+                    this.userInfo.modelId.employer.businessType ===
+                    'Manufacturer'
+                "
+                class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-6 w-full min-w-0 mb-8"
+            >
+                <div
+                    class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden"
+                >
+                    <div class="flex flex-col items-center mt-2">
+                        <div
+                            class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500 mb-2"
+                        >
+                            {{ productCount }}
+                        </div>
+                        <div class="text-3xl font-bold text-blue-500">
+                            {{ materialType }}
+                        </div>
+                        <div
+                            class="flex items-baseline justify-center w-full mt-1 text-secondary"
+                        >
+                            <div class="ml-1.5 text-lg font-medium">
+                                Manufactured
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden"
+                >
+                    <div class="flex flex-col items-center mt-2">
+                        <div
+                            class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500 mb-2"
+                        >
+                            {{ deliveriesDoneCount }}
+                        </div>
+                        <div class="text-3xl font-bold text-blue-500">
+                            {{ materialType }}
+                        </div>
+                        <div
+                            class="flex items-baseline justify-center w-full mt-1 text-secondary"
+                        >
+                            <div class="ml-1.5 text-lg font-medium">Sent</div>
                         </div>
                     </div>
                 </div>

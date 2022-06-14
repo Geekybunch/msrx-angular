@@ -15,6 +15,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
     imports: [CommonModule, FormsModule, ReactiveFormsModule],
@@ -36,6 +37,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSelectModule,
         MatSnackBarModule,
         MatDialogModule,
+        MatChipsModule,
     ],
 })
 export class SharedModule {}

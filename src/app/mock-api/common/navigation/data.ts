@@ -213,6 +213,45 @@ export const TesterNavigation: FuseNavigationItem[] = [
         link: '/sign-out',
     },
 ];
+export const manufacturerNavigation: FuseNavigationItem[] = [
+    {
+        id: 'manufacturer.dashboard',
+        title: 'Dashboard',
+        type: 'basic',
+        icon: 'dashboard',
+        link: '/manufacturer/dashboard',
+    },
+    {
+        id: 'manufacturer.product-listing',
+        title: 'Product Listing',
+        type: 'basic',
+        icon: 'add_shopping_cart',
+        link: '/manufacturer/product-listing',
+    },
+
+    {
+        id: 'manufacturer.attendence',
+        title: 'Attendence',
+        type: 'basic',
+        icon: 'event_available',
+        link: '/manufacturer/attendence',
+    },
+
+    {
+        id: 'manufacturer.employees',
+        title: 'Employee',
+        type: 'basic',
+        icon: 'people_alt',
+        link: '/manufacturer/employees',
+    },
+    {
+        id: 'logout',
+        title: 'Logout',
+        type: 'basic',
+        icon: 'heroicons_outline:logout',
+        link: '/sign-out',
+    },
+];
 export const processorNavigation: FuseNavigationItem[] = [
     {
         id: 'processor.dashboard',

@@ -56,7 +56,10 @@
                                 *matCellDef="let element"
                                 class="capitalize"
                             >
-                                {{ element.materialId.name }}
+                                {{
+                                    element.materialId &&
+                                        element.materialId.name
+                                }}
                             </td>
                         </ng-container>
 

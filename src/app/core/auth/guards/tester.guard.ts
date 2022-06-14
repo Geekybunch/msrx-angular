@@ -32,7 +32,6 @@ export class TesterGuard implements CanActivate {
             this.getUser &&
             this.getUser.modelId.employer.businessType == 'Tester'
         ) {
-            console.log('Tester');
             return true;
         } else {
             if (this.getUser) {
@@ -40,7 +39,7 @@ export class TesterGuard implements CanActivate {
                 let redirect = role.toLowerCase();
                 this.router.navigateByUrl(`/${redirect}/dashboard`);
             }
-            console.log('else');
+
             return false;
         }
     }

@@ -1,0 +1,165 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="flex-auto p-6 max-h-160 -m-6 overflow-y-auto modify">
+        <div class="max-w-3xl">
+            <form
+                [formGroup]="createProductForm"
+                class="flex flex-col py-8 px-10 bg-card rounded-xl shadow overflow-hidden"
+            >
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between mb-4"
+                >
+                    <div
+                        class="text-xl font-medium tracking-tight leading-6 truncate"
+                    >
+                        Update Product
+                    </div>
+
+                    <button mat-icon-button matDialogClose>
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+                <div class="flex flex-row gt-xs:flex-row">
+                    <mat-form-field class="flex-auto gt-xs:pr-3 fuse-mat-dense">
+                        <mat-label>Name</mat-label>
+                        <input matInput [formControlName]="'name'" />
+                    </mat-form-field>
+                    <div class="flex flex-row gt-md:flex-row">
+                        <mat-form-field
+                            class="fuse-mat-textarea flex-auto fuse-mat-dense ml-5"
+                        >
+                            <mat-label> SKU</mat-label>
+                            <input matInput [formControlName]="'sku'" />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="flex-auto gt-md:pr-3 fuse-mat-dense ml-4"
+                        >
+                            <mat-label>Dosage</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [formControlName]="'dosage'"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="flex flex-row gt-md:flex-row">
+                    <div class="flex-auto mat-chips mb-3">
+                        <mat-form-field
+                            class="fuse-mat-textarea flex-auto fuse-mat-dense"
+                            style="width: 100%"
+                        >
+                            <mat-label
+                                >Ingredients (Press Next To Add)</mat-label
+                            >
+                            <input
+                                class="m-0"
+                                placeholder="Press Next To Add.."
+                                (keyup.enter)="ingridentInput($event)"
+                                [formControlName]="'ingredient'"
+                            />
+                            <mat-chip-list
+                                #chipList
+                                aria-label="Fruit selection"
+                            >
+                            </mat-chip-list>
+                        </mat-form-field>
+                        <div class="">
+                            <mat-chip
+                                *ngFor="
+                                    let ingrident of ingredients;
+                                    let i = index
+                                "
+                            >
+                                {{ ingrident | titlecase }}
+                                <button
+                                    matChipRemove
+                                    (click)="this.ingredients.splice(i, 1)"
+                                >
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-row gt-md:flex-row mb-3">
+                    <div class="flex-auto mat-chips">
+                        <mat-form-field
+                            class="fuse-mat-textarea flex-auto fuse-mat-dense"
+                            style="width: 100%"
+                        >
+                            <mat-label>Allergies (Press Next To Add)</mat-label>
+                            <input
+                                class="m-0"
+                                placeholder="Press Next To Add.."
+                                [formControlName]="'allergy'"
+                                (keyup.enter)="alliergiesInput($event)"
+                            />
+                            <mat-chip-list
+                                #chipList
+                                aria-label="Fruit selection"
+                            >
+                            </mat-chip-list>
+                        </mat-form-field>
+                        <div class="">
+                            <mat-chip
+                                *ngFor="let allergy of allergies; let i = index"
+                            >
+                                {{ allergy | titlecase }}
+                                <button
+                                    matChipRemove
+                                    (click)="this.ingredients.splice(i, 1)"
+                                >
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <mat-form-field class="flex-auto gt-xs:pl-3 fuse-mat-dense">
+                        <mat-label> Description</mat-label>
+                        <textarea
+                            matInput
+                            [formControlName]="'description'"
+                        ></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col mb-3">
+                    <div
+                        class="text-lg font-semibold tracking-tight leading-6 truncate mb-2"
+                    >
+                        Used Plants
+                    </div>
+                    <div class="flex flex-row items-center">
+                        <mat-chip *ngFor="let plant of plantIDs; let i = index">
+                            {{ plant.slice(5, 10) }}...
+                            <button
+                                matChipRemove
+                                (click)="this.plantIDs.splice(i, 1)"
+                            >
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <button
+                            class="scan_btn bg-primary-500 text-white rounded-full"
+                        >
+                            Scan More Plants
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gt-md:flex-row mt-2">
+                    <button
+                        (click)="addProduct()"
+                        class="max-w-50"
+                        mat-raised-button
+                        color="primary"
+                    >
+                        Save Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

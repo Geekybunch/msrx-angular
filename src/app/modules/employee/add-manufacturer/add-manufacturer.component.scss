@@ -1,0 +1,41 @@
+.modify {
+    padding: 0px !important;
+    width: 40rem !important;
+}
+::ng-deep {
+    .mat-chips {
+        .mat-form-field-wrapper {
+            margin-bottom: 8px !important;
+        }
+    }
+    .mat-standard-chip {
+        min-height: 25px !important;
+        font-size: 13px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+    }
+    .mat-standard-chip .mat-chip-remove.mat-icon,
+    .mat-standard-chip .mat-chip-remove .mat-icon {
+        margin-top: -3px;
+    }
+}
+.scan_btn {
+    padding: 4px 14px 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+::ng-deep body.light .mat-snack-bar-container,
+body .light .mat-snack-bar-container {
+    background: rgb(34 197 94);
+    color: #fff !important;
+}
+::ng-deep body.light .mat-snack-bar-container .mat-button {
+    color: #fff;
+}
+
+::ng-deep body.light .mat-snack-bar-container.alert-red {
+    background: rgb(239 68 68);
+    color: #fff !important;
+}

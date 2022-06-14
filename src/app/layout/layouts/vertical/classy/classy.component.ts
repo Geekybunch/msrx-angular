@@ -25,6 +25,7 @@ import { AuthService } from 'app/core/auth/auth.service';
 import {
     cultivatorNavigation,
     defaultNavigation,
+    manufacturerNavigation,
     processorNavigation,
     TesterNavigation,
 } from 'app/mock-api/common/navigation/data';
@@ -98,6 +99,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                     this.role.modelId.employer.businessType === 'Processor'
                 ) {
                     this.navigation.compact = processorNavigation;
+                } else if (
+                    this.role.modelId.employer.businessType === 'Manufacturer'
+                ) {
+                    this.navigation.compact = manufacturerNavigation;
                 }
             });
 
@@ -149,6 +154,9 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     }
     openDialog() {
         this.dialog.open(this.scanQRCodeDialog);
+    }
+    matClose() {
+        this.dialog.closeAll();
     }
     plantDetails() {
         if (this.scanQRForm.invalid) {

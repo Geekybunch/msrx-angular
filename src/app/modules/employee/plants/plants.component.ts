@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GrowerService } from 'app/core/grower/grower.service';
 import { TesterService } from 'app/core/tester/tester.service';
 import { ProcessorService } from 'app/core/processor/processor.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 @Component({
     selector: 'app-plants',
@@ -43,7 +44,8 @@ export class PlantsComponent implements OnInit {
         private matDialog: MatDialog,
         private testerService: TesterService,
         private processorService: ProcessorService,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private confirmationService: FuseConfirmationService
     ) {
         this.userInfo = JSON.parse(localStorage.getItem('userData'));
     }
@@ -151,21 +153,39 @@ export class PlantsComponent implements OnInit {
         });
     }
     deletePlant(plantId: any) {
-        this.growerService.deleteGrowerPlant(plantId).subscribe(
-            (res) => {
-                console.log(res);
-                this.getPlants();
-                this.snackBar.open('Plant Deleted Successfully..!', 'Close', {
-                    duration: 2000,
-                });
+        const confirmation = this.confirmationService.open({
+            title: 'Are you sure ?',
+            message:
+                'Do you really want to delete this Plant? This process cannot be undone!',
+            actions: {
+                confirm: {
+                    label: 'Delete',
+                },
             },
-            (err: any) => {
-                this.snackBar.open(err.error.message, 'Close', {
-                    duration: 2000,
-                    panelClass: ['alert-red'],
-                });
-                console.log(err);
+        });
+        confirmation.afterClosed().subscribe((result) => {
+            if (result === 'confirmed') {
+                this.growerService.deleteGrowerPlant(plantId).subscribe(
+                    (res) => {
+                        console.log(res);
+                        this.getPlants();
+                        this.snackBar.open(
+                            'Plant Deleted Successfully..!',
+                            'Close',
+                            {
+                                duration: 2000,
+                            }
+                        );
+                    },
+                    (err: any) => {
+                        this.snackBar.open(err.error.message, 'Close', {
+                            duration: 2000,
+                            panelClass: ['alert-red'],
+                        });
+                        console.log(err);
+                    }
+                );
             }
-        );
+        });
     }
 }

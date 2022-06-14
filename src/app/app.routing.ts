@@ -6,6 +6,8 @@ import { InitialDataResolver } from 'app/app.resolvers';
 import { EmployeeGuard } from './core/auth/guards/employee.guard';
 import { AdminGuard } from './core/auth/guards/admin.guards';
 import { TesterGuard } from './core/auth/guards/tester.guard';
+import { ProcessorGuard } from './core/auth/guards/processor.guard';
+import { ManufacturerGuard } from './core/auth/guards/manufacturer.guard';
 
 export const appRoutes: Route[] = [
     { path: '', pathMatch: 'full', redirectTo: 'admin/dashboard' },
@@ -187,6 +189,7 @@ export const appRoutes: Route[] = [
     },
     {
         path: 'cultivator',
+        canActivate: [EmployeeGuard],
         loadChildren: () =>
             import('app/modules/employee/employee.module').then(
                 (m) => m.EmployeeModule
@@ -194,7 +197,7 @@ export const appRoutes: Route[] = [
     },
     {
         path: 'tester',
-
+        canActivate: [TesterGuard],
         loadChildren: () =>
             import('app/modules/employee/employee.module').then(
                 (m) => m.EmployeeModule
@@ -202,6 +205,15 @@ export const appRoutes: Route[] = [
     },
     {
         path: 'processor',
+        canActivate: [ProcessorGuard],
+        loadChildren: () =>
+            import('app/modules/employee/employee.module').then(
+                (m) => m.EmployeeModule
+            ),
+    },
+    {
+        path: 'manufacturer',
+        canActivate: [ManufacturerGuard],
         loadChildren: () =>
             import('app/modules/employee/employee.module').then(
                 (m) => m.EmployeeModule
