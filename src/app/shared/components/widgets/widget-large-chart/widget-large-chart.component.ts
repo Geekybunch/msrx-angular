@@ -11,7 +11,6 @@ import {
     ApexGrid,
     ApexTitleSubtitle,
     ApexLegend,
-    ApexPlotOptions,
 } from 'ng-apexcharts';
 import moment from 'moment';
 
@@ -27,9 +26,7 @@ export type ChartOptions = {
     grid: ApexGrid;
     legend: ApexLegend;
     title: ApexTitleSubtitle;
-    plotOptions: ApexPlotOptions;
 };
-
 @Component({
     selector: 'app-widget-large-chart',
     templateUrl: './widget-large-chart.component.html',
@@ -39,9 +36,10 @@ export class WidgetLargeChartComponent implements OnInit {
     @Input() seriesRaw = [];
     categories = [];
     series = [];
-    isChartLoading = true;
     @ViewChild('chart', { static: false }) chart: ChartComponent;
+    isChartLoading = true;
     public chartOptions: Partial<ChartOptions>;
+
     constructor() {
         this.chartOptions = {
             series: this.series,
@@ -50,13 +48,7 @@ export class WidgetLargeChartComponent implements OnInit {
                     show: false,
                 },
                 height: 350,
-                type: 'bar',
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '95%',
-                },
+                type: 'line',
             },
             dataLabels: {
                 enabled: false,
@@ -64,6 +56,7 @@ export class WidgetLargeChartComponent implements OnInit {
             stroke: {
                 width: 5,
                 curve: 'straight',
+                dashArray: [0, 8, 5],
             },
             title: {
                 align: 'left',
@@ -104,6 +97,7 @@ export class WidgetLargeChartComponent implements OnInit {
             },
         };
     }
+
     getDaysBetweenDates = function (startDate, endDate) {
         let now = startDate.clone(),
             dates = [];
@@ -130,10 +124,11 @@ export class WidgetLargeChartComponent implements OnInit {
             }
             this.seriesRaw[i].data = newData;
         }
+        console.log('this.seriesRaw', this.seriesRaw);
         return this.seriesRaw;
     };
 
-    ngOnInit(): void {
+    ngOnInit() {
         setTimeout(() => {
             const startDate = moment().subtract(1, 'month');
             const endDate = moment();

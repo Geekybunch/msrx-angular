@@ -219,11 +219,4 @@ export const appRoutes: Route[] = [
                 (m) => m.EmployeeModule
             ),
     },
-    // {
-    //     path: 'cultivator/test-details',
-    //     loadChildren: () =>
-    //         import('app/modules/pages/test-details/test-details.module').then(
-    //             (m) => m.TestDetailsModule
-    //         ),
-    // },
 ];

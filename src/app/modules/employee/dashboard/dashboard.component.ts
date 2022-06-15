@@ -1,7 +1,5 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from 'app/core/auth/auth.service';
-
 import { GrowerService } from 'app/core/grower/grower.service';
 import { ManufactureService } from 'app/core/manufacture/manufacture.service';
 import { ProcessorService } from 'app/core/processor/processor.service';
@@ -20,12 +18,7 @@ export class DashboardComponent implements OnInit {
     dashboardLoaded = false;
     materialType = 'Plants';
     userInfo: any;
-    public grownPlantCount: number;
-    public testedPlantCount: number;
-    public plantTestedCount: number;
-    public plantProcessed: number;
-    public productCount: number;
-    public deliveriesDoneCount: number;
+    public analyticsData: any;
 
     userSessionsSeries: ApexAxisChartSeries = [];
     cardCount: {
@@ -37,7 +30,6 @@ export class DashboardComponent implements OnInit {
         private growerService: GrowerService,
         private testerService: TesterService,
         private processorService: ProcessorService,
-        private authServies: AuthService,
         private manufactureService: ManufactureService
     ) {
         this.userInfo = JSON.parse(localStorage.getItem('userData'));
@@ -47,15 +39,6 @@ export class DashboardComponent implements OnInit {
         this.getDates();
         this.userDetails = JSON.parse(localStorage.getItem('userData'));
         this.getDashboardData();
-    }
-    countTimer(index: number, maxVal: number) {
-        const timer1 = setInterval(() => {
-            if (this.cardCount[index].value === maxVal) {
-                clearInterval(timer1);
-            } else {
-                this.cardCount[index].value++;
-            }
-        }, 200);
     }
 
     getDates() {
@@ -71,7 +54,7 @@ export class DashboardComponent implements OnInit {
         );
     }
 
-    getDashboardData(start?: any, end?: any) {
+    getDashboardData(start?: string, end?: string) {
         if (this.userInfo.modelId.employer.businessType === 'Cultivator') {
             let params: any;
             if (start && !end) {
@@ -84,22 +67,9 @@ export class DashboardComponent implements OnInit {
                 this.growerService
                     .getDashboardData(params)
                     .subscribe((res: any) => {
-                        console.log(res);
-                        this.grownPlantCount = res.data.plantCount;
-                        this.testedPlantCount = res.data.plantTestedCount;
-                        this.cardCount.push({
-                            label: 'Grown',
-                            value: 0,
-                        });
+                        console.log('data', res);
+                        this.analyticsData = res.data;
 
-                        this.countTimer(0, res.data.plantCount);
-
-                        this.cardCount.push({
-                            label: 'Tested',
-                            value: 0,
-                        });
-
-                        this.countTimer(1, res.data.plantTestedCount);
                         this.userSessionsSeries = [
                             { name: 'Tested', data: res.data.plantsTested },
                             { name: 'Grown', data: res.data.plantsAdded },
@@ -108,8 +78,8 @@ export class DashboardComponent implements OnInit {
                                 data: res.data.plantsProcessed,
                             },
                         ];
-                        this.dashboardLoaded = true;
                     });
+                console.log('this.userSessionsSeries', this.userSessionsSeries);
             }
         } else if (this.userInfo.modelId.employer.businessType === 'Tester') {
             let params: any;
@@ -123,21 +93,10 @@ export class DashboardComponent implements OnInit {
                 this.testerService
                     .getDashboardData(params)
                     .subscribe((res: any) => {
-                        console.log(res);
-                        this.plantTestedCount = res.data.plantTestedCount;
-
-                        this.countTimer(0, res.data.plantTestedCount);
-
-                        this.cardCount.push({
-                            label: 'Tested',
-                            value: 0,
-                        });
-
-                        this.countTimer(1, res.data.plantTestedCount);
+                        this.analyticsData = res.data;
                         this.userSessionsSeries = [
                             { name: 'Tested', data: res.data.plantsTested },
                         ];
-                        this.dashboardLoaded = true;
                     });
             }
         } else if (
@@ -155,23 +114,14 @@ export class DashboardComponent implements OnInit {
                     .getDashboardData(params)
                     .subscribe((res: any) => {
                         console.log(res);
-                        this.plantProcessed = res.data.plantProcessedCount;
+                        this.analyticsData = res.data;
 
-                        this.countTimer(0, res.data.plantTestedCount);
-
-                        this.cardCount.push({
-                            label: 'Processor',
-                            value: 0,
-                        });
-
-                        this.countTimer(1, res.data.plantTestedCount);
                         this.userSessionsSeries = [
                             {
                                 name: 'Processor',
                                 data: res.data.plantProcessed,
                             },
                         ];
-                        this.dashboardLoaded = true;
                     });
             }
         } else if (
@@ -188,21 +138,8 @@ export class DashboardComponent implements OnInit {
                 this.manufactureService
                     .getDashboardData(params)
                     .subscribe((res: any) => {
-                        this.productCount = res.data.productCount;
-                        this.deliveriesDoneCount = res.data.deliveriesDoneCount;
-                        console.log(res);
+                        this.analyticsData = res.data;
                         this.materialType = 'Product';
-                        this.cardCount.push({
-                            label: 'Manufactured',
-                            value: 0,
-                        });
-
-                        this.countTimer(0, res.data.productCount);
-                        this.cardCount.push({
-                            label: 'Sent',
-                            value: 0,
-                        });
-                        this.countTimer(1, res.data.deliveriesDoneCount);
                         this.userSessionsSeries = [
                             {
                                 name: 'Manufactured',
@@ -213,7 +150,6 @@ export class DashboardComponent implements OnInit {
                                 data: res.data.deliveriesDone,
                             },
                         ];
-                        this.dashboardLoaded = true;
                     });
             }
         }
@@ -233,4 +169,37 @@ export class DashboardComponent implements OnInit {
         );
         this.getDashboardData(this.startDate, this.endDate);
     }
+    // getAreaChartData(
+    //     rows: {
+    //         label: string;
+    //         series: {
+    //             date: string;
+    //             value: number;
+    //         }[];
+    //     }[]
+    // ) {
+    //     const barDateData = {};
+
+    //     rows.forEach((row) => {
+    //         this.userSessionsSeries.push({
+    //             name: row.label,
+    //             data: [],
+    //         });
+
+    //         row.series.forEach((bar, idx) => {
+    //             if (!barDateData[bar.date]) {
+    //                 barDateData[bar.date] = [];
+    //             }
+    //             barDateData[bar.date].push(bar.value);
+    //         });
+    //     });
+
+    //     Object.values(barDateData).forEach((bars: number[]) => {
+    //         bars.forEach((bar, idx) => {
+    //             this.userSessionsSeries[idx].data.push(bar as any);
+    //         });
+    //     });
+
+    //     console.log(this.userSessionsSeries);
+    // }
 }

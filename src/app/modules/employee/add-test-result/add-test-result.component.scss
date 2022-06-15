@@ -1,0 +1,59 @@
+.modify {
+    padding: 0px !important;
+    width: 40rem !important;
+}
+::ng-deep body.light .mat-snack-bar-container,
+body .light .mat-snack-bar-container {
+    background: rgb(34 197 94);
+    color: #fff !important;
+}
+::ng-deep body.light .mat-snack-bar-container .mat-button {
+    color: #fff;
+}
+
+::ng-deep body.light .mat-snack-bar-container.alert-red {
+    background: rgb(239 68 68);
+    color: #fff !important;
+}
+
+::ng-deep .mat-toolbar-row,
+::ng-deep .mat-toolbar-single-row {
+    height: 15px !important;
+    background: transparent;
+}
+
+.mat-toolbar-single-row button {
+    width: 140px;
+    font-size: 12px !important;
+    line-height: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+#uploadFile {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 9;
+    opacity: 0;
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+}
+::ng-deep .upload .mat-form-field-flex {
+    padding: 12px 0px !important;
+    margin: 0px !important;
+}
+::ng-deep .upload .mat-form-field-flex input {
+    font-size: 14px !important;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.54);
+}
+::ng-deep .upload .mat-form-field-infix {
+    padding: 0px !important;
+    margin: 0px !important;
+    border: 1px solid transparent;
+}

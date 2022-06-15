@@ -61,7 +61,7 @@ export class AddPlantsComponent implements OnInit {
     addPlant() {
         if (this.createPalntsForm.invalid) {
             this.snackBar.open('Invalid Form', 'Close', {
-                duration: 2000,
+                duration: 3000,
                 panelClass: ['alert-red'],
             });
             return;
@@ -103,11 +103,15 @@ export class AddPlantsComponent implements OnInit {
                             'Palnt Updated Successfully..!',
                             'Close',
                             {
-                                duration: 2000,
+                                duration: 3000,
                             }
                         );
                     },
                     (err: any) => {
+                        this.snackBar.open(err.error.message, 'Close', {
+                            duration: 3000,
+                            panelClass: ['alert-red'],
+                        });
                         this._matDialogRef.close();
                         console.log(err);
                     }

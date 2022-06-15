@@ -59,13 +59,13 @@ const routes: Routes = [
                         'app/modules/employee/product-listing/product-listing.module'
                     ).then((m) => m.ProductListingModule),
             },
-            // {
-            //     path: 'test-details',
-            //     loadChildren: () =>
-            //         import(
-            //             'app/modules/employee/test-details/test-details.module'
-            //         ).then((m) => m.TestDetailsModule),
-            // },
+            {
+                path: 'test-details',
+                loadChildren: () =>
+                    import(
+                        'app/modules/employee/test-details/test-details.module'
+                    ).then((m) => m.TestDetailsModule),
+            },
         ],
     },
 ];

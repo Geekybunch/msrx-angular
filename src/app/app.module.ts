@@ -14,6 +14,7 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { MatFileUploadModule } from 'angular-material-fileupload';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -32,6 +33,7 @@ const routerConfig: ExtraOptions = {
         CoreModule,
         LayoutModule,
         MarkdownModule.forRoot({}),
+        MatFileUploadModule,
     ],
     providers: [
         {

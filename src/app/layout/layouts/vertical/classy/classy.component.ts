@@ -1,5 +1,6 @@
 import {
     Component,
+    ElementRef,
     OnDestroy,
     OnInit,
     TemplateRef,
@@ -29,6 +30,7 @@ import {
     processorNavigation,
     TesterNavigation,
 } from 'app/mock-api/common/navigation/data';
+import { CommonService } from 'app/core/common/common.service';
 
 @Component({
     selector: 'classy-layout',
@@ -45,6 +47,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     plantId: string;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
+    @ViewChild('myInput')
+    myInputVariable: ElementRef;
 
     /**
      * Constructor
@@ -58,7 +62,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _fuseNavigationService: FuseNavigationService,
         private dialog: MatDialog,
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+        private commonService: CommonService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -162,11 +167,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         if (this.scanQRForm.invalid) {
             return;
         }
-        console.log(this.scanQRForm.value.planId);
-        this.router.navigate([
-            '/cultivator/test-details',
-            this.scanQRForm.value.planId,
-        ]);
+        this.commonService.$testPantID.next(this.scanQRForm.value.planId);
+        this.router.navigate(['/tester/test-details'], {
+            queryParams: {
+                plantID: this.scanQRForm.value.planId,
+            },
+            replaceUrl: true,
+        });
+
         this.dialog.closeAll();
     }
 }

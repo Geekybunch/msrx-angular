@@ -1,1 +1,541 @@
-<p>test-details works!</p>
+<div class="flex flex-col flex-auto w-full" *ngIf="plantResponse; else noData">
+    <div class="max-w-3xl p-5">
+        <div
+            class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card shadow rounded border-b"
+        >
+            <div
+                _ngcontent-dum-c251=""
+                class="text-lg font-medium tracking-tight leading-6 truncate"
+            >
+                Plant Details
+            </div>
+            <button
+                (click)="openTestResultDialog()"
+                class="items-center bg-primary text-white rounded-full"
+            >
+                Add Test
+            </button>
+        </div>
+        <div
+            class="flex flex-col sm:flex-col w-full max-w-xs sm:max-w-none bg-card mb-5 shadow"
+        >
+            <div class="p-8">
+                <div class="flex flex-col">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Plant Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Batch Number</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.batchNumber
+                                ? plantResponse.batchNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Genetic Company</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.geneticCompany
+                                ? plantResponse.geneticCompany
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Genetic Stain</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.geneticStain
+                                ? plantResponse.geneticStain
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Nutrient Manufacture</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.nutrientManufacture
+                                ? plantResponse.nutrientManufacture
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Dry Weight</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.dryWeight
+                                ? plantResponse.dryWeight
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Discarded Weight</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.discardedWeight
+                                ? plantResponse.discardedWeight
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Wet Weight</span
+                        >
+                        <span class="mx-2">:</span>
+
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.wetWeight
+                                ? plantResponse.wetWeight
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col border-t pt-4 mt-5">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Employee Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >Id Number</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse &&
+                            plantResponse.employee &&
+                            plantResponse.employee.idNumber
+                                ? plantResponse.employee.idNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse &&
+                            plantResponse.employee &&
+                            plantResponse.employee.name
+                                ? plantResponse.employee.name
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Type</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse &&
+                            plantResponse.employee &&
+                            plantResponse.employee.type
+                                ? plantResponse.employee.type
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col border-t pt-4 mt-5">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Grower Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse &&
+                            plantResponse.employee &&
+                            plantResponse.grower.businessName
+                                ? plantResponse.grower.businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary"
+                            >ID Number</span
+                        >
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse &&
+                            plantResponse.grower.businessIDNumber
+                                ? plantResponse.grower.businessIDNumber
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Type</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.grower.businessType
+                                ? plantResponse.grower.businessType
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Phone</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse && plantResponse.grower.businessPhone
+                                ? plantResponse.grower.businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Address</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            plantResponse &&
+                            plantResponse.grower.businessAddress
+                                ? plantResponse.grower.businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col border-t pt-4 mt-5">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Test Details
+                    </div>
+
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Approved</span>
+                        <span class="mx-2">:</span>
+                        <span
+                            class="font-medium"
+                            [ngClass]="
+                                plantResponse && !plantResponse.plantTest
+                                    ? 'text-red-600'
+                                    : ' text-green-600'
+                            "
+                        >
+                            {{
+                                plantResponse && !plantResponse.plantTest
+                                    ? "Pending"
+                                    : "Done"
+                            }}</span
+                        >
+                    </div>
+                    <ng-container
+                        *ngIf="plantResponse && plantResponse.plantTest"
+                    >
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary">Coa</span>
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">
+                                <a
+                                    class="bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                    href="{{
+                                        plantResponse &&
+                                        plantResponse.plantTest &&
+                                        plantResponse.plantTest.coa
+                                            ? plantResponse.plantTest.coa
+                                            : ''
+                                    }}"
+                                    target="_blank"
+                                >
+                                    Download
+                                </a>
+                            </span>
+                        </div>
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary"
+                                >Discarded Weight</span
+                            >
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">
+                                {{
+                                    plantResponse &&
+                                    plantResponse.plantTest &&
+                                    plantResponse.plantTest.discardedWeight
+                                        ? plantResponse.plantTest
+                                              .discardedWeight
+                                        : ""
+                                }}</span
+                            >
+                        </div>
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary"
+                                >Notes</span
+                            >
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">
+                                {{
+                                    plantResponse &&
+                                    plantResponse.plantTest &&
+                                    plantResponse.plantTest.notes
+                                        ? plantResponse.plantTest.notes
+                                        : ""
+                                }}</span
+                            >
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <div class="text-xg mt-2 font-bold truncate mb-1">
+                                Employee
+                            </div>
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantTest &&
+                                plantResponse.plantTest.employee.name
+                                    ? plantResponse.plantTest.employee.name
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary">Type</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantTest &&
+                                plantResponse.plantTest.employee.type
+                                    ? plantResponse.plantTest.employee.type
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <div class="text-xg mt-2 font-bold truncate mb-1">
+                                Tester
+                            </div>
+                            <span class="font-medium text-secondary"
+                                >ID Number</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantTest &&
+                                plantResponse.plantTest.tester.businessIDNumber
+                                    ? plantResponse.plantTest.tester
+                                          .businessIDNumber
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantTest &&
+                                plantResponse.plantTest.tester.businessName
+                                    ? plantResponse.plantTest.tester
+                                          .businessName
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary"
+                                >Phone</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantTest &&
+                                plantResponse.plantTest.tester.businessPhone
+                                    ? plantResponse.plantTest.tester
+                                          .businessPhone
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary"
+                                >Addres</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantTest &&
+                                plantResponse.plantTest.tester.businessAddress
+                                    ? plantResponse.plantTest.tester
+                                          .businessAddress
+                                    : ""
+                            }}</span>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="flex flex-col border-t pt-4 mt-5">
+                    <div class="text-xl mt-3 font-bold truncate mb-3">
+                        Process Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Approved</span>
+                        <span class="mx-2">:</span>
+                        <span
+                            class="font-medium"
+                            [ngClass]="
+                                plantResponse && !plantResponse.plantProcess
+                                    ? 'text-red-600'
+                                    : ' text-green-600'
+                            "
+                        >
+                            {{
+                                plantResponse && !plantResponse.plantProcess
+                                    ? "Pending"
+                                    : "Done"
+                            }}</span
+                        >
+                    </div>
+                    <ng-container
+                        *ngIf="plantResponse && plantResponse.plantProcess"
+                    >
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary"
+                                >Discarded Weight</span
+                            >
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">
+                                {{
+                                    plantResponse &&
+                                    plantResponse.plantProcess &&
+                                    plantResponse.plantProcess.discardedWeight
+                                        ? plantResponse.plantProcess
+                                              .discardedWeight
+                                        : ""
+                                }}</span
+                            >
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <div class="text-xg mt-2 font-bold truncate mb-1">
+                                Employee
+                            </div>
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantProcess &&
+                                plantResponse.plantProcess.employee.name
+                                    ? plantResponse.plantProcess.employee.name
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-3">
+                            <span class="font-medium text-secondary">Type</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantProcess &&
+                                plantResponse.plantProcess.employee.type
+                                    ? plantResponse.plantProcess.employee.type
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <div class="text-xg mt-2 font-bold truncate mb-1">
+                                Processor
+                            </div>
+                            <span class="font-medium text-secondary"
+                                >ID Number</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantProcess &&
+                                plantResponse.plantProcess.processor
+                                    .businessIDNumber
+                                    ? plantResponse.plantProcess.processor
+                                          .businessIDNumber
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary">Name</span>
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantProcess &&
+                                plantResponse.plantProcess.processor
+                                    .businessName
+                                    ? plantResponse.plantProcess.processor
+                                          .businessName
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary"
+                                >Phone</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantProcess &&
+                                plantResponse.plantProcess.processor
+                                    .businessPhone
+                                    ? plantResponse.plantProcess.processor
+                                          .businessPhone
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium text-secondary"
+                                >Addres</span
+                            >
+                            <span class="mx-2">:</span>
+
+                            <span class="font-medium">{{
+                                plantResponse &&
+                                plantResponse.plantProcess &&
+                                plantResponse.plantProcess.processor
+                                    .businessAddress
+                                    ? plantResponse.plantProcess.processor
+                                          .businessAddress
+                                    : ""
+                            }}</span>
+                        </div>
+                    </ng-container>
+                    <div class="mt-3">
+                        <button
+                            class="items-center bg-primary scanner text-white rounded-full"
+                        >
+                            Show QR Code
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #noData>
+    <div class="flex flex-col flex-auto w-full">
+        <div class="max-w-3xl p-5">
+            <div
+                class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card shadow rounded border-b"
+            >
+                <div
+                    _ngcontent-dum-c251=""
+                    class="text-lg font-medium tracking-tight leading-6 truncate"
+                >
+                    Plant Details
+                </div>
+            </div>
+            <div
+                class="flex flex-col sm:flex-col w-full max-w-xs sm:max-w-none bg-card mb-5 shadow h-100 items-center justify-center"
+            >
+                <div class="p-8">
+                    <p class="text-2xl font-semibold text-red-500">
+                        "PlantId" must be a valid mongo id
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

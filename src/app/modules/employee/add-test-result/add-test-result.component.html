@@ -1,0 +1,105 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="flex-auto p-6 max-h-160 -m-6 overflow-y-auto modify">
+        <div class="max-w-3xl">
+            <form
+                [formGroup]="testForm"
+                class="flex flex-col py-8 px-10 bg-card rounded-xl shadow overflow-hidden"
+            >
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between mb-6"
+                >
+                    <div
+                        class="text-xl font-medium tracking-tight leading-6 truncate"
+                    >
+                        Add Test
+                    </div>
+
+                    <button mat-icon-button matDialogClose>
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+
+                <div class="flex flex-row gt-xs:flex-row">
+                    <mat-form-field class="flex-auto gt-xs:pr-3 fuse-mat-dense">
+                        <mat-label>Discarded Weight (gm)</mat-label>
+                        <input matInput [formControlName]="'discardedWeight'" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto fuse-mat-dense ml-5">
+                        <mat-label>Choose a date</mat-label>
+                        <input
+                            matInput
+                            [matDatepicker]="picker1"
+                            [formControlName]="'testDateTime'"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker1"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div
+                    class="flex flex-row gt-xs:flex-row items-center justify-center"
+                >
+                    <mat-form-field class="flex-auto upload fuse-mat-dense">
+                        <mat-label>Coa</mat-label>
+                        <mat-toolbar>
+                            <input
+                                class="truncate"
+                                matInput
+                                readonly
+                                name="name"
+                                [(ngModel)]="fileAttr"
+                                [formControlName]="'coa'"
+                            />
+
+                            <button
+                                class="browse_btn"
+                                mat-flat-button
+                                color="primary"
+                            >
+                                Browse File
+                            </button>
+                        </mat-toolbar>
+
+                        <input
+                            type="file"
+                            #fileInput
+                            id="uploadFile"
+                            name="uploadFile"
+                            accept="image/*"
+                            (change)="fileSelected($event)"
+                        />
+                    </mat-form-field>
+                    <mat-slide-toggle
+                        class="mt-8 ml-6 sm:mt-0"
+                        [color]="'primary'"
+                        [formControlName]="'approved'"
+                    >
+                        Approved
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="flex flex-col">
+                    <mat-form-field class="flex-auto gt-xs:pl-3 fuse-mat-dense">
+                        <mat-label> Testing Note</mat-label>
+                        <textarea
+                            matInput
+                            [formControlName]="'notes'"
+                        ></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col gt-md:flex-row mt-2">
+                    <button
+                        class="max-w-50"
+                        mat-raised-button
+                        color="primary"
+                        (click)="saveTest()"
+                    >
+                        Save Test
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
