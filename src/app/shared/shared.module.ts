@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
     imports: [CommonModule, FormsModule, ReactiveFormsModule],
@@ -38,6 +39,7 @@ import { MatChipsModule } from '@angular/material/chips';
         MatSnackBarModule,
         MatDialogModule,
         MatChipsModule,
+        MatToolbarModule,
     ],
 })
 export class SharedModule {}

@@ -26,6 +26,7 @@ import { AuthService } from 'app/core/auth/auth.service';
 import {
     cultivatorNavigation,
     defaultNavigation,
+    disposalNavigation,
     manufacturerNavigation,
     processorNavigation,
     TesterNavigation,
@@ -108,6 +109,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                     this.role.modelId.employer.businessType === 'Manufacturer'
                 ) {
                     this.navigation.compact = manufacturerNavigation;
+                } else if (
+                    this.role.modelId.employer.businessType === 'Disposer'
+                ) {
+                    this.navigation.compact = disposalNavigation;
                 }
             });
 
@@ -167,13 +172,23 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         if (this.scanQRForm.invalid) {
             return;
         }
+
         this.commonService.$testPantID.next(this.scanQRForm.value.planId);
-        this.router.navigate(['/tester/test-details'], {
-            queryParams: {
-                plantID: this.scanQRForm.value.planId,
-            },
-            replaceUrl: true,
-        });
+        if (this.role.modelId.employer?.businessType === 'Tester') {
+            this.router.navigate(['/tester/test-details'], {
+                queryParams: {
+                    plantID: this.scanQRForm.value.planId,
+                },
+                replaceUrl: true,
+            });
+        } else if (this.role.modelId.employer?.businessType === 'Processor') {
+            this.router.navigate(['/processor/test-details'], {
+                queryParams: {
+                    plantID: this.scanQRForm.value.planId,
+                },
+                replaceUrl: true,
+            });
+        }
 
         this.dialog.closeAll();
     }

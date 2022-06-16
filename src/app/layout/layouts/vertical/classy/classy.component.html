@@ -14,7 +14,10 @@
             </div>
         </div>
         <fuse-vertical-navigation-basic-item
-            *ngIf="role.modelId?.employer?.businessType === 'Tester'"
+            *ngIf="
+                role.modelId?.employer?.businessType === 'Tester' ||
+                role.modelId?.employer?.businessType === 'Processor'
+            "
         >
             <div class="fuse-vertical-navigation-item-wrapper">
                 <button
@@ -33,55 +36,6 @@
         >
     </ng-container>
 </fuse-vertical-navigation>
-
-<!-- <fuse-vertical-navigation
-    *ngIf="role.modelId?.employer?.businessType === 'Cultivator'"
-    class="dark bg-gray-900 print:hidden"
-    [mode]="isScreenSmall ? 'over' : 'side'"
-    [name]="'mainNavigation'"
-    [navigation]="navigation.compact"
-    [opened]="!isScreenSmall"
->
-    <ng-container fuseVerticalNavigationContentHeader>
-        <div class="flex items-center w-full p-6 pl-6 pb-5 justify-center">
-            <div class="flex items-center justify-center">
-                <img class="w-30" src="assets/images/logo/logo01.png" />
-            </div>
-        </div>
-        <fuse-vertical-navigation-basic-item>
-            <div class="fuse-vertical-navigation-item-wrapper">
-                <button
-                    (click)="openDialog()"
-                    class="mat-tooltip-trigger fuse-vertical-navigation-item"
-                    style="width: 100%"
-                >
-                    <mat-icon
-                        class="mat-icon notranslate fuse-vertical-navigation-item-icon mat-icon-no-color ng-star-inserted"
-                        [svgIcon]="'heroicons_solid:qrcode'"
-                    ></mat-icon>
-
-                    Scan QR Code
-                </button>
-            </div></fuse-vertical-navigation-basic-item
-        >
-    </ng-container>
-</fuse-vertical-navigation>
-<fuse-vertical-navigation
-    *ngIf="role.modelId?.employer?.businessType === 'Tester'"
-    class="dark bg-gray-900 print:hidden"
-    [mode]="isScreenSmall ? 'over' : 'side'"
-    [name]="'mainNavigation'"
-    [navigation]="navigation.futuristic"
-    [opened]="!isScreenSmall"
->
-    <ng-container fuseVerticalNavigationContentHeader>
-        <div class="flex items-center w-full p-6 pl-6 pb-5 justify-center">
-            <div class="flex items-center justify-center">
-                <img class="w-30" src="assets/images/logo/logo01.png" />
-            </div>
-        </div>
-    </ng-container>
-</fuse-vertical-navigation> -->
 
 <div class="flex flex-col flex-auto w-full min-w-0">
     <div

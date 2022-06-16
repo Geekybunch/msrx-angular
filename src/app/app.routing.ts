@@ -219,4 +219,11 @@ export const appRoutes: Route[] = [
                 (m) => m.EmployeeModule
             ),
     },
+    {
+        path: 'disposal',
+        loadChildren: () =>
+            import('app/modules/disposal/disposal.module').then(
+                (m) => m.DisposalModule
+            ),
+    },
 ];

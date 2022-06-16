@@ -1,0 +1,88 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="flex-auto p-6 max-h-160 -m-6 overflow-y-auto modify">
+        <div class="max-w-3xl">
+            <form
+                [formGroup]="processedForm"
+                class="flex flex-col py-8 px-10 bg-card rounded-xl shadow overflow-hidden"
+            >
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between mb-6"
+                >
+                    <div
+                        class="text-xl font-medium tracking-tight leading-6 truncate"
+                    >
+                        Add Processed Result
+                    </div>
+
+                    <button mat-icon-button matDialogClose>
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+
+                <div class="flex flex-row gt-xs:flex-row">
+                    <mat-form-field class="flex-auto gt-xs:pr-3 fuse-mat-dense">
+                        <mat-label>Discarded Weight (gm)</mat-label>
+                        <input matInput [formControlName]="'discardedWeight'" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto fuse-mat-dense ml-5">
+                        <mat-label>Processing Date</mat-label>
+                        <input
+                            matInput
+                            [matDatepicker]="picker1"
+                            [formControlName]="'processDateTime'"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker1"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-row gt-xs:flex-row items-center">
+                    <div class="mb-4 select">
+                        <label>Extraction Method *</label>
+                        <ng-select
+                            class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                            placeholder="Select One"
+                            [formControlName]="'extractionMethodUsed'"
+                        >
+                            <ng-option
+                                *ngFor="let method of EXTRANCTION_METHODS"
+                                [value]="method"
+                            >
+                                {{ method }}</ng-option
+                            >
+                        </ng-select>
+                    </div>
+                    <mat-slide-toggle
+                        class="mt-8 ml-6 sm:mt-0"
+                        [color]="'primary'"
+                        [formControlName]="'approved'"
+                    >
+                        Approved
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="flex flex-col">
+                    <mat-form-field class="flex-auto gt-xs:pl-3 fuse-mat-dense">
+                        <mat-label> Ingredients</mat-label>
+                        <textarea
+                            matInput
+                            [formControlName]="'ingredients'"
+                        ></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col gt-md:flex-row mt-2">
+                    <button
+                        class="max-w-50"
+                        mat-raised-button
+                        color="primary"
+                        (click)="saveProcessed()"
+                    >
+                        Save Result
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

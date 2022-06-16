@@ -27,3 +27,10 @@ export enum EmployeeType {
 }
 
 export const DEFAULT_POPULATED_FIELDS = ['plant', 'tester', 'employee'];
+export enum QRType {
+    PLANT,
+    PRODUCT,
+    BOOKING,
+    PATIENT,
+    EMPLOYEE_ATTENDANCE,
+}

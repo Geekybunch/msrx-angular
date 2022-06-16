@@ -291,6 +291,36 @@ export const processorNavigation: FuseNavigationItem[] = [
         link: '/sign-out',
     },
 ];
+export const disposalNavigation: FuseNavigationItem[] = [
+    {
+        id: 'disposal.dashboard',
+        title: 'Dashboard',
+        type: 'basic',
+        icon: 'dashboard',
+        link: '/disposal/dashboard',
+    },
+    {
+        id: 'disposal.attendence',
+        title: 'Attendence',
+        type: 'basic',
+        icon: 'event_available',
+        link: '/disposal/attendence',
+    },
+    {
+        id: 'disposal.employees',
+        title: 'Employee',
+        type: 'basic',
+        icon: 'people_alt',
+        link: '/disposal/employees',
+    },
+    {
+        id: 'logout',
+        title: 'Logout',
+        type: 'basic',
+        icon: 'heroicons_outline:logout',
+        link: '/sign-out',
+    },
+];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
         id: 'example',

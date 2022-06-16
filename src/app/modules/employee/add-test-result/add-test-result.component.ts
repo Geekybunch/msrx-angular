@@ -83,7 +83,6 @@ export class AddTestResultComponent implements OnInit {
 
     saveTest() {
         if (this.testForm.invalid || !this.file) {
-            console.log(this.testForm.value);
             this.snackBar.open('Invalid Form', 'Close', {
                 duration: 2000,
                 panelClass: ['alert-red'],
@@ -103,7 +102,11 @@ export class AddTestResultComponent implements OnInit {
                 });
             },
             (err: any) => {
-                this._matDialogRef.close();
+                this.snackBar.open(err.error.message, 'Close', {
+                    duration: 3000,
+                    panelClass: ['alert-red'],
+                });
+                // this._matDialogRef.close();
             }
         );
     }

@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DisposerService } from 'app/core/disposer/disposer.service';
 import { GrowerService } from 'app/core/grower/grower.service';
 import { ManufactureService } from 'app/core/manufacture/manufacture.service';
 import { ProcessorService } from 'app/core/processor/processor.service';
@@ -33,7 +34,8 @@ export class DashboardComponent implements OnInit {
         private growerService: GrowerService,
         private testerService: TesterService,
         private processorService: ProcessorService,
-        private manufactureService: ManufactureService
+        private manufactureService: ManufactureService,
+        private disposerService: DisposerService
     ) {
         this.userInfo = JSON.parse(localStorage.getItem('userData'));
     }
@@ -158,6 +160,29 @@ export class DashboardComponent implements OnInit {
                             {
                                 name: 'Sent',
                                 data: res.data.deliveriesDone,
+                            },
+                        ];
+                    });
+            }
+        } else if (this.userInfo.modelId.employer.businessType === 'Disposer') {
+            let params: any;
+            if (start && !end) {
+            } else {
+                if (start && end) {
+                    params = `?from=${start}&to=${end}`;
+                } else {
+                    params = `?from=${this.startDate}&to=${this.endDate}`;
+                }
+                this.disposerService
+                    .getDisposerDashboardData(params)
+                    .subscribe((res: any) => {
+                        this.analyticsData = res.data;
+                        console.log(res);
+
+                        this.userSessionsSeries = [
+                            {
+                                name: 'Manufactured',
+                                data: res.data.deliveryDone,
                             },
                         ];
                     });
