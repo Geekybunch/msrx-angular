@@ -4,6 +4,7 @@ import { GrowerService } from 'app/core/grower/grower.service';
 import { ManufactureService } from 'app/core/manufacture/manufacture.service';
 import { ProcessorService } from 'app/core/processor/processor.service';
 import { TesterService } from 'app/core/tester/tester.service';
+import moment from 'moment';
 
 @Component({
     selector: 'app-dashboard',
@@ -12,8 +13,10 @@ import { TesterService } from 'app/core/tester/tester.service';
 })
 export class DashboardComponent implements OnInit {
     public userDetails: any;
-    public startDate;
-    public endDate;
+    public startDate: string;
+    public endDate: string;
+    public dateFrom: any;
+    public dateTo: any;
     public currentMonth: any;
     dashboardLoaded = false;
     materialType = 'Plants';
@@ -42,16 +45,22 @@ export class DashboardComponent implements OnInit {
     }
 
     getDates() {
+        // this.dateFrom = moment().subtract(1, 'month');
+        // this.dateTo = moment();
+
         let d = new Date();
         this.endDate = new DatePipe('en-US').transform(
             d.toLocaleDateString(),
             'yyyy-MM-dd'
         );
+        this.dateTo = this.endDate;
+
         d.setMonth(d.getMonth() - 1);
         this.startDate = new DatePipe('en-US').transform(
             d.toLocaleDateString(),
             'yyyy-MM-dd'
         );
+        this.dateFrom = this.startDate;
     }
 
     getDashboardData(start?: string, end?: string) {
@@ -93,6 +102,7 @@ export class DashboardComponent implements OnInit {
                 this.testerService
                     .getDashboardData(params)
                     .subscribe((res: any) => {
+                        console.log(res);
                         this.analyticsData = res.data;
                         this.userSessionsSeries = [
                             { name: 'Tested', data: res.data.plantsTested },
@@ -159,7 +169,7 @@ export class DashboardComponent implements OnInit {
             event.value,
             'yyyy-MM-dd'
         );
-
+        this.dateFrom = this.startDate;
         this.getDashboardData(this.startDate, null);
     }
     filterByEndDate(event) {
@@ -167,39 +177,7 @@ export class DashboardComponent implements OnInit {
             event.value,
             'yyyy-MM-dd'
         );
+        this.dateTo = this.endDate;
         this.getDashboardData(this.startDate, this.endDate);
     }
-    // getAreaChartData(
-    //     rows: {
-    //         label: string;
-    //         series: {
-    //             date: string;
-    //             value: number;
-    //         }[];
-    //     }[]
-    // ) {
-    //     const barDateData = {};
-
-    //     rows.forEach((row) => {
-    //         this.userSessionsSeries.push({
-    //             name: row.label,
-    //             data: [],
-    //         });
-
-    //         row.series.forEach((bar, idx) => {
-    //             if (!barDateData[bar.date]) {
-    //                 barDateData[bar.date] = [];
-    //             }
-    //             barDateData[bar.date].push(bar.value);
-    //         });
-    //     });
-
-    //     Object.values(barDateData).forEach((bars: number[]) => {
-    //         bars.forEach((bar, idx) => {
-    //             this.userSessionsSeries[idx].data.push(bar as any);
-    //         });
-    //     });
-
-    //     console.log(this.userSessionsSeries);
-    // }
 }
