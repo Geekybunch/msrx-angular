@@ -62,7 +62,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'logout',
         title: 'Logout',
         type: 'basic',
-        icon: 'heroicons_outline:logout',
+        icon: 'logout',
         link: '/sign-out',
     },
     // {
@@ -170,7 +170,7 @@ export const cultivatorNavigation: FuseNavigationItem[] = [
         id: 'logout',
         title: 'Logout',
         type: 'basic',
-        icon: 'heroicons_outline:logout',
+        icon: 'logout',
         link: '/sign-out',
     },
 ];
@@ -209,7 +209,7 @@ export const TesterNavigation: FuseNavigationItem[] = [
         id: 'logout',
         title: 'Logout',
         type: 'basic',
-        icon: 'heroicons_outline:logout',
+        icon: 'logout',
         link: '/sign-out',
     },
 ];
@@ -248,7 +248,7 @@ export const manufacturerNavigation: FuseNavigationItem[] = [
         id: 'logout',
         title: 'Logout',
         type: 'basic',
-        icon: 'heroicons_outline:logout',
+        icon: 'logout',
         link: '/sign-out',
     },
 ];
@@ -293,31 +293,52 @@ export const processorNavigation: FuseNavigationItem[] = [
 ];
 export const disposalNavigation: FuseNavigationItem[] = [
     {
-        id: 'disposal.dashboard',
+        id: 'disposer.dashboard',
         title: 'Dashboard',
         type: 'basic',
         icon: 'dashboard',
-        link: '/disposal/dashboard',
+        link: '/disposer/dashboard',
     },
     {
-        id: 'disposal.attendence',
+        id: 'disposer.create-disposary',
+        title: 'Add Disposal Record',
+        type: 'basic',
+        icon: 'library_add',
+        link: '/disposer/create-disposary',
+    },
+    {
+        id: 'disposer.delivery-vehicles',
+        title: 'Delivery  Vehicles',
+        type: 'basic',
+        icon: 'directions_car',
+        link: '/disposer/delivery-vehicles',
+    },
+    {
+        id: 'disposer.past-deliveries',
+        title: 'Past Disposals',
+        type: 'basic',
+        icon: 'shopping_cart',
+        link: '/disposer/past-deliveries',
+    },
+    {
+        id: 'disposer.attendence',
         title: 'Attendence',
         type: 'basic',
         icon: 'event_available',
-        link: '/disposal/attendence',
+        link: '/disposer/attendence',
     },
     {
-        id: 'disposal.employees',
+        id: 'disposer.employees',
         title: 'Employee',
         type: 'basic',
         icon: 'people_alt',
-        link: '/disposal/employees',
+        link: '/disposer/employees',
     },
     {
         id: 'logout',
         title: 'Logout',
         type: 'basic',
-        icon: 'heroicons_outline:logout',
+        icon: 'logout',
         link: '/sign-out',
     },
 ];

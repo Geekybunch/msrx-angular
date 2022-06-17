@@ -128,3 +128,14 @@ export interface BookFilterI {
     zipCode: string;
     location: string;
 }
+export interface CommonBusinessResponse {
+    data: {
+        businesses: {
+            results: BussinessI[];
+            page: number;
+            limit: number;
+            totalPages: number;
+            totalResults: number;
+        };
+    };
+}

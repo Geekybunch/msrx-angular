@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class AdminGuard implements CanActivate {
+export class DisposalGuard implements CanActivate {
     getUser: any;
     constructor(private router: Router) {
         this.getUser = JSON.parse(localStorage.getItem('userData'));
@@ -28,19 +28,18 @@ export class AdminGuard implements CanActivate {
     }
 
     checkEmployee(): boolean {
-        if (this.getUser && this.getUser.onModel == 'Admin') {
-            console.log('Admin');
+        if (
+            this.getUser &&
+            this.getUser.modelId.employer.businessType == 'Disposer'
+        ) {
             return true;
         } else {
             if (this.getUser) {
-                let role = this.getUser.onModel;
-                let redirect =
-                    role.toLowerCase() == 'employee'
-                        ? 'cultivator'
-                        : role.toLowerCase();
-
+                let role = this.getUser.modelId.employer.businessType;
+                let redirect = role.toLowerCase();
                 this.router.navigateByUrl(`/${redirect}/dashboard`);
             }
+            console.log('else');
             return false;
         }
     }

@@ -21,6 +21,28 @@ const routes: Routes = [
                     ).then((m) => m.DashboardModule),
             },
             {
+                path: 'create-disposary',
+                loadChildren: () =>
+                    import(
+                        'app/modules/disposal/pages/create-disposary/create-disposary.module'
+                    ).then((m) => m.CreateDisposaryModule),
+            },
+            {
+                path: 'delivery-vehicles',
+                loadChildren: () =>
+                    import(
+                        'app/modules/disposal/pages/dilevery-vehicles/dilevery-vehicles.module'
+                    ).then((m) => m.DileveryVehiclesModule),
+            },
+            {
+                path: 'past-deliveries',
+                loadChildren: () =>
+                    import(
+                        'app/modules/disposal/pages/past-dileviries/past-dileviries.module'
+                    ).then((m) => m.PastDileviriesModule),
+            },
+
+            {
                 path: 'attendence',
                 loadChildren: () =>
                     import(

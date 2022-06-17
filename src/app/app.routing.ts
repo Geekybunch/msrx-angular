@@ -8,6 +8,7 @@ import { AdminGuard } from './core/auth/guards/admin.guards';
 import { TesterGuard } from './core/auth/guards/tester.guard';
 import { ProcessorGuard } from './core/auth/guards/processor.guard';
 import { ManufacturerGuard } from './core/auth/guards/manufacturer.guard';
+import { DisposalGuard } from './core/auth/guards/disposal.guard';
 
 export const appRoutes: Route[] = [
     { path: '', pathMatch: 'full', redirectTo: 'admin/dashboard' },
@@ -220,7 +221,8 @@ export const appRoutes: Route[] = [
             ),
     },
     {
-        path: 'disposal',
+        path: 'disposer',
+        canActivate: [DisposalGuard],
         loadChildren: () =>
             import('app/modules/disposal/disposal.module').then(
                 (m) => m.DisposalModule
