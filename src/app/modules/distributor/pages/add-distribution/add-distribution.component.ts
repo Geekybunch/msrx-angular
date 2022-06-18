@@ -1,10 +1,4 @@
-import {
-    Component,
-    Inject,
-    OnInit,
-    TemplateRef,
-    ViewChild,
-} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,6 +6,8 @@ import { Router } from '@angular/router';
 import {
     BussinessI,
     CommonPlantDetailI,
+    DispensarySearchI,
+    ProductI,
 } from 'app/core/common/common.interface';
 import { CommonService } from 'app/core/common/common.service';
 import { DeliveryVehicleI } from 'app/core/dilevery-vehicle/delivery-vehicle.interface';
@@ -21,26 +17,28 @@ import { DistributerService } from 'app/core/distributer/distributer.service';
 import moment from 'moment';
 
 @Component({
-    selector: 'app-create-disposary',
-    templateUrl: './create-disposary.component.html',
-    styleUrls: ['./create-disposary.component.scss'],
+    selector: 'app-add-distribution',
+    templateUrl: './add-distribution.component.html',
+    styleUrls: ['./add-distribution.component.scss'],
 })
-export class CreateDisposaryComponent implements OnInit {
+export class AddDistributionComponent implements OnInit {
     @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
     dileveryForm: FormGroup;
     materials: {
         id: string;
-        plantDetail: CommonPlantDetailI;
+        productDetail: ProductI;
         quantity: number;
     }[] = [];
     deliveryVehicle: DeliveryVehicleI;
     deliveryFrom: BussinessI;
-    plantID: any;
+    productID: any;
     quantity: number;
-    plantsData: any;
+    productData: any;
     quantityDialog: boolean = false;
     businesses: BussinessI[] = [];
     vehicles: DeliveryVehicleI[] = [];
+    dispensaries: DispensarySearchI[] = [];
+    dispensary: DispensarySearchI;
 
     constructor(
         private commonService: CommonService,
@@ -56,26 +54,38 @@ export class CreateDisposaryComponent implements OnInit {
 
     ngOnInit(): void {
         this.dileveryForm = new FormGroup({
-            vehicle: new FormControl(null, Validators.required),
-            fromBusiness: new FormControl(null),
             pickUpLocation: new FormControl(null, Validators.required),
             pickUpDateTime: new FormControl(
                 moment().toISOString(),
                 Validators.required
             ),
+            dropLocation: new FormControl(null, Validators.required),
+            dropDateTime: new FormControl(
+                moment().toISOString(),
+                Validators.required
+            ),
+            dispensaryCtrl: new FormControl(null, Validators.required),
+            vehicle: new FormControl(null, Validators.required),
         });
-        this.getBusinesses();
+        this.getDispensaries();
         this.listVehicles();
     }
     showScanMenu() {
         this.dialog.open(this.scanQRCodeDialog);
     }
-    plantDetails() {
-        this.commonService.getCommonPlantDetails(this.plantID).subscribe(
+    productDetails() {
+        this.commonService.getCommonProductDetails(this.productID).subscribe(
             (res: any) => {
                 console.log(res);
-                this.plantsData = res.data?.plant;
-                this.quantityDialog = true;
+                if (res.data.product === null) {
+                    this.snackBar.open('Invalid Product', 'Close', {
+                        duration: 3000,
+                        panelClass: ['alert-red'],
+                    });
+                } else {
+                    this.productData = res.data?.product;
+                    this.quantityDialog = true;
+                }
             },
             (err: any) => {
                 this.snackBar.open(err.error.message, 'Close', {
@@ -86,9 +96,10 @@ export class CreateDisposaryComponent implements OnInit {
             }
         );
     }
-    getBusinesses(event: string = '') {
-        this.commonService.getBusinessListing(event).subscribe((res) => {
-            this.businesses = res.data.businesses.results;
+    getDispensaries() {
+        this.commonService.listDispensaryList().subscribe((res) => {
+            this.dispensaries = res.data.dispensaries.results;
+            console.log(res);
         });
     }
     listVehicles() {
@@ -103,22 +114,27 @@ export class CreateDisposaryComponent implements OnInit {
     addMaterial() {
         this.quantityDialog = false;
         this.materials.push({
-            id: this.plantsData._id,
-            plantDetail: this.plantsData,
+            id: this.productData._id,
+            productDetail: this.productData,
             quantity: this.quantity,
         });
-        this.dialog.closeAll();
-    }
-    selectBusiness(business: any) {
-        console.log(business);
-        if (business) {
-            this.deliveryFrom = business as BussinessI;
-            this.dileveryForm
-                .get('fromBusiness')
-                .setValue(this.deliveryFrom.businessName);
+        if (!this.dileveryForm.get('pickUpLocation').value) {
             this.dileveryForm
                 .get('pickUpLocation')
-                .setValue(this.deliveryFrom.businessAddress);
+                .setValue(this.productData.manufacturer.businessAddress);
+        }
+        this.dialog.closeAll();
+    }
+    openDispensarySearch(dispensary: any) {
+        console.log(dispensary);
+        if (dispensary) {
+            this.dispensary = dispensary;
+            this.dileveryForm
+                .get('dispensaryCtrl')
+                .setValue(this.dispensary.name);
+            this.dileveryForm
+                .get('dropLocation')
+                .setValue(this.dispensary.addressLine1);
         }
     }
     addDelivery() {
@@ -146,17 +162,17 @@ export class CreateDisposaryComponent implements OnInit {
             onModel: 'Product',
             quantity: m.quantity,
         }));
+        request.from = this.materials[0].productDetail.manufacturer._id;
+        request.to = this.dispensary.business._id;
+        delete (request as any).dispensaryCtrl;
 
-        request.from = this.deliveryFrom._id;
-        delete (request as any).fromBusiness;
-        request.to = null;
         this.distributerService.addDelivery(request).subscribe(
             (res: any) => {
                 console.log(res);
                 this.snackBar.open(res.message, 'Close', {
                     duration: 3000,
                 });
-                this.router.navigateByUrl('disposer/dashboard');
+                this.router.navigateByUrl('distributor/dashboard');
             },
             (err: any) => {
                 console.log(err);

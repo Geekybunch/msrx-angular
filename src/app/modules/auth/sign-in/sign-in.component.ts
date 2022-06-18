@@ -75,6 +75,11 @@ export class AuthSignInComponent implements OnInit {
                     res.data.user.modelId?.employer?.businessType === 'Disposer'
                 ) {
                     this._router.navigateByUrl('disposer/dashboard');
+                } else if (
+                    res.data.user.modelId?.employer?.businessType ===
+                    'Distributor'
+                ) {
+                    this._router.navigateByUrl('distributor/dashboard');
                 }
             },
             (response) => {

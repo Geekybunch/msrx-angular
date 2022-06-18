@@ -6,6 +6,8 @@ import { applicationUrls } from '../urls';
 import {
     CommonBusinessResponse,
     CommonPLantDetailResponse,
+    CommonProductDetailI,
+    DispensariesListResponse,
 } from './common.interface';
 
 @Injectable({
@@ -21,6 +23,11 @@ export class CommonService {
             applicationUrls.commonPlantDetails + '/' + plantID
         );
     }
+    getCommonProductDetails(plantID: string) {
+        return this.http.get<CommonProductDetailI>(
+            applicationUrls.commonProductDetails + '/' + plantID
+        );
+    }
     getBusinessListing(businessName?: string) {
         return this.http.get<CommonBusinessResponse>(
             applicationUrls.commonListBusinesses,
@@ -29,6 +36,11 @@ export class CommonService {
                     businessName,
                 } as any,
             }
+        );
+    }
+    listDispensaryList() {
+        return this.http.get<DispensariesListResponse>(
+            applicationUrls.commonListDispensary
         );
     }
 }

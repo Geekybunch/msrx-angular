@@ -7,12 +7,13 @@
                 <div
                     class="text-xl font-medium tracking-tight leading-6 truncate"
                 >
-                    Create Disposal Record
+                    Add Delivery
                 </div>
             </div>
             <div class="flex flex-row gt-md:flex-col mb-5">
                 <mat-chip *ngFor="let material of materials; let i = index">
-                    {{ materialIDs[i].slice(1, 8) }}...
+                    ({{ materials[i].quantity }})
+                    {{ materials[i].productDetail.name }}
                     <button matChipRemove (click)="this.materials.splice(i, 1)">
                         <mat-icon>cancel</mat-icon>
                     </button>
@@ -22,31 +23,24 @@
                     (click)="showScanMenu()"
                     class="scan_btn bg-primary-500 text-white rounded-full w-auto"
                 >
-                    Scan Plants
+                    Scan More Products
                 </button>
             </div>
             <form [formGroup]="dileveryForm" class="flex flex-col">
                 <div class="flex flex-col gt-xs:flex-col mb-5">
-                    <label>Picked Up From *</label>
+                    <label>Dispensary Name *</label>
                     <ng-select
                         class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
-                        placeholder="Select Business"
-                        [formControlName]="'fromBusiness'"
-                        (change)="selectBusiness($event)"
+                        placeholder="Select Dispensary"
+                        [formControlName]="'dispensaryCtrl'"
+                        (change)="openDispensarySearch($event)"
                     >
                         <ng-option
-                            *ngFor="let business of businesses"
-                            [value]="business"
-                            >{{ business.businessName }}</ng-option
+                            *ngFor="let dispensary of dispensaries"
+                            [value]="dispensary"
+                            >{{ dispensary.name }}</ng-option
                         >
                     </ng-select>
-                </div>
-
-                <div class="flex flex-col gt-md:flex-col">
-                    <mat-form-field class="flex-auto fuse-mat-dense">
-                        <mat-label> PickUp Location</mat-label>
-                        <input matInput [formControlName]="'pickUpLocation'" />
-                    </mat-form-field>
                 </div>
 
                 <div class="flex flex-col gt-xs:flex-col mb-5">
@@ -63,14 +57,37 @@
                         >
                     </ng-select>
                 </div>
-
                 <div class="flex flex-row gt-md:flex-row">
                     <mat-form-field class="flex-auto fuse-mat-dense">
+                        <mat-label> PickUp Location</mat-label>
+                        <input matInput [formControlName]="'pickUpLocation'" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto fuse-mat-dense ml-5">
                         <mat-label> Pickup Time</mat-label>
                         <input
                             matInput
                             [matDatepicker]="picker1"
                             [formControlName]="'pickUpDateTime'"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker1"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-row gt-md:flex-row">
+                    <mat-form-field class="flex-auto fuse-mat-dense">
+                        <mat-label> Drop Off Location</mat-label>
+                        <input matInput [formControlName]="'dropLocation'" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto fuse-mat-dense ml-5">
+                        <mat-label> Drop-off Time</mat-label>
+                        <input
+                            matInput
+                            [matDatepicker]="picker1"
+                            [formControlName]="'dropDateTime'"
                         />
                         <mat-datepicker-toggle
                             matSuffix
@@ -87,7 +104,7 @@
                         mat-raised-button
                         color="primary"
                     >
-                        Add Disposal
+                        Add Delivery
                     </button>
                 </div>
             </form>
@@ -102,10 +119,10 @@
                 <mat-form-field class="flex-auto fuse-mat-dense">
                     <input
                         matInput
-                        name="plantId"
-                        [(ngModel)]="plantID"
+                        name="productID"
+                        [(ngModel)]="productID"
                         [ngModelOptions]="{ standalone: true }"
-                        placeholder="Enter Plant ID"
+                        placeholder="Enter Product ID"
                     />
                 </mat-form-field>
             </div>
@@ -125,7 +142,7 @@
         </form>
         <mat-dialog-actions>
             <button
-                (click)="plantDetails()"
+                (click)="productDetails()"
                 mat-button
                 mat-raised-button
                 color="primary"

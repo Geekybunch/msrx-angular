@@ -2,6 +2,9 @@ import { environment } from '../../environments/environment';
 
 class ApplicationURLs {
     serverUrl = environment.apiUrl;
+    get refreshToken() {
+        return this.serverUrl + '/auth/refresh-tokens/';
+    }
 
     get growerPlants() {
         return this.serverUrl + '/business/grower/plants';

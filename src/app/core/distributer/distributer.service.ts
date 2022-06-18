@@ -33,9 +33,9 @@ export class DistributerService {
         );
     }
 
-    getDashboardData(dateFrom: string, dateTo: string) {
+    getDashboardData(payload: any) {
         return this.http.get<DeliveryDashboardResponse>(
-            applicationUrls.distributorDashboard,
+            applicationUrls.distributorDashboard + payload,
             {
                 params: {
                     // dateFrom,

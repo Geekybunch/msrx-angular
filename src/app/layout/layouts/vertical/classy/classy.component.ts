@@ -27,6 +27,7 @@ import {
     cultivatorNavigation,
     defaultNavigation,
     disposalNavigation,
+    distributorNavigation,
     manufacturerNavigation,
     processorNavigation,
     TesterNavigation,
@@ -113,6 +114,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                     this.role.modelId.employer.businessType === 'Disposer'
                 ) {
                     this.navigation.compact = disposalNavigation;
+                } else if (
+                    this.role.modelId.employer.businessType === 'Distributor'
+                ) {
+                    this.navigation.compact = distributorNavigation;
                 }
             });
 

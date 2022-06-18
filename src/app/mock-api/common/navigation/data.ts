@@ -342,6 +342,57 @@ export const disposalNavigation: FuseNavigationItem[] = [
         link: '/sign-out',
     },
 ];
+export const distributorNavigation: FuseNavigationItem[] = [
+    {
+        id: 'distributor.dashboard',
+        title: 'Dashboard',
+        type: 'basic',
+        icon: 'dashboard',
+        link: '/distributor/dashboard',
+    },
+    {
+        id: 'distributor.add-distribution',
+        title: 'Add Delivery',
+        type: 'basic',
+        icon: 'library_add',
+        link: '/distributor/add-distribution',
+    },
+    {
+        id: 'distributor.delivery-vehicles',
+        title: 'Delivery Vehicles',
+        type: 'basic',
+        icon: 'directions_car',
+        link: '/distributor/delivery-vehicles',
+    },
+    {
+        id: 'distributor.past-deliveries',
+        title: 'Past Deliveries',
+        type: 'basic',
+        icon: 'shopping_cart',
+        link: '/distributor/past-deliveries',
+    },
+    {
+        id: 'distributor.attendence',
+        title: 'Attendence',
+        type: 'basic',
+        icon: 'event_available',
+        link: '/distributor/attendence',
+    },
+    {
+        id: 'distributor.employees',
+        title: 'Employee',
+        type: 'basic',
+        icon: 'people_alt',
+        link: '/distributor/employees',
+    },
+    {
+        id: 'logout',
+        title: 'Logout',
+        type: 'basic',
+        icon: 'logout',
+        link: '/sign-out',
+    },
+];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
         id: 'example',

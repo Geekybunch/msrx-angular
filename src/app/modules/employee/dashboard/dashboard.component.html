@@ -209,7 +209,10 @@
             </div>
             <div
                 *ngIf="
-                    this.userInfo.modelId.employer.businessType === 'Disposer'
+                    this.userInfo.modelId.employer.businessType ===
+                        'Disposer' ||
+                    this.userInfo.modelId.employer.businessType ===
+                        'Distributor'
                 "
                 class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-6 w-full min-w-0 mb-8"
             >

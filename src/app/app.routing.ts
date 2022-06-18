@@ -228,4 +228,11 @@ export const appRoutes: Route[] = [
                 (m) => m.DisposalModule
             ),
     },
+    {
+        path: 'distributor',
+        loadChildren: () =>
+            import('app/modules/distributor/distributor.module').then(
+                (m) => m.DistributorModule
+            ),
+    },
 ];
