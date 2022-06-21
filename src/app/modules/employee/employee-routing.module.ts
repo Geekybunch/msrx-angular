@@ -66,6 +66,13 @@ const routes: Routes = [
                         'app/modules/employee/test-details/test-details.module'
                     ).then((m) => m.TestDetailsModule),
             },
+            {
+                path: 'qr-scanner-layout',
+                loadChildren: () =>
+                    import(
+                        'app/modules/common/qr-scanner-layout/qr-scanner-layout.module'
+                    ).then((m) => m.QrScannerLayoutModule),
+            },
         ],
     },
 ];

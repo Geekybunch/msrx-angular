@@ -33,6 +33,8 @@ import {
     TesterNavigation,
 } from 'app/mock-api/common/navigation/data';
 import { CommonService } from 'app/core/common/common.service';
+import { getBusinessType } from 'app/shared/shared.utils';
+import { BusinessTypeEnums } from 'app/shared/shared.enums';
 
 @Component({
     selector: 'classy-layout',
@@ -47,10 +49,11 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     public role: any;
     scanQRForm: FormGroup;
     plantId: string;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
-    @ViewChild('myInput')
-    myInputVariable: ElementRef;
+    @ViewChild('filterPlantId')
+    filterPlantId: ElementRef;
 
     /**
      * Constructor
@@ -179,7 +182,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         }
 
         this.commonService.$testPantID.next(this.scanQRForm.value.planId);
-        if (this.role.modelId.employer?.businessType === 'Tester') {
+        if (this.role.modelId.employer?.businessType === 'Cultivator') {
+            this.router.navigate(['/cultivator/test-details'], {
+                queryParams: {
+                    plantID: this.scanQRForm.value.planId,
+                },
+                replaceUrl: true,
+            });
+        } else if (this.role.modelId.employer?.businessType === 'Tester') {
             this.router.navigate(['/tester/test-details'], {
                 queryParams: {
                     plantID: this.scanQRForm.value.planId,
@@ -193,6 +203,26 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 },
                 replaceUrl: true,
             });
+        } else if (
+            this.role.modelId.employer?.businessType === 'Manufacturer'
+        ) {
+            this.router.navigate(['/manufacturer/test-details'], {
+                queryParams: {
+                    plantID: this.scanQRForm.value.planId,
+                },
+                replaceUrl: true,
+            });
+        }
+
+        this.dialog.closeAll();
+    }
+    presentScanAction() {
+        if (this.role.modelId.employer?.businessType === 'Cultivator') {
+            this.router.navigateByUrl('/cultivator/qr-scanner-layout');
+        } else if (
+            this.role.modelId.employer?.businessType === 'Manufacturer'
+        ) {
+            this.router.navigateByUrl('/manufacturer/qr-scanner-layout');
         }
 
         this.dialog.closeAll();

@@ -14,8 +14,16 @@
                         >
                             <ng-option
                                 *ngFor="let list of businesses"
-                                [value]="list.from._id"
-                                >{{ list.from.businessName }}</ng-option
+                                [value]="
+                                    list && list.from && list.from._id
+                                        ? list.from._id
+                                        : ''
+                                "
+                                >{{
+                                    list && list.from && list.from.businessName
+                                        ? list.from.businessName
+                                        : "Unknown Business"
+                                }}</ng-option
                             >
                         </ng-select>
                         <ng-select
@@ -26,8 +34,16 @@
                         >
                             <ng-option
                                 *ngFor="let business of businesses"
-                                [value]="business.from._id"
-                                >{{ business.from.businessName }}</ng-option
+                                [value]="
+                                    business &&
+                                    business.from &&
+                                    business.from._id
+                                        ? business.from._id
+                                        : 'Unknown Business'
+                                "
+                                >{{
+                                    business.from && business.from.businessName
+                                }}</ng-option
                             >
                         </ng-select>
                         <ng-select
@@ -77,7 +93,13 @@
                                 mat-cell
                                 *matCellDef="let element"
                             >
-                                {{ element.from.businessName }}
+                                {{
+                                    element &&
+                                    element.from &&
+                                    element.from.businessName
+                                        ? element.from.businessName
+                                        : "Unknown Business"
+                                }}
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="to">

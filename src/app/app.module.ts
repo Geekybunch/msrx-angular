@@ -15,6 +15,7 @@ import { appRoutes } from 'app/app.routing';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { MatFileUploadModule } from 'angular-material-fileupload';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -34,6 +35,7 @@ const routerConfig: ExtraOptions = {
         LayoutModule,
         MarkdownModule.forRoot({}),
         MatFileUploadModule,
+        NgxSpinnerModule,
     ],
     providers: [
         {

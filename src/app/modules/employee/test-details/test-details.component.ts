@@ -10,10 +10,12 @@ import {
 import { AuthService } from 'app/core/auth/auth.service';
 import { CommonPlantDetailI } from 'app/core/common/common.interface';
 import { CommonService } from 'app/core/common/common.service';
-import { BusinessTypeEnums } from 'app/shared/shared.enums';
+import { BusinessTypeEnums, QRType } from 'app/shared/shared.enums';
+import { genereateQRCode } from 'app/shared/shared.utils';
 import { cloneDeep } from 'lodash';
 import { AddProcessedResultComponent } from '../add-processed-result/add-processed-result.component';
 import { AddTestResultComponent } from '../add-test-result/add-test-result.component';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 @Component({
     selector: 'app-test-details',
@@ -88,5 +90,42 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
             });
         }
     }
-    downloadQrCode() {}
+    async downloadQrCode() {
+        const qr = genereateQRCode(QRType.PLANT, this.plantID);
+
+        try {
+            // const res = await this.savePicture(qr.toDataURL());
+            // alert(`QR Downloaded! ${res.filepath}`);
+            // this.toastr.show(`QR Downloaded! ${res.filepath}`);
+            this.openProtoViewer(qr.toDataURL());
+        } catch (e) {
+            // `e` may be a string or Error object
+        }
+    }
+    openProtoViewer(arg0: any) {
+        throw new Error('Method not implemented.');
+    }
+    private async savePicture(base64Data: string) {
+        await Filesystem.requestPermissions();
+        const filePath = 'mmsrx';
+        try {
+            await Filesystem.mkdir({
+                path: filePath,
+                directory: Directory.ExternalStorage,
+            });
+        } catch (error) {
+            console.error('Error in creating directory', error);
+        }
+
+        const fileName = `${filePath}/Batch #${this.plantResponse.batchNumber}.png`;
+        const savedFile = await Filesystem.writeFile({
+            path: fileName,
+            data: base64Data,
+            directory: Directory.ExternalStorage,
+        });
+        return {
+            filepath: fileName,
+            webviewPath: savedFile.uri,
+        };
+    }
 }

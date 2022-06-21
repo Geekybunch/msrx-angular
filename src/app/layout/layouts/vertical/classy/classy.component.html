@@ -15,8 +15,10 @@
         </div>
         <fuse-vertical-navigation-basic-item
             *ngIf="
+                role.modelId?.employer?.businessType === 'Cultivator' ||
                 role.modelId?.employer?.businessType === 'Tester' ||
-                role.modelId?.employer?.businessType === 'Processor'
+                role.modelId?.employer?.businessType === 'Processor' ||
+                role.modelId?.employer?.businessType === 'Manufacturer'
             "
         >
             <div class="fuse-vertical-navigation-item-wrapper">
@@ -68,6 +70,7 @@
                         matInput
                         [formControlName]="'planId'"
                         placeholder="Enter Plant ID"
+                        #filterPlantId
                     />
                 </mat-form-field>
             </div>
@@ -75,6 +78,7 @@
                 <button
                     class="flex items-center justify-center rounded"
                     style="border: 1px dashed rgb(203 213 225); padding: 10px"
+                    (click)="presentScanAction()"
                 >
                     <mat-icon
                         svgIcon="qr_code_scanner"
