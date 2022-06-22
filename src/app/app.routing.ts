@@ -184,6 +184,13 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/inventory-logs/inventory-logs.module'
                             ).then((m) => m.InventoryLogsModule),
                     },
+                    {
+                        path: 'state-agencies',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/state-agencies/state-agencies.module'
+                            ).then((m) => m.StateAgenciesModule),
+                    },
                 ],
             },
         ],

@@ -31,5 +31,8 @@ class Urls {
     get inventoryLogs() {
         return this.serverUrl + '/inventory/logs';
     }
+    get stateAgencies() {
+        return this.serverUrl + '/state-agencies';
+    }
 }
 export const adminUrls = new Urls();

@@ -59,6 +59,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/admin/inventory-logs',
     },
     {
+        id: 'admin.state-agencies',
+        title: 'State Agencies',
+        type: 'basic',
+        icon: 'assignment',
+        link: '/admin/state-agencies',
+    },
+    {
         id: 'logout',
         title: 'Logout',
         type: 'basic',
