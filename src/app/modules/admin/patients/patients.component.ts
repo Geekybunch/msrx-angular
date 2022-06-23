@@ -37,7 +37,7 @@ export class PatientsComponent implements OnInit {
     getPatientsList() {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
-            : 20;
+            : 10;
         const pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
         }`;

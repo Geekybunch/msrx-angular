@@ -48,7 +48,7 @@ export class EmployeesComponent implements OnInit {
     getEmployeesList() {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
-            : 20;
+            : 10;
 
         let pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1

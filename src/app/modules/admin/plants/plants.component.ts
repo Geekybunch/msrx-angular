@@ -57,7 +57,7 @@ export class PlantsComponent implements OnInit, AfterViewInit {
     getPlantsData(): void {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
-            : 20;
+            : 10;
 
         const pageparams = `?limit=${this.paginator.pageSize}&page=${
             this.paginator.pageIndex + 1
