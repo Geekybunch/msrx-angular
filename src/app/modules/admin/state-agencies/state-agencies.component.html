@@ -47,7 +47,7 @@
                     <table class="w-full" mat-table [dataSource]="dataSource">
                         <ng-container matColumnDef="name">
                             <th class="w-60" mat-header-cell *matHeaderCellDef>
-                                Name
+                                Agency Name
                             </th>
                             <td
                                 class="capitalize"
@@ -55,6 +55,18 @@
                                 *matCellDef="let element"
                             >
                                 {{ element.modelId.name }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="delegateName">
+                            <th class="w-60" mat-header-cell *matHeaderCellDef>
+                                Person Name
+                            </th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.modelId.delegateName }}
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="email">
@@ -166,7 +178,29 @@
                         name="name"
                         type="text"
                         matInput
-                        placeholder="Name"
+                        placeholder="Agency Name"
+                        required
+                    />
+                    <mat-error
+                        *ngIf="
+                            stateAgencieFromSubmit &&
+                            f.name.errors.required &&
+                            f.name.errors
+                        "
+                    >
+                        You must provide a <strong>Name</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    [ngClass]="formFieldHelpers"
+                    class="flex-auto fuse-mat-dense"
+                >
+                    <input
+                        formControlName="delegateName"
+                        name="delegateName"
+                        type="text"
+                        matInput
+                        placeholder="Person Name"
                         required
                     />
                     <mat-error
@@ -205,7 +239,7 @@
 
             <mat-dialog-actions>
                 <button
-                    type="submit"
+                    type="button"
                     mat-button
                     mat-raised-button
                     color="primary"
