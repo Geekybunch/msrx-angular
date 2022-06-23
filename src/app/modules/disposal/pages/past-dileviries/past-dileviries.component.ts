@@ -17,7 +17,7 @@ export class PastDileviriesComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild('sidenav') sideNav: MatSidenav;
     @Input() position: 'start' | 'end';
-    public pageSize = 20;
+    public pageSize = 10;
     public totalResults: number;
     public filterName: string;
     public deliveryDetails: any;

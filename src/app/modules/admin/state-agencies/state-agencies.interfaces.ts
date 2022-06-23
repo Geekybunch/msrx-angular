@@ -1,7 +1,6 @@
 export interface StateAgencies {
     name: string;
     email: string;
-
     actions: any;
 }
 

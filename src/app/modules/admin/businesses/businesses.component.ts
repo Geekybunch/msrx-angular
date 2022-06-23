@@ -16,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class BusinessesComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    public pageSize = 20;
+    public pageSize = 10;
     public totalResults: number;
     public noRecords: any;
     public filterName: string;

@@ -16,7 +16,7 @@ import { DileveryVehicleService } from 'app/core/dilevery-vehicle/dilevery-vehic
 export class DileveryVehiclesComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild('sidenav') sideNav: MatSidenav;
-    public pageSize = 20;
+    public pageSize = 10;
     public totalResults: number;
     public noRecords: any;
 

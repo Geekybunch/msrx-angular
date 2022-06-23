@@ -25,7 +25,7 @@ export class ProductListingComponent implements OnInit {
     @ViewChild('sidenav') sideNav: MatSidenav;
     @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
     @Input() position: 'start' | 'end';
-    public pageSize = 20;
+    public pageSize = 10;
     public totalResults: number;
     public filterName: string;
     public viewDetails: any;

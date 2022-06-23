@@ -16,7 +16,7 @@ import { displayedColumns } from './patients.interfaces';
 export class PatientsComponent implements OnInit {
     @ViewChild('sidenav') sideNav: MatSidenav;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    public pageSize = 20;
+    public pageSize = 10;
     public totalResults: number;
     public noRecords: any;
     public searchedPatient;
