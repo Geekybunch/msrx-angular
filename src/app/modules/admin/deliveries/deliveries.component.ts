@@ -3,7 +3,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
+import { BusinessService } from 'app/core/admin/business/business.service';
 import { DeliveriesService } from 'app/core/admin/deliveries/deliveries.service';
+import { CommonService } from 'app/core/common/common.service';
 import { Deliveries } from './deliveries.interfaces';
 import { displayedColumns } from './deliveries.interfaces';
 
@@ -26,7 +28,10 @@ export class DeliveriesComponent implements OnInit {
     dataSource = new MatTableDataSource<Deliveries>();
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-    constructor(private deliveriesService: DeliveriesService) {}
+    constructor(
+        private deliveriesService: DeliveriesService,
+        private businessService: BusinessService
+    ) {}
 
     ngOnInit(): void {
         this.getDeliveriesData();
@@ -59,6 +64,7 @@ export class DeliveriesComponent implements OnInit {
         }`;
         this.deliveriesService.getDeliveriesList(totalparams).subscribe(
             (response: any) => {
+                console.log(response);
                 this.noRecords = response.data.deliveries.results;
                 this.dataSource = response.data.deliveries.results;
                 this.totalResults = response.data.deliveries.totalResults;
@@ -69,29 +75,52 @@ export class DeliveriesComponent implements OnInit {
         );
     }
     getBusinessDropDownlist = (businessName?: string): void => {
-        let pageParams = '?limit=20&page=1';
-        this.deliveriesService.getDeliveriesList(pageParams).subscribe(
+        console.log('get businesses');
+        let pageParams = '?limit=10&page=1&businessType=Disposer';
+        if (businessName) {
+            pageParams += '&businessName=' + businessName;
+        }
+        this.businessService.getBusinessDetails(pageParams).subscribe(
             (response: any) => {
-                this.businesses = response.data.deliveries.results;
-                const filteredArr = this.businesses.reduce((thing, current) => {
-                    const x = thing.find(
-                        (item) =>
-                            item.business.businessName ===
-                            current.business.businessName
-                    );
-                    if (!x) {
-                        return thing.concat([current]);
-                    } else {
-                        return thing;
-                    }
-                }, []);
-                this.businesses = filteredArr;
+                console.log('response', response);
+                this.businesses = response.data.businesses.results.map(
+                    (obj: any) => ({
+                        _id: obj._id,
+                        businessName: obj.businessName,
+                    })
+                );
             },
             (err: any) => {
                 console.log(err);
             }
         );
     };
+
+    // getBusinessDropDownlist = (businessName?: string): void => {
+    //     let pageParams = '?limit=20&page=1';
+    //     this.deliveriesService.getDeliveriesList(pageParams).subscribe(
+    //         (response: any) => {
+    //             this.businesses = response.data.deliveries.results;
+    //             console.log(this.businesses);
+    //             const filteredArr = this.businesses.reduce((thing, current) => {
+    //                 const x = thing.find(
+    //                     (item) =>
+    //                         item.business.businessName ===
+    //                         current.business.businessName
+    //                 );
+    //                 if (!x) {
+    //                     return thing.concat([current]);
+    //                 } else {
+    //                     return thing;
+    //                 }
+    //             }, []);
+    //             this.businesses = filteredArr;
+    //         },
+    //         (err: any) => {
+    //             console.log(err);
+    //         }
+    //     );
+    // };
 
     filterByBusiness(): void {
         console.log(this.selectedBusiness);
@@ -104,6 +133,7 @@ export class DeliveriesComponent implements OnInit {
         this.getDeliveriesData();
     }
     viewDetails(event) {
+        console.log(event);
         this.deliveryDetails = event;
         this.sideNav.toggle();
     }

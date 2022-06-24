@@ -14,8 +14,8 @@
                         >
                             <ng-option
                                 *ngFor="let list of businesses"
-                                [value]="list.business._id"
-                                >{{ list.business.businessName }}</ng-option
+                                [value]="list._id"
+                                >{{ list.businessName }}</ng-option
                             >
                         </ng-select>
                         <ng-select
@@ -24,11 +24,11 @@
                             [(ngModel)]="selectedBusinessFrom"
                             (change)="filterByBusinessFrom()"
                         >
-                            <ng-option
+                            <!-- <ng-option
                                 *ngFor="let business of businesses"
                                 [value]="business.from._id"
                                 >{{ business.from.businessName }}</ng-option
-                            >
+                            > -->
                         </ng-select>
                         <ng-select
                             class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense sm:ml-4"
@@ -36,7 +36,7 @@
                             [(ngModel)]="selectedBusinessTo"
                             (change)="filterByBusinessTo()"
                         >
-                            <ng-option
+                            <!-- <ng-option
                                 *ngFor="let business of businesses"
                                 [value]="
                                     business && business.to && business.to._id
@@ -50,7 +50,7 @@
                                         ? business.to.businessName
                                         : ""
                                 }}</ng-option
-                            >
+                            > -->
                         </ng-select>
                     </div>
                     <div class="flex flex-col items-center w-36">
@@ -174,11 +174,11 @@
                 <div class="leading-6 mb-2">
                     <span class="font-medium text-secondary">Name</span>
                     <span class="mx-2">:</span>
-                    <span class="font-medium">{{
+                    <!-- <span class="font-medium">{{
                         deliveryDetails && deliveryDetails.business.businessName
                             ? deliveryDetails.business.businessName
                             : ""
-                    }}</span>
+                    }}</span> -->
                 </div>
                 <div class="leading-6 mb-2">
                     <span class="font-medium text-secondary">ID Number</span>

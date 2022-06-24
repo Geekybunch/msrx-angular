@@ -164,6 +164,7 @@ export class AddDistributionComponent implements OnInit {
         }));
         request.from = this.materials[0].productDetail.manufacturer._id;
         request.to = this.dispensary.business._id;
+        delete (request as any).dispensaryCtrl;
 
         this.distributerService.addDelivery(request).subscribe(
             (res: any) => {
