@@ -12,8 +12,8 @@ import {
 import { CommonService } from 'app/core/common/common.service';
 import { DeliveryVehicleI } from 'app/core/dilevery-vehicle/delivery-vehicle.interface';
 import { DileveryVehicleService } from 'app/core/dilevery-vehicle/dilevery-vehicle.service';
-import { CreateDileveryI } from 'app/core/distributer/distributer.interface';
-import { DistributerService } from 'app/core/distributer/distributer.service';
+import { CreateDileveryI } from 'app/core/distributor/distributor.interface';
+import { DistributorService } from 'app/core/distributor/distributor.service';
 import moment from 'moment';
 
 @Component({
@@ -46,7 +46,7 @@ export class AddDistributionComponent implements OnInit {
         private snackBar: MatSnackBar,
         private router: Router,
         private vehicleService: DileveryVehicleService,
-        private distributerService: DistributerService
+        private distributorService: DistributorService
     ) {}
     get materialIDs() {
         return this.materials.map((i) => i.id);
@@ -76,6 +76,7 @@ export class AddDistributionComponent implements OnInit {
     productDetails() {
         this.commonService.getCommonProductDetails(this.productID).subscribe(
             (res: any) => {
+                this.productID = '';
                 console.log(res);
                 if (res.data.product === null) {
                     this.snackBar.open('Invalid Product', 'Close', {
@@ -165,7 +166,7 @@ export class AddDistributionComponent implements OnInit {
         request.from = this.materials[0].productDetail.manufacturer._id;
         request.to = this.dispensary.business._id;
         delete (request as any).dispensaryCtrl;
-        this.distributerService.addDelivery(request).subscribe(
+        this.distributorService.addDelivery(request).subscribe(
             (res: any) => {
                 console.log(res);
                 this.snackBar.open(res.message, 'Close', {
@@ -177,5 +178,9 @@ export class AddDistributionComponent implements OnInit {
                 console.log(err);
             }
         );
+    }
+    presentScanAction() {
+        this.router.navigateByUrl('/distributor/qr-scanner-layout');
+        this.dialog.closeAll();
     }
 }

@@ -100,3 +100,6 @@ label {
     display: block;
     color: rgba(30, 41, 59, 0.8) !important;
 }
+::ng-deep .mat-chip-ripple {
+    display: none !important;
+}

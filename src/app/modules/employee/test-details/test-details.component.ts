@@ -16,6 +16,7 @@ import { cloneDeep } from 'lodash';
 import { AddProcessedResultComponent } from '../add-processed-result/add-processed-result.component';
 import { AddTestResultComponent } from '../add-test-result/add-test-result.component';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-test-details',
@@ -33,7 +34,8 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
         private commonService: CommonService,
         private router: Router,
         private matDialog: MatDialog,
-        private authService: AuthService
+        private authService: AuthService,
+        private snackBar: MatSnackBar
     ) {
         this.commonService.$testPantID.subscribe((res: string) => {
             this.plantID = res;
@@ -61,6 +63,14 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
                 this.plantResponse = res.data.plant;
             },
             (err: any) => {
+                this.router.navigate(['/'], {
+                    replaceUrl: true,
+                });
+                this.snackBar.open(err.error.message, 'Close', {
+                    duration: 3000,
+                    panelClass: ['alert-red'],
+                });
+
                 console.log(err);
             }
         );

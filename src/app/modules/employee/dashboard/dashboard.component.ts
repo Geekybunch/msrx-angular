@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DisposerService } from 'app/core/disposer/disposer.service';
-import { DistributerService } from 'app/core/distributer/distributer.service';
+import { DistributorService } from 'app/core/distributor/distributor.service';
 import { GrowerService } from 'app/core/grower/grower.service';
 import { ManufactureService } from 'app/core/manufacture/manufacture.service';
 import { ProcessorService } from 'app/core/processor/processor.service';
@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
         private processorService: ProcessorService,
         private manufactureService: ManufactureService,
         private disposerService: DisposerService,
-        private distributorService: DistributerService
+        private distributorService: DistributorService
     ) {
         this.userInfo = JSON.parse(localStorage.getItem('userData'));
     }

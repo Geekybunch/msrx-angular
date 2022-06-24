@@ -83,7 +83,15 @@ class ApplicationURLs {
             '/business/common/wellness-center/{{wellnessCenter}}/available-slots'
         );
     }
-
+    get inventoryDetails() {
+        return this.serverUrl + '/business/common/inventory/details';
+    }
+    get inventoryLogs() {
+        return this.serverUrl + '/business/common/inventory/logs';
+    }
+    get addManufacturerInventory() {
+        return this.serverUrl + '/business/manufacturer/products/quantity';
+    }
     get employeeAdmin() {
         return this.serverUrl + '/business/common/employees';
     }

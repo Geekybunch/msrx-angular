@@ -16,8 +16,8 @@ import {
 import { CommonService } from 'app/core/common/common.service';
 import { DeliveryVehicleI } from 'app/core/dilevery-vehicle/delivery-vehicle.interface';
 import { DileveryVehicleService } from 'app/core/dilevery-vehicle/dilevery-vehicle.service';
-import { CreateDileveryI } from 'app/core/distributer/distributer.interface';
-import { DistributerService } from 'app/core/distributer/distributer.service';
+import { CreateDileveryI } from 'app/core/distributor/distributor.interface';
+import { DistributorService } from 'app/core/distributor/distributor.service';
 import moment from 'moment';
 
 @Component({
@@ -35,7 +35,7 @@ export class CreateDisposaryComponent implements OnInit {
     }[] = [];
     deliveryVehicle: DeliveryVehicleI;
     deliveryFrom: BussinessI;
-    plantID: any;
+    plantID: string;
     quantity: number;
     plantsData: any;
     quantityDialog: boolean = false;
@@ -48,7 +48,7 @@ export class CreateDisposaryComponent implements OnInit {
         private snackBar: MatSnackBar,
         private router: Router,
         private vehicleService: DileveryVehicleService,
-        private distributerService: DistributerService
+        private distributorService: DistributorService
     ) {}
     get materialIDs() {
         return this.materials.map((i) => i.id);
@@ -73,6 +73,7 @@ export class CreateDisposaryComponent implements OnInit {
     plantDetails() {
         this.commonService.getCommonPlantDetails(this.plantID).subscribe(
             (res: any) => {
+                this.plantID = '';
                 console.log(res);
                 this.plantsData = res.data?.plant;
                 this.quantityDialog = true;
@@ -150,7 +151,7 @@ export class CreateDisposaryComponent implements OnInit {
         request.from = this.deliveryFrom._id;
         delete (request as any).fromBusiness;
         request.to = null;
-        this.distributerService.addDelivery(request).subscribe(
+        this.distributorService.addDelivery(request).subscribe(
             (res: any) => {
                 console.log(res);
                 this.snackBar.open(res.message, 'Close', {
@@ -162,5 +163,9 @@ export class CreateDisposaryComponent implements OnInit {
                 console.log(err);
             }
         );
+    }
+    presentScanAction() {
+        this.router.navigateByUrl('/disposer/qr-scanner-layout');
+        this.dialog.closeAll();
     }
 }

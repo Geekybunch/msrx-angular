@@ -66,14 +66,14 @@
                         <mat-label> Pickup Time</mat-label>
                         <input
                             matInput
-                            [matDatepicker]="picker1"
+                            [matDatepicker]="picker"
                             [formControlName]="'pickUpDateTime'"
                         />
                         <mat-datepicker-toggle
                             matSuffix
-                            [for]="picker1"
+                            [for]="picker"
                         ></mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </div>
 
@@ -129,6 +129,7 @@
 
             <div class="flex flex-col">
                 <button
+                    (click)="presentScanAction()"
                     class="flex items-center justify-center rounded"
                     style="border: 1px dashed rgb(203 213 225); padding: 10px"
                 >

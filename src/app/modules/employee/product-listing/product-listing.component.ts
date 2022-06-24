@@ -4,8 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CommonService } from 'app/core/common/common.service';
+import { InventoryService } from 'app/core/inventory/inventory.service';
 import { ManufactureService } from 'app/core/manufacture/manufacture.service';
 import {
     CreateProductsRequest,
@@ -32,22 +34,32 @@ export class ProductListingComponent implements OnInit {
     public noRecords: any;
     public plantsData: any;
     public plantId: any;
+    public filterInventoryDetails: any = [];
 
     visibleColumns = DisplayedManufactrors;
     dataSource = new MatTableDataSource<CreateProductsRequest>();
     public businessInput = new Subject<string>();
     plantId$: Observable<number[]>;
+    dta;
 
     constructor(
         private manufactrorService: ManufactureService,
         private commonService: CommonService,
         private snackBar: MatSnackBar,
         private confirmationService: FuseConfirmationService,
-        private matDialog: MatDialog
+        private matDialog: MatDialog,
+        private router: Router,
+        private inventoryService: InventoryService
     ) {}
 
     ngOnInit(): void {
-        this.getManufacturedProducts();
+        if (this.router.url == '/manufacturer/product-listing') {
+            this.getManufacturedProducts();
+        } else if (this.router.url == '/manufacturer/inventory-details') {
+            this.getInventoryDetails();
+        } else if (this.router.url == '/manufacturer/update-inventory') {
+            this.getInventoryLogs();
+        }
     }
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
@@ -67,6 +79,65 @@ export class ProductListingComponent implements OnInit {
                 this.noRecords = response.data.products.results;
                 this.dataSource = response.data.products.results;
                 this.totalResults = response.data.products.totalResults;
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    }
+    getInventoryDetails() {
+        this.paginator.pageSize = this.paginator.pageSize
+            ? this.paginator.pageSize
+            : 10;
+        let pageparams = `?limit=${this.paginator.pageSize}&page=${
+            this.paginator.pageIndex + 1
+        }`;
+        let productName = this.filterName ? `&name=${this.filterName}` : '';
+        let totalparams = `${pageparams + productName}`;
+        this.inventoryService.getInventoryDetails(totalparams).subscribe(
+            (response: any) => {
+                console.log(response);
+                this.noRecords = response.data.quantity;
+                this.totalResults = response.data.quantity.length;
+                for (let i = 0; i < response.data.quantity.length; i++) {
+                    this.filterInventoryDetails.push(
+                        response.data.quantity[i].materialId
+                    );
+                }
+                this.dataSource = this.filterInventoryDetails;
+                console.log(this.filterInventoryDetails);
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    }
+    getInventoryLogs() {
+        this.paginator.pageSize = this.paginator.pageSize
+            ? this.paginator.pageSize
+            : 10;
+        let pageparams = `?limit=${this.paginator.pageSize}&page=${
+            this.paginator.pageIndex + 1
+        }`;
+        let productName = this.filterName ? `&name=${this.filterName}` : '';
+        let totalparams = `${pageparams + productName}`;
+        this.inventoryService.getInventoryLogs(totalparams).subscribe(
+            (response: any) => {
+                console.log(response);
+                this.noRecords = response.data.quantity.results;
+                this.totalResults = response.data.quantity.totalResults;
+                console.log(response.data.quantity.results);
+                for (
+                    let i = 0;
+                    i < response.data.quantity.results.length;
+                    i++
+                ) {
+                    this.filterInventoryDetails.push(
+                        response.data.quantity.results[i].materialId
+                    );
+                }
+                this.dataSource = this.filterInventoryDetails;
+                console.log(this.filterInventoryDetails);
             },
             (err: any) => {
                 console.log(err);

@@ -62,7 +62,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'admin.state-agencies',
         title: 'State Agencies',
         type: 'basic',
-        icon: 'assignment',
+        icon: 'heroicons_outline:library',
         link: '/admin/state-agencies',
     },
     {
@@ -234,6 +234,21 @@ export const manufacturerNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'add_shopping_cart',
         link: '/manufacturer/product-listing',
+    },
+
+    {
+        id: 'manufacturer.update-inventory',
+        title: 'Update Inventory',
+        type: 'basic',
+        icon: 'settings',
+        link: '/manufacturer/update-inventory',
+    },
+    {
+        id: 'manufacturer.inventory-details',
+        title: 'Inventory Details',
+        type: 'basic',
+        icon: 'layers',
+        link: '/manufacturer/inventory-details',
     },
 
     {

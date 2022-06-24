@@ -60,6 +60,22 @@ const routes: Routes = [
                     ).then((m) => m.ProductListingModule),
             },
             {
+                path: 'update-inventory',
+                canActivate: [ManufacturerGuard],
+                loadChildren: () =>
+                    import(
+                        'app/modules/employee/product-listing/product-listing.module'
+                    ).then((m) => m.ProductListingModule),
+            },
+            {
+                path: 'inventory-details',
+                canActivate: [ManufacturerGuard],
+                loadChildren: () =>
+                    import(
+                        'app/modules/employee/product-listing/product-listing.module'
+                    ).then((m) => m.ProductListingModule),
+            },
+            {
                 path: 'test-details',
                 loadChildren: () =>
                     import(

@@ -6,12 +6,12 @@ import {
     CreateDileveryI,
     DeliveriesResponseI,
     DeliveryDashboardResponse,
-} from './distributer.interface';
+} from './distributor.interface';
 
 @Injectable({
     providedIn: 'root',
 })
-export class DistributerService {
+export class DistributorService {
     constructor(private http: HttpClient) {}
 
     addDelivery(data: CreateDileveryI) {

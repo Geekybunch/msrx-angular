@@ -49,11 +49,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     public role: any;
     scanQRForm: FormGroup;
     plantId: string;
+    filterPlantId: string = null;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
-    @ViewChild('filterPlantId')
-    filterPlantId: ElementRef;
 
     /**
      * Constructor
@@ -180,6 +179,9 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         if (this.scanQRForm.invalid) {
             return;
         }
+        setTimeout(() => {
+            this.scanQRForm.reset();
+        }, 2000);
 
         this.commonService.$testPantID.next(this.scanQRForm.value.planId);
         if (this.role.modelId.employer?.businessType === 'Cultivator') {
@@ -212,6 +214,20 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 },
                 replaceUrl: true,
             });
+        } else if (this.role.modelId.employer?.businessType === 'Disposer') {
+            this.router.navigate(['/disposer/test-details'], {
+                queryParams: {
+                    plantID: this.scanQRForm.value.planId,
+                },
+                replaceUrl: true,
+            });
+        } else if (this.role.modelId.employer?.businessType === 'Distributor') {
+            this.router.navigate(['/distributor/test-details'], {
+                queryParams: {
+                    plantID: this.scanQRForm.value.planId,
+                },
+                replaceUrl: true,
+            });
         }
 
         this.dialog.closeAll();
@@ -219,10 +235,18 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     presentScanAction() {
         if (this.role.modelId.employer?.businessType === 'Cultivator') {
             this.router.navigateByUrl('/cultivator/qr-scanner-layout');
+        } else if (this.role.modelId.employer?.businessType === 'Tester') {
+            this.router.navigateByUrl('/tester/qr-scanner-layout');
+        } else if (this.role.modelId.employer?.businessType === 'Processor') {
+            this.router.navigateByUrl('/processor/qr-scanner-layout');
         } else if (
             this.role.modelId.employer?.businessType === 'Manufacturer'
         ) {
             this.router.navigateByUrl('/manufacturer/qr-scanner-layout');
+        } else if (this.role.modelId.employer?.businessType === 'Disposer') {
+            this.router.navigateByUrl('/disposer/qr-scanner-layout');
+        } else if (this.role.modelId.employer?.businessType === 'Distributor') {
+            this.router.navigateByUrl('/distributor/qr-scanner-layout');
         }
 
         this.dialog.closeAll();

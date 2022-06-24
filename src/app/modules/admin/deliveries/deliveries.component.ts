@@ -20,6 +20,7 @@ export class DeliveriesComponent implements OnInit {
     public totalResults: number;
     public deliveryDetails: any;
     public businesses: any[] = [];
+    public disposerBusinesses: any[] = [];
     public selectedBusiness;
     public selectedBusinessFrom;
     public selectedBusinessTo;
@@ -36,6 +37,7 @@ export class DeliveriesComponent implements OnInit {
     ngOnInit(): void {
         this.getDeliveriesData();
         this.getBusinessDropDownlist();
+        this.getDeliveryBusiness();
     }
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
@@ -74,8 +76,7 @@ export class DeliveriesComponent implements OnInit {
             }
         );
     }
-    getBusinessDropDownlist = (businessName?: string): void => {
-        console.log('get businesses');
+    getDeliveryBusiness = (businessName?: string): void => {
         let pageParams = '?limit=10&page=1&businessType=Disposer';
         if (businessName) {
             pageParams += '&businessName=' + businessName;
@@ -83,12 +84,24 @@ export class DeliveriesComponent implements OnInit {
         this.businessService.getBusinessDetails(pageParams).subscribe(
             (response: any) => {
                 console.log('response', response);
-                this.businesses = response.data.businesses.results.map(
+                this.disposerBusinesses = response.data.businesses.results.map(
                     (obj: any) => ({
                         _id: obj._id,
                         businessName: obj.businessName,
                     })
                 );
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    };
+    getBusinessDropDownlist = (): void => {
+        let pageParams = '?limit=10&page=1';
+        this.businessService.getBusinessDetails(pageParams).subscribe(
+            (response: any) => {
+                console.log('response', response);
+                this.businesses = response.data.businesses.results;
             },
             (err: any) => {
                 console.log(err);

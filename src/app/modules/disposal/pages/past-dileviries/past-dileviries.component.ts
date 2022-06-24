@@ -5,8 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import {
     CreateDileveryI,
     DisplayedDileveryI,
-} from 'app/core/distributer/distributer.interface';
-import { DistributerService } from 'app/core/distributer/distributer.service';
+} from 'app/core/distributor/distributor.interface';
+import { DistributorService } from 'app/core/distributor/distributor.service';
 
 @Component({
     selector: 'app-past-dileviries',
@@ -30,7 +30,7 @@ export class PastDileviriesComponent implements OnInit {
     visibleColumns = DisplayedDileveryI;
     dataSource = new MatTableDataSource<CreateDileveryI>();
 
-    constructor(private distributerService: DistributerService) {}
+    constructor(private distributorService: DistributorService) {}
 
     ngOnInit(): void {
         this.getPastDilevieris();
@@ -60,7 +60,7 @@ export class PastDileviriesComponent implements OnInit {
         let totalparams = `${
             pageparams + business + businessFrom + businessTo
         }`;
-        this.distributerService.listDeliveries(totalparams).subscribe(
+        this.distributorService.listDeliveries(totalparams).subscribe(
             (response: any) => {
                 console.log(response);
                 this.noRecords = response.data.deliveries.results;
@@ -74,7 +74,7 @@ export class PastDileviriesComponent implements OnInit {
     }
     getBusinessDropDownlist = (businessName?: string): void => {
         let pageParams = '?limit=20&page=1';
-        this.distributerService.listDeliveries(pageParams).subscribe(
+        this.distributorService.listDeliveries(pageParams).subscribe(
             (response: any) => {
                 console.log(response);
                 this.businesses = response.data.deliveries.results;
