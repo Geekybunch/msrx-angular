@@ -39,20 +39,23 @@ export class StateAgenciesComponent implements OnInit {
         private snackBar: MatSnackBar
     ) {}
 
+    get f() {
+        return this.stateAgencieForm.controls;
+    }
+
     ngOnInit(): void {
         this.getStateAgencies();
         this.stateAgencieForm = this.fb.group({
             name: ['', Validators.required],
+            delegateName: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
         });
-    }
-    get f() {
-        return this.stateAgencieForm.controls;
     }
 
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
     }
+
     getStateAgencies() {
         this.paginator.pageSize = this.paginator.pageSize
             ? this.paginator.pageSize
@@ -99,12 +102,12 @@ export class StateAgenciesComponent implements OnInit {
     addStateAgencies() {
         this.dialog.open(this.addStateAgencieDialog);
     }
+
     stateAgencieFormSubmit(formValue) {
         if (this.stateAgencieForm.invalid) {
             this.stateAgencieFromSubmit = true;
             return;
         }
-
         //console.log('formValue.value', formValue.value, formValue);
         this.stateAgenciesService.postStateAgencies(formValue).subscribe(
             (res) => {
