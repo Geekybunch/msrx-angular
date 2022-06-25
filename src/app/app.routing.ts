@@ -9,6 +9,8 @@ import { TesterGuard } from './core/auth/guards/tester.guard';
 import { ProcessorGuard } from './core/auth/guards/processor.guard';
 import { ManufacturerGuard } from './core/auth/guards/manufacturer.guard';
 import { DisposalGuard } from './core/auth/guards/disposal.guard';
+import { DistributorGuard } from './core/auth/guards/distributor.guard';
+import { WellnessGuard } from './core/auth/guards/wellness.guard';
 
 export const appRoutes: Route[] = [
     { path: '', pathMatch: 'full', redirectTo: 'admin/dashboard' },
@@ -237,9 +239,18 @@ export const appRoutes: Route[] = [
     },
     {
         path: 'distributor',
+        canActivate: [DistributorGuard],
         loadChildren: () =>
             import('app/modules/distributor/distributor.module').then(
                 (m) => m.DistributorModule
+            ),
+    },
+    {
+        path: 'wellnesscenter',
+        canActivate: [WellnessGuard],
+        loadChildren: () =>
+            import('app/modules/wellness-center/wellness-center.module').then(
+                (m) => m.WellnessCenterModule
             ),
     },
 ];

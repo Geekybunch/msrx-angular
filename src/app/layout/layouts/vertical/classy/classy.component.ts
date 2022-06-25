@@ -31,6 +31,7 @@ import {
     manufacturerNavigation,
     processorNavigation,
     TesterNavigation,
+    wellnessCenterNavigation,
 } from 'app/mock-api/common/navigation/data';
 import { CommonService } from 'app/core/common/common.service';
 import { getBusinessType } from 'app/shared/shared.utils';
@@ -120,6 +121,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                     this.role.modelId.employer.businessType === 'Distributor'
                 ) {
                     this.navigation.compact = distributorNavigation;
+                } else if (
+                    this.role.modelId.employer.businessType === 'WellnessCenter'
+                ) {
+                    this.navigation.compact = wellnessCenterNavigation;
                 }
             });
 
@@ -228,6 +233,15 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 },
                 replaceUrl: true,
             });
+        } else if (
+            this.role.modelId.employer?.businessType === 'WellnessCenter'
+        ) {
+            this.router.navigate(['/wellnesscenter/test-details'], {
+                queryParams: {
+                    plantID: this.scanQRForm.value.planId,
+                },
+                replaceUrl: true,
+            });
         }
 
         this.dialog.closeAll();
@@ -247,6 +261,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl('/disposer/qr-scanner-layout');
         } else if (this.role.modelId.employer?.businessType === 'Distributor') {
             this.router.navigateByUrl('/distributor/qr-scanner-layout');
+        } else if (
+            this.role.modelId.employer?.businessType === 'WellnessCenter'
+        ) {
+            this.router.navigateByUrl('/wellnesscenter/qr-scanner-layout');
         }
 
         this.dialog.closeAll();

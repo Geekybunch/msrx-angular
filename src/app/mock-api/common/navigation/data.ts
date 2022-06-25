@@ -415,6 +415,50 @@ export const distributorNavigation: FuseNavigationItem[] = [
         link: '/sign-out',
     },
 ];
+export const wellnessCenterNavigation: FuseNavigationItem[] = [
+    {
+        id: 'wellnesscenter.dashboard',
+        title: 'Dashboard',
+        type: 'basic',
+        icon: 'dashboard',
+        link: '/wellnesscenter/dashboard',
+    },
+    {
+        id: 'wellnesscenter.wellness-center-details',
+        title: 'Business Profile',
+        type: 'basic',
+        icon: 'heroicons_outline:office-building',
+        link: '/wellnesscenter/wellness-center-details',
+    },
+    {
+        id: 'wellnesscenter.booking-listing',
+        title: 'Appointments',
+        type: 'basic',
+        icon: 'heroicons_outline:clock',
+        link: '/wellnesscenter/booking-listing',
+    },
+    {
+        id: 'wellnesscenter.attendence',
+        title: 'Attendence',
+        type: 'basic',
+        icon: 'event_available',
+        link: '/wellnesscenter/attendence',
+    },
+    {
+        id: 'wellnesscenter.employees',
+        title: 'Employee',
+        type: 'basic',
+        icon: 'people_alt',
+        link: '/wellnesscenter/employees',
+    },
+    {
+        id: 'logout',
+        title: 'Logout',
+        type: 'basic',
+        icon: 'logout',
+        link: '/sign-out',
+    },
+];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
         id: 'example',

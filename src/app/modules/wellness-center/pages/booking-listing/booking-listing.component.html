@@ -1,0 +1,461 @@
+<mat-sidenav-container class="example-container w-full">
+    <mat-sidenav-content>
+        <div class="flex flex-col flex-auto w-full">
+            <div class="w-full max-w-screen-xl mx-auto p-5">
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card mb-5 shadow rounded"
+                >
+                    <div class="flex items-center">
+                        <mat-form-field
+                            class="fuse-mat-no-subscript w-full sm:w-80 mt-4 sm:mt-0 fuse-mat-dense"
+                            [floatLabel]="'always'"
+                        >
+                            <mat-icon
+                                matPrefix
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:search'"
+                            ></mat-icon>
+                            <input
+                                placeholder="Search by Patient Name"
+                                matInput
+                                #query
+                            />
+                        </mat-form-field>
+                        <!-- <ng-select
+                    class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                    placeholder="Select Employee"
+                    [(ngModel)]="selectedEmployee"
+                    (change)="filterByEmployee()"
+                >
+                    <ng-option
+                        *ngFor="let Employee of Employees"
+                        [value]="Employee"
+                        >{{ Employee }}</ng-option
+                    >
+                </ng-select>
+                <ng-select
+                    class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense sm:ml-4"
+                    placeholder="Select Business"
+                    (search)="onSearchBusiness($event)"
+                    [(ngModel)]="selectedBusiness"
+                    (change)="filterByBusiness()"
+                >
+                    <ng-option
+                        *ngFor="let business of businesses"
+                        [value]="business._id"
+                        >{{ business.businessName }}</ng-option
+                    >
+                </ng-select> -->
+
+                        <mat-slide-toggle
+                            class="mt-8 ml-5 sm:mt-0"
+                            [color]="'primary'"
+                            (change)="toggleApproved($event)"
+                        >
+                            Approved
+                        </mat-slide-toggle>
+                    </div>
+                    <div class="flex flex-col items-center w-36">
+                        <div
+                            class="text-7xl font-bold tracking-tight leading-none text-blue-500"
+                        >
+                            {{ totalResults }}
+                        </div>
+                        <div
+                            class="text-lg font-medium text-blue-600 dark:text-blue-500"
+                        >
+                            Total Results
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card mb-5 shadow rounded py-1">
+                    <table class="w-full" mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="patient">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Patient Name
+                            </th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.patient.name }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="bookingDate">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Appointment Time
+                            </th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.bookingDate | date: "mediumDate" }},
+                                {{ element.timeSlotStart | uppercase }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="patientArrivalTime">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Patient Arrived At
+                            </th>
+                            <td
+                                class="capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{
+                                    element.patientArrivalTime | date: "medium"
+                                }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="isApproved">
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                    [ngClass]="
+                                        element && element.status == 'APPROVED'
+                                            ? 'text-amber-800 bg-amber-200  dark:bg-amber-600'
+                                            : 'bg-green-200 text-green-600'
+                                    "
+                                >
+                                    {{ element && element.status }}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="actions">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                class="w-10"
+                            ></th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-contriner
+                                    *ngIf="
+                                        element.status === BOOKIN_STATUS.PENDING
+                                    "
+                                >
+                                    <button
+                                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                    >
+                                        Accept
+                                    </button>
+                                    <button
+                                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                    >
+                                        Decline
+                                    </button>
+                                </ng-contriner>
+
+                                <ng-contriner
+                                    *ngIf="
+                                        element.status ===
+                                        BOOKIN_STATUS.APPROVED
+                                    "
+                                >
+                                    <button
+                                        (click)="
+                                            updateBooking(
+                                                BOOKIN_STATUS.VISITED,
+                                                element
+                                            )
+                                        "
+                                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                    >
+                                        Mark Visited
+                                    </button>
+                                </ng-contriner>
+                                <ng-contriner
+                                    *ngIf="
+                                        element.status === BOOKIN_STATUS.VISITED
+                                    "
+                                >
+                                    <button
+                                        (click)="addPrescription(element)"
+                                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                    >
+                                        Add Prescription
+                                    </button>
+                                </ng-contriner>
+                                <ng-contriner
+                                    *ngIf="
+                                        element.status ===
+                                        BOOKIN_STATUS.COMPLETED
+                                    "
+                                >
+                                    <button
+                                        (click)="seePrescription(element)"
+                                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                                    >
+                                        See Prescription
+                                    </button>
+                                </ng-contriner>
+                            </td>
+                        </ng-container>
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="visibleColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: visibleColumns"
+                        ></tr>
+                    </table>
+                    <div
+                        class="bg-card text-center p-4 border-b"
+                        *ngIf="noRecords && noRecords.length === 0"
+                    >
+                        No records found
+                    </div>
+
+                    <mat-paginator
+                        [pageSizeOptions]="[5, 10, 25, 30]"
+                        [pageSize]="pageSize"
+                        [length]="totalResults"
+                        (page)="getBookings()"
+                    >
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-content>
+    <mat-sidenav position="end" #sidenav class="sm:w-128">
+        <div class="p-6 bg-primary">
+            <div class="flex items-center justify-between absolute right-6">
+                <button mat-icon-button (click)="sidenav.close()">
+                    <mat-icon
+                        [svgIcon]="'heroicons_outline:x'"
+                        class="text-white"
+                    ></mat-icon>
+                </button>
+            </div>
+
+            <div class="flex flex-col text-white">
+                <div class="text-xl mt-3 font-bold truncate mb-4">
+                    <span class="font-bold">Patient Name</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-bold">{{
+                        bookingDetails && bookingDetails.booking.patient.name
+                            ? bookingDetails.booking.patient.name
+                            : ""
+                    }}</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-24 mr-6">
+                        <img
+                            *ngIf="
+                                bookingDetails &&
+                                bookingDetails.booking.patient.profilePic ===
+                                    undefined
+                            "
+                            width="96"
+                            height="96"
+                            class="rounded-full"
+                            src="assets/images/avatars/avatar-img.png"
+                            alt=""
+                        />
+                        <img
+                            *ngIf="
+                                bookingDetails &&
+                                bookingDetails.booking.patient.profilePic !==
+                                    undefined
+                            "
+                            width="96"
+                            height="96"
+                            class="rounded-full"
+                            src="{{
+                                bookingDetails &&
+                                bookingDetails.booking.patient.profilePic
+                                    ? bookingDetails.booking.patient.profilePic
+                                    : ''
+                            }}"
+                            alt=""
+                        />
+                    </div>
+                    <div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium">Age</span>
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">{{
+                                bookingDetails &&
+                                bookingDetails.booking.patient.age
+                                    ? bookingDetails.booking.patient.age
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium">Phone</span>
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">{{
+                                bookingDetails &&
+                                bookingDetails.booking.patient.mobile
+                                    ? bookingDetails.booking.patient.mobile
+                                    : ""
+                            }}</span>
+                        </div>
+                        <div class="leading-6 mb-2">
+                            <span class="font-medium">Address</span>
+                            <span class="mx-2">:</span>
+                            <span class="font-medium">{{
+                                bookingDetails &&
+                                bookingDetails.booking.patient.address
+                                    ? bookingDetails.booking.patient.address
+                                    : ""
+                            }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="flex flex-col border-b mb-5 pb-5">
+                <div
+                    class="flex flex-col"
+                    *ngFor="
+                        let list of bookingDetails && bookingDetails.signedBy;
+                        let i = index
+                    "
+                >
+                    <div class="text-lg mt-2 truncate">
+                        <span class="font-medium text-secondary"
+                            >Signature {{ i + 1 }}</span
+                        >
+                        <span class="mx-2">:</span
+                        ><span class="font-bold">{{ list.name }}</span>
+                    </div>
+
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col mb-3">
+                <div class="leading-6">
+                    <span class="font-medium text-secondary">Total Dosage</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        bookingDetails && bookingDetails.dosage
+                            ? bookingDetails.dosage
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col mb-3">
+                <div class="leading-6">
+                    <span class="font-medium text-secondary"
+                        >Prescribed On</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        bookingDetails && bookingDetails.createdAt
+                            ? (bookingDetails.createdAt | date: "mediumDate")
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col mb-3">
+                <div class="leading-6">
+                    <span class="font-medium text-secondary">Description</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        bookingDetails && bookingDetails.description
+                            ? bookingDetails.description
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <div class="flex flex-col border-t mt-5 pt-5">
+                <div
+                    class="flex flex-col border-b pb-5 mb-5"
+                    *ngFor="
+                        let item of bookingDetails &&
+                            bookingDetails.dispensaryDetails;
+                        let i = index
+                    "
+                >
+                    <div class="text-lg mt-2 font-bold truncate mb-4">
+                        {{ i + 1 }} . Dispensary Details
+                    </div>
+                    <div class="leading-6 mb-2">
+                        <span class="font-medium text-secondary">Name</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            item.dispensary.name
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-4">
+                        <span class="font-medium text-secondary">About</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            item.dispensary.about
+                        }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="mt-2 font-bold truncate mb-2">
+                            Product Details
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Name</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.name
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Dosage</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.dosage
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Quantity</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].quantity
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Allergies</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.allergies
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Ingredients</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.ingredients
+                                }}</span>
+                            </div>
+                            <div class="leading-6 mb-2">
+                                <span class="font-medium text-secondary"
+                                    >Description</span
+                                >
+                                <span class="mx-2">:</span>
+                                <span class="font-medium">{{
+                                    item.products[0].product.description
+                                }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav>
+</mat-sidenav-container>
