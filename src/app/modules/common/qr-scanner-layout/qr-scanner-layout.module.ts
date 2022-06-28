@@ -6,6 +6,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { MatSelectModule } from '@angular/material/select';
 
 const routes: Route[] = [
     {
@@ -16,7 +17,7 @@ const routes: Route[] = [
 
 @NgModule({
     declarations: [QrScannerLayoutComponent],
-    imports: [CommonModule, RouterModule.forChild(routes)],
+    imports: [CommonModule, MatSelectModule, RouterModule.forChild(routes)],
     providers: [BarcodeScanner],
 })
 export class QrScannerLayoutModule {}

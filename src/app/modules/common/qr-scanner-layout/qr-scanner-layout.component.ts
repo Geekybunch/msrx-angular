@@ -1,5 +1,6 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     OnInit,
@@ -20,103 +21,133 @@ import QrScanner from 'qr-scanner';
     changeDetection: ChangeDetectionStrategy.Default,
 })
 export class QrScannerLayoutComponent implements OnInit {
-    public userInfo: any;
-    returnDataModal = false;
-    plantID: string;
-    plantResponse: any;
-    data;
-    productResponse: any;
-    plantDetails: boolean = false;
-    productDetails: boolean = false;
-    scannerId: string;
-    filterScannerId: string;
     @ViewChild('videoPlayer') videoplayer: ElementRef<HTMLVideoElement>;
+    public userInfo: any;
+    // returnDataModal = false;
+    // plantID: string;
+    // plantResponse: any;
+    // data;
+    // productResponse: any;
+    // plantDetails: boolean = false;
+    // productDetails: boolean = false;
+    // scannerId: string;
+    // filterScannerId: string;
+    qrScanner: QrScanner;
+    scannedData: string;
+    scannedType: string;
+    scannedId: string;
+    scannerButtonText = 'Start Scanner';
+    cameras = [];
 
     constructor(
         private router: Router,
         private authService: AuthService,
         private commonService: CommonService,
-        private spinner: NgxSpinnerService
+        private spinner: NgxSpinnerService,
+        private cd: ChangeDetectorRef
     ) {
         this.userInfo = this.authService.userRole;
     }
 
-    ngOnInit() {
-        const qrScanner = new QrScanner(
-            document.getElementById('vid') as HTMLVideoElement,
-            (result) => this.setResult(camQrResult, result),
+    ngOnInit() {}
 
-            {
-                highlightScanRegion: true,
-                highlightCodeOutline: true,
-            }
-        );
-        const camQrResult = document.getElementById('cam-qr-result');
-        const camList = document.getElementById('cam-list') as any;
-        camList.addEventListener('change', (event: any) => {
-            qrScanner.setCamera(event.target.value).then();
-        });
-        qrScanner.start().then(() => {
-            QrScanner.listCameras(true).then((cameras) =>
+    setCameras() {
+        this.qrScanner.start().then(() => {
+            QrScanner.listCameras(true).then((cameras: QrScanner.Camera[]) =>
                 cameras.forEach((camera) => {
-                    const option = document.createElement('option');
-                    option.value = camera.id;
-                    option.text = camera.label;
-                    camList.add(option);
+                    this.cameras.push({
+                        value: camera.id,
+                        text: camera.label,
+                    });
                 })
             );
         });
     }
 
-    setResult(label, result) {
-        console.log(result.data);
-        label.textContent = result.data;
-        this.scannerId = result.data.split(':')[1];
-        if (this.scannerId) {
+    async startScanner() {
+        try {
+            this.qrScanner = new QrScanner(
+                document.getElementById('vid') as HTMLVideoElement,
+                (result: any) => {
+                    if (result) {
+                        this.setResult(result);
+                    }
+                }
+            );
+            this.setCameras();
+            await this.qrScanner.start();
+        } catch (error) {
+            console.log('scanner not available ' + error);
+            alert('scanner not available ' + error);
         }
-        this.filterScannerId = result.data.split(':')[0];
-        if (this.filterScannerId == '0') {
-            this.getPlantDetails();
-        } else if (this.filterScannerId == '1') {
-            this.getProdctDetails();
-        }
-
-        // label.style.color = 'teal';
-        // clearTimeout(label.highlightTimeout);
-        // label.highlightTimeout = setTimeout(
-        //     () => (label.style.color = 'inherit'),
-        //     100
-        // );
-    }
-    public getPlantDetails(): void {
-        this.spinner.show();
-        this.commonService.getCommonPlantDetails(this.scannerId).subscribe(
-            (res) => {
-                this.plantDetails = true;
-                console.log(res);
-                this.spinner.hide();
-                this.plantResponse = res.data.plant;
-            },
-            (err: any) => {
-                console.log(err);
-            }
-        );
-    }
-    public getProdctDetails(): void {
-        //  this.spinner.show();
-        this.commonService.getCommonProductDetails(this.scannerId).subscribe(
-            (res) => {
-                this.productResponse = res.data.product;
-                this.productDetails = true;
-                // alert('here');
-                console.log(res);
-                // this.spinner.hide();
-            },
-            (err: any) => {
-                console.log(err);
-            }
-        );
     }
 
-    downloadQrCode() {}
+    async stopScanner() {
+        try {
+            await this.qrScanner.stop();
+        } catch (error) {
+            console.log('unable to stop scanner');
+        }
+    }
+
+    async setResult(result) {
+        await this.stopScanner();
+        console.log(result);
+        this.scannerButtonText = 'Scan Again';
+        this.scannedData = result;
+        const type = this.scannedData.split(':')[0];
+        this.scannedId = this.scannedData.split(':')[1];
+        if (!type || !this.scannedId) {
+            alert('Invalid QR Code');
+            return;
+        }
+        if (type === '0') {
+            this.scannedType = 'Plant';
+        }
+        if (type === '1') {
+            this.scannedType = 'Product';
+        }
+        console.log('this.scannedId', this.scannedId);
+        console.log('this.scannedType', this.scannedType);
+        this.cd.detectChanges();
+        // check user role
+        // check qr type
+    }
+
+    // tester can only scan a plant - we display the test form
+    // processor can only scan a plant - we display the process form
+    // cultivator can only scan a plant - we display the plant details. show popup from right
+    // manufacturer can scan plant. - we display him the page where he added products.
+    // manufacturer can scan product. - we display the product popup from right side.
+
+    // public getPlantDetails(): void {
+    //     this.spinner.show();
+    //     this.commonService.getCommonPlantDetails(this.scannerId).subscribe(
+    //         (res) => {
+    //             this.plantDetails = true;
+    //             console.log(res);
+    //             this.spinner.hide();
+    //             this.plantResponse = res.data.plant;
+    //         },
+    //         (err: any) => {
+    //             console.log(err);
+    //         }
+    //     );
+    // }
+
+    // public getProductDetails(): void {
+    //     //  this.spinner.show();
+    //     this.commonService.getCommonProductDetails(this.scannerId).subscribe(
+    //         (res) => {
+    //             this.productResponse = res.data.product;
+    //             this.productDetails = true;
+    //             // alert('here');
+    //             console.log(res);
+    //             // this.spinner.hide();
+    //         },
+    //         (err: any) => {
+    //             console.log(err);
+    //         }
+    //     );
+    // }
 }
