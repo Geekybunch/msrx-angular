@@ -1,0 +1,185 @@
+<div class="p-8">
+    <div class="flex items-end justify-end absolute right-6">
+        <button mat-icon-button (click)="closeNav($event)">
+            <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <div class="flex flex-col">
+        <div class="text-xl mt-3 font-bold truncate mb-3">Product Details</div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Name</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse && productResponse.name
+                    ? productResponse.name
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Description</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse && productResponse.description
+                    ? productResponse.description
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Dosage</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse && productResponse.dosage
+                    ? productResponse.dosage
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Sku</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse && productResponse.sku
+                    ? productResponse.sku
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Ingredients</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium capitalize">{{
+                productResponse && productResponse.ingredients
+                    ? productResponse.ingredients
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Allergies</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium capitalize">{{
+                productResponse && productResponse.allergies
+                    ? productResponse.allergies
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Created At</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse && productResponse.createdAt
+                    ? (productResponse.createdAt | date: "medium")
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Plants</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium"
+                ><button
+                    (click)="sidenav2.toggle(); getPlantsDetails(plants)"
+                    *ngFor="
+                        let plants of productResponse && productResponse.plants
+                    "
+                    class="bg-primary-50 w-auto mb-2 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                >
+                    {{ plants }}
+                </button></span
+            >
+        </div>
+    </div>
+    <div class="flex flex-col border-t pt-4 mt-5">
+        <div class="text-xl mt-3 font-bold truncate mb-3">Employee Details</div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Id Number</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse &&
+                productResponse.employee &&
+                productResponse.employee.idNumber
+                    ? productResponse.employee.idNumber
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Name</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse &&
+                productResponse.employee &&
+                productResponse.employee.name
+                    ? productResponse.employee.name
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Type</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse &&
+                productResponse.employee &&
+                productResponse.employee.type
+                    ? productResponse.employee.type
+                    : ""
+            }}</span>
+        </div>
+    </div>
+    <div class="flex flex-col border-t pt-4 mt-5">
+        <div class="text-xl mt-3 font-bold truncate mb-3">
+            Manufacturer Details
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Id Number</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse &&
+                productResponse.manufacturer &&
+                productResponse.manufacturer.businessIDNumber
+                    ? productResponse.manufacturer.businessIDNumber
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Name</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse &&
+                productResponse.manufacturer &&
+                productResponse.manufacturer.businessName
+                    ? productResponse.manufacturer.businessName
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Type</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse &&
+                productResponse.manufacturer &&
+                productResponse.manufacturer.businessType
+                    ? productResponse.manufacturer.businessType
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary">Phone</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse &&
+                productResponse.manufacturer &&
+                productResponse.manufacturer.businessPhone
+                    ? productResponse.manufacturer.businessPhone
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-2">
+            <span class="font-medium text-secondary"> Address</span>
+            <span class="mx-2">:</span>
+            <span class="font-medium">{{
+                productResponse &&
+                productResponse.manufacturer &&
+                productResponse.manufacturer.businessAddress
+                    ? productResponse.manufacturer.businessAddress
+                    : ""
+            }}</span>
+        </div>
+    </div>
+</div>

@@ -1,38 +1,89 @@
-<div class="flex flex-col flex-auto w-full max-w-screen-xl mx-auto">
-    <div class="max-w-3xl3 p-8">
-        <div
-            class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card shadow border-b m-0"
-        >
-            <div
-                class="text-lg font-medium tracking-tight leading-6 truncate m-0"
-            >
-                QR Code Scanner
-            </div>
-        </div>
-        <div
-            class="flex flex-col sm:flex-col w-full max-w-xs sm:max-w-none bg-card mb-6 shadow"
-        >
-            <div class="p-8">
-                <div class="flex-col m-0">
-                    <div id="video-container">
-                        <video id="vid" width="700"></video>
+<mat-sidenav-container class="w-full">
+    <mat-sidenav-content
+        ><div class="flex flex-col flex-auto w-full max-w-screen-xl mx-auto">
+            <div class="max-w-3xl3 p-8">
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card shadow border-b m-0"
+                >
+                    <div
+                        class="text-lg font-medium tracking-tight leading-6 truncate m-0"
+                    >
+                        QR Code Scanner
                     </div>
-                    <mat-select  placeholder="Select Camera">
-                        <mat-option *ngFor="let camera of cameras" [value]="camera.value">
-                            {{camera.text}}
-                        </mat-option>
-                    </mat-select>
-                    <p class="m-0 mt-8 text-lg font-medium">
-                        <b>Detected QR code Type : </b>
-                        <span id="cam-qr-result">{{this.scannedType}}</span>
-                    </p>
-                    <p class="m-0 mt-8 text-lg font-medium">
-                        <b>Detected QR code Value : </b>
-                        <span id="cam-qr-result">{{this.scannedId}}</span>
-                    </p>
-                    <button (click)="startScanner()">{{scannerButtonText}}</button>
+                </div>
+                <div
+                    class="flex flex-col sm:flex-col w-full max-w-xs sm:max-w-none bg-card mb-6 shadow"
+                >
+                    <div class="p-10">
+                        <div class="flex-col m-0">
+                            <div id="video-container ">
+                                <video
+                                    id="vid"
+                                    width="700"
+                                    class="border"
+                                ></video>
+                            </div>
+                            <div
+                                class="flex flex-col gt-xs:flex-row mt-5 mb-0"
+                                style="width: 700px"
+                            >
+                                <mat-form-field class="fuse-mat-dense">
+                                    <mat-select placeholder="Select Camera">
+                                        <mat-option
+                                            *ngFor="let camera of cameras"
+                                            [value]="camera.value"
+                                        >
+                                            {{ camera.text }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <p class="m-0 mt-2 text-lg font-medium">
+                                <b>Detected QR code Type : </b>
+                                <span id="cam-qr-result">{{
+                                    this.scannedType
+                                }}</span>
+                            </p>
+                            <p class="m-0 mt-4 text-lg font-medium">
+                                <b>Detected QR code Value : </b>
+                                <span id="cam-qr-result">{{
+                                    this.scannedId
+                                }}</span>
+                            </p>
+                            <div class="mt-5 m-0">
+                                <button
+                                    class="startScanner px-8"
+                                    mat-raised-button
+                                    color="primary"
+                                    (click)="startScanner()"
+                                >
+                                    {{ scannerButtonText }}
+                                </button>
+                                <!-- <button
+                                    class="startScanner px-8"
+                                    mat-raised-button
+                                    color="primary"
+                                    (click)="test()"
+                                >
+                                    {{ scannerButtonText }}
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </mat-sidenav-content>
+    <mat-sidenav position="end" #sidenav class="sm:w-128">
+        <app-plants-drawer
+            *ngIf="plantDetails"
+            [qrScannerId]="qrScannerId"
+            (newItemEvent)="closeDrawer($event)"
+        ></app-plants-drawer>
+        <app-product-drawer
+            *ngIf="productDetails"
+            [qrScannerId]="qrScannerId"
+            (newItemEvent)="closeDrawer($event)"
+        ></app-product-drawer>
+    </mat-sidenav>
+</mat-sidenav-container>

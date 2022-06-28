@@ -6,7 +6,10 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NavigationEnd, Router } from '@angular/router';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { AuthService } from 'app/core/auth/auth.service';
 import { CommonService } from 'app/core/common/common.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -19,7 +22,11 @@ import QrScanner from 'qr-scanner';
 })
 export class QrScannerLayoutComponent implements OnInit {
     @ViewChild('videoPlayer') videoplayer: ElementRef<HTMLVideoElement>;
-    public userInfo: any;
+    @ViewChild('sidenav') sideNav: MatSidenav;
+    public userRole: any;
+    public qrScannerId: string;
+    plantDetails: boolean = false;
+    productDetails: boolean = false;
     // returnDataModal = false;
     // plantID: string;
     // plantResponse: any;
@@ -41,9 +48,11 @@ export class QrScannerLayoutComponent implements OnInit {
         private authService: AuthService,
         private commonService: CommonService,
         private spinner: NgxSpinnerService,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private snackBar: MatSnackBar,
+        private _fuseConfirmationService: FuseConfirmationService
     ) {
-        this.userInfo = this.authService.userRole;
+        this.userRole = this.authService.userRole;
     }
 
     ngOnInit() {}
@@ -89,7 +98,6 @@ export class QrScannerLayoutComponent implements OnInit {
 
     async setResult(result) {
         await this.stopScanner();
-        console.log(result);
         this.scannerButtonText = 'Scan Again';
         this.scannedData = result;
         const type = this.scannedData.split(':')[0];
@@ -104,11 +112,100 @@ export class QrScannerLayoutComponent implements OnInit {
         if (type === '1') {
             this.scannedType = 'Product';
         }
+        this.getTestresults();
         console.log('this.scannedId', this.scannedId);
         console.log('this.scannedType', this.scannedType);
         this.cd.detectChanges();
-        // check user role
-        // check qr type
+    }
+    getTestresults() {
+        if (this.userRole.modelId.employer?.businessType === 'Tester') {
+            if (this.scannedType == 'Plant') {
+                this.router.navigate(['/tester/test-details'], {
+                    queryParams: {
+                        plantID: this.scannedId,
+                    },
+                    replaceUrl: true,
+                });
+            } else {
+                this._fuseConfirmationService.open({
+                    title: 'Error',
+                    message: 'Invalid QR Code',
+                    actions: {
+                        confirm: {
+                            show: false,
+                        },
+                        cancel: {
+                            show: true,
+                            label: 'Cancel',
+                        },
+                    },
+                });
+            }
+        }
+        if (this.userRole.modelId.employer?.businessType === 'Processor') {
+            if (this.scannedType == 'Plant') {
+                this.router.navigate(['/processor/test-details'], {
+                    queryParams: {
+                        plantID: this.scannedId,
+                    },
+                    replaceUrl: true,
+                });
+            } else {
+                this._fuseConfirmationService.open({
+                    title: 'Error',
+                    message: 'Invalid QR Code',
+                    actions: {
+                        confirm: {
+                            show: false,
+                        },
+                        cancel: {
+                            show: true,
+                            label: 'Cancel',
+                        },
+                    },
+                });
+            }
+        }
+        if (this.userRole.modelId.employer?.businessType === 'Cultivator') {
+            if (this.scannedType == 'Plant') {
+                this.plantDetails = true;
+                this.sideNav.toggle();
+                this.qrScannerId = this.scannedId;
+            } else {
+                this._fuseConfirmationService.open({
+                    title: 'Error',
+                    message: 'Invalid QR Code',
+                    actions: {
+                        confirm: {
+                            show: false,
+                        },
+                        cancel: {
+                            show: true,
+                            label: 'Cancel',
+                        },
+                    },
+                });
+            }
+        }
+
+        if (this.userRole.modelId.employer?.businessType === 'Manufacturer') {
+            if (this.scannedType == 'Plant') {
+                this.router.navigate(['/manufacturer/test-details'], {
+                    queryParams: {
+                        plantID: this.scannedId,
+                    },
+                    replaceUrl: true,
+                });
+            } else {
+                this.sideNav.toggle();
+                this.qrScannerId = this.scannedId;
+                this.productDetails = true;
+            }
+        }
+    }
+
+    closeDrawer(event) {
+        this.sideNav.close();
     }
 
     // tester can only scan a plant - we display the test form
