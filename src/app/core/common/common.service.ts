@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { DispensaryProfileResponse } from '../dispensary/dispensary.interface';
 import { applicationUrls } from '../urls';
 import {
+    CityJSONFile,
     GetBookingResponse,
     GetPrescriptionResponse,
     GetWellnessProfileResponse,
@@ -27,7 +28,13 @@ import {
 export class CommonService {
     $testPantID = new Subject();
 
-    constructor(private http: HttpClient) {}
+    private cityDetailsMap = new Map<string, string[]>();
+
+    constructor(private http: HttpClient) {
+        this.loadStateFile().subscribe((res) => {
+            this.cityDetailsMap = new Map(Object.entries(res));
+        });
+    }
 
     getCommonPlantDetails(plantID: string) {
         return this.http.get<CommonPLantDetailResponse>(
@@ -107,34 +114,33 @@ export class CommonService {
             )
         );
     }
+    loadStateFile() {
+        return this.http.get<CityJSONFile>('/assets/states.json');
+    }
 
-    // loadStateFile() {
-    //     return this.http.get<CityJSONFile>('/assets/states.json');
-    // }
+    getState() {
+        return new Promise<string[]>((res, rej) => {
+            if (this.cityDetailsMap.size) {
+                res(Array.from(this.cityDetailsMap.keys()));
+            } else {
+                this.loadStateFile().subscribe(() => {
+                    res(Array.from(this.cityDetailsMap.keys()));
+                });
+            }
+        });
+    }
 
-    // getState() {
-    //     return new Promise<string[]>((res, rej) => {
-    //         if (this.cityDetailsMap.size) {
-    //             res(Array.from(this.cityDetailsMap.keys()));
-    //         } else {
-    //             this.loadStateFile().subscribe(() => {
-    //                 res(Array.from(this.cityDetailsMap.keys()));
-    //             });
-    //         }
-    //     });
-    // }
-
-    // getCitiesByState(stateName: string) {
-    //     return new Promise<string[]>((res, rej) => {
-    //         if (this.cityDetailsMap.size) {
-    //             res(this.cityDetailsMap.get(stateName) || []);
-    //         } else {
-    //             this.loadStateFile().subscribe(() => {
-    //                 res(this.cityDetailsMap.get(stateName) || []);
-    //             });
-    //         }
-    //     });
-    // }
+    getCitiesByState(stateName: string) {
+        return new Promise<string[]>((res, rej) => {
+            if (this.cityDetailsMap.size) {
+                res(this.cityDetailsMap.get(stateName) || []);
+            } else {
+                this.loadStateFile().subscribe(() => {
+                    res(this.cityDetailsMap.get(stateName) || []);
+                });
+            }
+        });
+    }
 
     getWellnessCenterSlots(wellnessCenterID: string, date: string) {
         return this.http.get<WellnessCenterSlotsResponse>(

@@ -91,8 +91,15 @@
                                 mat-cell
                                 *matCellDef="let element"
                             >
-                                {{ element.bookingDate | date: "mediumDate" }},
-                                {{ element.timeSlotStart | uppercase }}
+                                {{ element.bookingDate | date }}
+                                {{
+                                    element.patientArrivalTime
+                                        | date: "shortTime"
+                                }}
+                                <!-- {{
+                                    element.patientArrivalTime | date: "medium"
+                                }}, -->
+                                <!-- {{ element.timeSlotStart | uppercase }} -->
                             </td>
                         </ng-container>
 
@@ -106,7 +113,8 @@
                                 *matCellDef="let element"
                             >
                                 {{
-                                    element.patientArrivalTime | date: "medium"
+                                    element.patientVisitedTime
+                                        | date: "dd MMM, YYYY H:mm a"
                                 }}
                             </td>
                         </ng-container>

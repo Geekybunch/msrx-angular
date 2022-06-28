@@ -5,12 +5,9 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-
 import { Router } from '@angular/router';
-
 import { AuthService } from 'app/core/auth/auth.service';
 import { CommonService } from 'app/core/common/common.service';
-
 import { NgxSpinnerService } from 'ngx-spinner';
 import QrScanner from 'qr-scanner';
 @Component({
@@ -80,13 +77,6 @@ export class QrScannerLayoutComponent implements OnInit {
         } else if (this.filterScannerId == '1') {
             this.getProdctDetails();
         }
-
-        // label.style.color = 'teal';
-        // clearTimeout(label.highlightTimeout);
-        // label.highlightTimeout = setTimeout(
-        //     () => (label.style.color = 'inherit'),
-        //     100
-        // );
     }
     public getPlantDetails(): void {
         this.spinner.show();
@@ -96,6 +86,7 @@ export class QrScannerLayoutComponent implements OnInit {
                 console.log(res);
                 this.spinner.hide();
                 this.plantResponse = res.data.plant;
+                alert('hi');
             },
             (err: any) => {
                 console.log(err);
@@ -103,14 +94,11 @@ export class QrScannerLayoutComponent implements OnInit {
         );
     }
     public getProdctDetails(): void {
-        //  this.spinner.show();
         this.commonService.getCommonProductDetails(this.scannerId).subscribe(
             (res) => {
                 this.productResponse = res.data.product;
                 this.productDetails = true;
-                // alert('here');
                 console.log(res);
-                // this.spinner.hide();
             },
             (err: any) => {
                 console.log(err);

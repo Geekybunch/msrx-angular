@@ -1,1 +1,177 @@
-<p>dashboard works!</p>
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="bg-card">
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+            <div
+                class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-10"
+            >
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container>
+                            <div
+                                class="text-2xl md:text-3xl font-semibold tracking-tight leading-7 md:leading-snug truncate"
+                            >
+                                Welcome back,
+                                <span class="text-blue-500"
+                                    >{{
+                                        userDetails.email.split("@")[0]
+                                            | titlecase
+                                    }}..!</span
+                                >
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <mat-form-field
+                    class="mat-form-field fuse-mat-no-subscript w-full sm:w-60 fuse-mat-dense"
+                >
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input
+                            matStartDate
+                            placeholder="Start date"
+                            [(ngModel)]="startDate"
+                            (dateChange)="filterByStartDate($event)"
+                        />
+                        <input
+                            matEndDate
+                            placeholder="End date"
+                            [(ngModel)]="endDate"
+                            (dateChange)="filterByEndDate($event)"
+                        />
+                    </mat-date-range-input>
+
+                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="flex-auto border-t p-8">
+        <div class="w-full max-w-screen-xl mx-auto">
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-full min-w-0 mb-8"
+            >
+                <div
+                    class="flex flex-col flex-auto p-6 bg-card shadow rounded-lg overflow-hidden"
+                >
+                    <div class="flex flex-col items-center mt-2 mat-tabs">
+                        <mat-chip-list class="mb-4">
+                            <mat-chip
+                                (click)="this.pie1Filter = 'today'"
+                                [ngClass]="{
+                                    active: this.pie1Filter === 'today'
+                                }"
+                                >Today</mat-chip
+                            >
+                            <mat-chip
+                                (click)="this.pie1Filter = 'week'"
+                                [ngClass]="{
+                                    active: this.pie1Filter === 'week'
+                                }"
+                            >
+                                Week</mat-chip
+                            >
+                            <mat-chip
+                                (click)="this.pie1Filter = 'month'"
+                                [ngClass]="{
+                                    active: this.pie1Filter === 'month'
+                                }"
+                            >
+                                Month</mat-chip
+                            >
+                        </mat-chip-list>
+
+                        <div
+                            class="text-4xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500 mb-2"
+                        >
+                            {{ getPie1() }}
+                        </div>
+                        <div class="text-2xl font-bold text-blue-500">
+                            Appointments
+                        </div>
+                        <div
+                            class="flex items-baseline justify-center w-full mt-1 text-secondary"
+                        >
+                            <div class="ml-1.5 text-lg font-medium">
+                                Pending
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="flex flex-col flex-auto p-6 bg-card shadow rounded-lg overflow-hidden"
+                >
+                    <div class="flex flex-col items-center mt-2 mat-tabs">
+                        <mat-chip-list class="mb-4">
+                            <mat-chip
+                                (click)="this.pie2Filter = 'today'"
+                                [ngClass]="{
+                                    active: this.pie2Filter === 'today'
+                                }"
+                                >Today</mat-chip
+                            >
+                            <mat-chip
+                                (click)="this.pie2Filter = 'week'"
+                                [ngClass]="{
+                                    active: this.pie2Filter === 'week'
+                                }"
+                            >
+                                Week</mat-chip
+                            >
+                            <mat-chip
+                                (click)="this.pie2Filter = 'month'"
+                                [ngClass]="{
+                                    active: this.pie2Filter === 'month'
+                                }"
+                            >
+                                Month</mat-chip
+                            >
+                        </mat-chip-list>
+
+                        <div
+                            class="text-4xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500 mb-2"
+                        >
+                            {{ getPie2() }}
+                        </div>
+                        <div class="text-2xl font-bold text-blue-500">
+                            Appointments
+                        </div>
+                        <div
+                            class="flex items-baseline justify-center w-full mt-1 text-secondary"
+                        >
+                            <div class="ml-1.5 text-lg font-medium">Total</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="flex flex-col flex-auto p-8 bg-card shadow rounded-lg overflow-hidden"
+            >
+                <div
+                    class="flex flex-col sm:flex-row items-start justify-between"
+                >
+                    <div
+                        class="text-lg font-medium tracking-tight leading-6 truncate"
+                    >
+                        Appointment Times
+                    </div>
+                </div>
+
+                <div
+                    class="flex flex-col flex-auto mt-6 grid grid-cols-7 border"
+                >
+                    <div
+                        *ngFor="let slot of slotData"
+                        class="px-5 py-6 border-r border-b time-slot-holder text-center"
+                    >
+                        {{ slot.count }}<br />
+                        {{ slot.slot }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

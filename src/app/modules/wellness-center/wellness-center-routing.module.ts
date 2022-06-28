@@ -17,7 +17,7 @@ const routes: Routes = [
                 path: 'dashboard',
                 loadChildren: () =>
                     import(
-                        'app/modules/employee/dashboard/dashboard.module'
+                        'app/modules/wellness-center/pages/dashboard/dashboard.module'
                     ).then((m) => m.DashboardModule),
             },
             {
@@ -26,6 +26,13 @@ const routes: Routes = [
                     import(
                         'app/modules/wellness-center/pages/wellness-center-details/wellness-center-details.module'
                     ).then((m) => m.WellnessCenterDetailsModule),
+            },
+            {
+                path: 'update-wellness-profile',
+                loadChildren: () =>
+                    import(
+                        'app/modules/wellness-center/pages/update-wellness-profile/update-wellness-profile.module'
+                    ).then((m) => m.UpdateWellnessProfileModule),
             },
             {
                 path: 'booking-listing',

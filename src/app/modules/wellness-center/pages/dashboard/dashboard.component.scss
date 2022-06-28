@@ -1,0 +1,16 @@
+.mat-tabs ::ng-deep .mat-chip {
+    cursor: pointer !important;
+    font-size: 13px;
+    min-height: 28px !important;
+    line-height: 29px !important;
+    &.active {
+        background: var(--fuse-primary) !important;
+        color: #fff !important;
+    }
+}
+.time-slot-holder:nth-child(7n + 7) {
+    border-right: 0px !important;
+}
+.time-slot-holder:last-child {
+    border-bottom: 0px !important;
+}
