@@ -1,0 +1,99 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="flex-auto p-6 max-h-160 -m-6 overflow-y-auto modify">
+        <div class="max-w-3xl">
+            <form
+                [formGroup]="prescriptionForm"
+                class="flex flex-col py-8 px-10 bg-card rounded-xl shadow overflow-hidden"
+            >
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between mb-4"
+                >
+                    <div
+                        class="text-xl font-medium tracking-tight leading-6 truncate"
+                    >
+                        Add Prescription
+                    </div>
+
+                    <button mat-icon-button matDialogClose>
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+                <ng-container *ngIf="bookingDetails">
+                    <div class="flex flex-row gt-xs:flex-row">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3 fuse-mat-dense"
+                        >
+                            <mat-label>Patient Name</mat-label>
+
+                            {{ bookingDetails.patient.name }}
+
+                            <input matInput value="" style="display: none" />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3 fuse-mat-dense ml-5"
+                        >
+                            <mat-label>Appointment Time</mat-label>
+                            {{
+                                bookingDetails.patientArrivalTime
+                                    | date: "short"
+                            }}
+                            <input matInput style="display: none" />
+                        </mat-form-field>
+                    </div>
+                    <div class="flex flex-col gt-xs:flex-col mb-3">
+                        <mat-form-field
+                            class="flex-auto gt-xs:pr-3 fuse-mat-dense"
+                        >
+                            <mat-label>Status</mat-label>
+                            <mat-chip-list
+                                #chipList
+                                aria-label="Fruit selection"
+                            >
+                                <mat-chip>
+                                    {{ bookingDetails.status | titlecase }}
+                                </mat-chip>
+                            </mat-chip-list>
+                            <input matInput style="display: none" />
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+                <div
+                    class="text-xl font-medium tracking-tight leading-6 truncate mb-2"
+                >
+                    Add Prescription Details
+                </div>
+                <div class="flex flex-col gt-xs:flex-col">
+                    <mat-form-field class="flex-auto gt-xs:pr-3 fuse-mat-dense">
+                        <mat-label>Dosage</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'dosage'"
+                            (keypress)="onlyNumber($event)"
+                        />
+                        <mat-hint class="mt-2">*Allow numbers only</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col">
+                    <mat-form-field class="flex-auto gt-xs:pl-3 fuse-mat-dense">
+                        <mat-label> Description</mat-label>
+                        <textarea
+                            matInput
+                            [formControlName]="'description'"
+                        ></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex flex-col gt-md:flex-row mt-2">
+                    <button
+                        class="max-w-50"
+                        mat-raised-button
+                        color="primary"
+                        (click)="savePrescription()"
+                    >
+                        Sign Prescription
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

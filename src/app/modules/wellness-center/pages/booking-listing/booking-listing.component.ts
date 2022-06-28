@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -11,6 +12,8 @@ import { BookingService } from 'app/core/booking/booking.service';
 import { CommonService } from 'app/core/common/common.service';
 import { BOOKIN_STATUS } from 'app/core/wellness/bookin.enums';
 import { WellnessService } from 'app/core/wellness/wellness.service';
+import { cloneDeep } from 'lodash';
+import { AddPrescriptionFormComponent } from './add-prescription-form/add-prescription-form.component';
 
 @Component({
     selector: 'app-booking-listing',
@@ -34,7 +37,8 @@ export class BookingListingComponent implements OnInit {
         private snackBar: MatSnackBar,
         private wellnessService: WellnessService,
         private commonService: CommonService,
-        private _fuseConfirmationService: FuseConfirmationService
+        private _fuseConfirmationService: FuseConfirmationService,
+        private matDialog: MatDialog
     ) {}
 
     visibleColumns = BookingList;
@@ -96,36 +100,39 @@ export class BookingListingComponent implements OnInit {
 
     async updateBooking(status: BOOKIN_STATUS, booking: BookingI) {
         let reason: string;
-        if (status === BOOKIN_STATUS.REJECTED) {
-            // const alert = await this.alertCtrl.create({
-            //     header: 'Enter Rejection Reason',
-            //     inputs: [
-            //         {
-            //             placeholder: 'Reason',
-            //         },
-            //     ],
-            //     buttons: [
-            //         {
-            //             text: 'Cancel',
-            //             role: 'cancel',
-            //         },
-            //         {
-            //             text: 'Done',
-            //         },
-            //     ],
-            // });
-            // alert.onDidDismiss().then((val) => {
-            //     try {
-            //         reason = val?.data?.values[0];
-            //         this.saveToDb(booking, booking._id, status, reason);
-            //     } catch (error) {}
-            // });
-            // await alert.present();
-        } else if (status === BOOKIN_STATUS.VISITED) {
+        if (status === BOOKIN_STATUS.VISITED) {
             this.markPatientVisited(booking, booking._id, status, new Date());
-        } else {
-            this.saveToDb(booking, booking._id, status);
         }
+        // if (status === BOOKIN_STATUS.REJECTED) {
+        //     // const alert = await this.alertCtrl.create({
+        //     //     header: 'Enter Rejection Reason',
+        //     //     inputs: [
+        //     //         {
+        //     //             placeholder: 'Reason',
+        //     //         },
+        //     //     ],
+        //     //     buttons: [
+        //     //         {
+        //     //             text: 'Cancel',
+        //     //             role: 'cancel',
+        //     //         },
+        //     //         {
+        //     //             text: 'Done',
+        //     //         },
+        //     //     ],
+        //     // });
+        //     alert.onDidDismiss().then((val) => {
+        //         try {
+        //             reason = val?.data?.values[0];
+        //             this.saveToDb(booking, booking._id, status, reason);
+        //         } catch (error) {}
+        //     });
+        //     await alert.present();
+        // } else if (status === BOOKIN_STATUS.VISITED) {
+        //     this.markPatientVisited(booking, booking._id, status, new Date());
+        // } else {
+        //     this.saveToDb(booking, booking._id, status);
+        // }
     }
 
     toggleApproved(change: MatSlideToggleChange): void {
@@ -153,6 +160,20 @@ export class BookingListingComponent implements OnInit {
             }
         );
     }
+    addPrescription(booking: BookingI) {
+        let addPrescription = this.matDialog.open(
+            AddPrescriptionFormComponent,
+            {
+                autoFocus: false,
+                data: {
+                    booking: cloneDeep(booking),
+                },
+            }
+        );
+        addPrescription.afterClosed().subscribe((result) => {
+            this.getBookings();
+        });
+    }
     seePrescription(booking: any) {
         this.commonService.getPrescription(booking._id).subscribe(
             (response: any) => {
@@ -178,7 +199,5 @@ export class BookingListingComponent implements OnInit {
                 });
             }
         );
-
-        // console.log(booking);
     }
 }

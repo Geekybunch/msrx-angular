@@ -6,12 +6,9 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-
 import { Router } from '@angular/router';
-
 import { AuthService } from 'app/core/auth/auth.service';
 import { CommonService } from 'app/core/common/common.service';
-
 import { NgxSpinnerService } from 'ngx-spinner';
 import QrScanner from 'qr-scanner';
 @Component({

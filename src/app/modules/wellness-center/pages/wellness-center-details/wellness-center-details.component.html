@@ -1,1 +1,119 @@
-<p>wellness-center-details works!</p>
+<div class="flex flex-col flex-auto w-full">
+    <div class="w-full max-w-screen-xl mx-auto p-8">
+        <!-- <div
+            class="flex flex-col sm:flex-row items-center justify-center w-full max-w-xs sm:max-w-none p-6 bg-card mb-10 shadow1 rounded mt-6"
+            style="height: 70px"
+        ></div> -->
+        <div class="bg-card mb-5 shadow rounded p-10 mt-10">
+            <div class="plant-pic rounded-full shadow p-2 bg-white">
+                <img
+                    src="assets//images/weed-bg.png"
+                    alt=""
+                    width="150"
+                    height="150"
+                />
+            </div>
+
+            <div
+                class="text-3xl font-bold tracking-tight leading-6 truncate text-center mb-3"
+            >
+                {{ wellnessData && wellnessData.name }}
+            </div>
+            <div
+                class="flex items-baseline justify-center w-full mt-1 text-secondary mb-8"
+            >
+                <div class="text-lg font-medium flex items-center">
+                    <mat-icon
+                        class="icon-size-5 text-hint mr-2"
+                        [svgIcon]="'heroicons_solid:location-marker'"
+                    ></mat-icon>
+                    {{ wellnessData && wellnessData.addressLine1 }}
+                </div>
+            </div>
+            <div class="mb-6">
+                <div
+                    class="text-xl font-medium tracking-tight leading-6 truncate mb-2"
+                >
+                    About us
+                </div>
+                <div class="text-secondary">
+                    {{ wellnessData && wellnessData.about }}
+                </div>
+            </div>
+            <div
+                class="flex items-start w-full grid grid-cols-3 border"
+                style="margin-bottom: -1px"
+            >
+                <div class="flex border-r py-3 px-6">
+                    <div class="min-w-0">
+                        <div class="leading-6 truncate text-secondary mb-1">
+                            Opening Time
+                        </div>
+                        <div class="leading-6 truncate font-medium">
+                            {{ wellnessData && wellnessData.openTime }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex border-r py-3 px-6">
+                    <div class="min-w-0">
+                        <div class="leading-6 truncate text-secondary mb-1">
+                            Closing Time
+                        </div>
+                        <div class="leading-6 truncate font-medium">
+                            {{ wellnessData && wellnessData.closeTime }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex py-3 px-6">
+                    <div class="min-w-0">
+                        <div class="leading-6 truncate text-secondary mb-1.5">
+                            Appointment Duration
+                        </div>
+                        <div class="leading-6 truncate font-medium">
+                            {{ wellnessData && wellnessData.timeSlotLength }}m
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-start w-full grid grid-cols-3 border">
+                <div class="flex border-r py-3 px-6">
+                    <div class="min-w-0">
+                        <div class="leading-6 truncate text-secondary mb-1">
+                            City
+                        </div>
+                        <div class="leading-6 truncate font-medium">
+                            {{ wellnessData && wellnessData.city }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex border-r py-3 px-6">
+                    <div class="min-w-0">
+                        <div class="leading-6 truncate text-secondary mb-1">
+                            ZIP Code
+                        </div>
+                        <div class="leading-6 truncate font-medium">
+                            {{ wellnessData && wellnessData.zipCode }}
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="flex py-3 px-6">
+                    <div class="min-w-0">
+                        <div
+                            class="leading-6 truncate text-secondary mb-1.5"
+                        ></div>
+                        <div class="leading-6 truncate font-medium"></div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <button
+            routerLink="/wellnesscenter/update-wellness-profile"
+            mat-fab
+            color="primary"
+            class="edit_btn"
+            *ngIf="isOwner"
+        >
+            <mat-icon>edit</mat-icon>
+        </button>
+    </div>
+</div>
