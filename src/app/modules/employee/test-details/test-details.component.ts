@@ -60,7 +60,6 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
     getPlantDetails() {
         return this.commonService.getCommonPlantDetails(this.plantID).subscribe(
             (res) => {
-                console.log(res);
                 this.plantResponse = res.data.plant;
             },
             (err: any) => {

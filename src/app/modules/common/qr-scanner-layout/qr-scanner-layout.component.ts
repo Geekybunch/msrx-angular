@@ -7,9 +7,12 @@ import {
     ViewChild,
 } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NavigationEnd, Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { AuthService } from 'app/core/auth/auth.service';
+import { CommonService } from 'app/core/common/common.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 import QrScanner from 'qr-scanner';
 @Component({
     selector: 'app-qr-scanner-layout',
@@ -111,9 +114,7 @@ export class QrScannerLayoutComponent implements OnInit {
         console.log('this.scannedType', this.scannedType);
         this.cd.detectChanges();
     }
-    // ngDoCheck() {
-    //     this.getTestresults();
-    // }
+
     getTestresults() {
         if (this.userRole.modelId.employer?.businessType === 'Tester') {
             if (this.scannedType == 'Plant') {
@@ -138,8 +139,9 @@ export class QrScannerLayoutComponent implements OnInit {
                     },
                 });
             }
-        }
-        if (this.userRole.modelId.employer?.businessType === 'Processor') {
+        } else if (
+            this.userRole.modelId.employer?.businessType === 'Processor'
+        ) {
             if (this.scannedType == 'Plant') {
                 this.router.navigate(['/processor/test-details'], {
                     queryParams: {
@@ -162,8 +164,9 @@ export class QrScannerLayoutComponent implements OnInit {
                     },
                 });
             }
-        }
-        if (this.userRole.modelId.employer?.businessType === 'Cultivator') {
+        } else if (
+            this.userRole.modelId.employer?.businessType === 'Cultivator'
+        ) {
             if (this.scannedType == 'Plant') {
                 this.plantDetails = true;
                 this.sideNav.toggle();
@@ -183,18 +186,55 @@ export class QrScannerLayoutComponent implements OnInit {
                     },
                 });
             }
-        }
-
-        if (this.userRole.modelId.employer?.businessType === 'Manufacturer') {
+        } else if (
+            this.userRole.modelId.employer?.businessType === 'Manufacturer'
+        ) {
             if (this.scannedType == 'Plant') {
                 this.router.navigate(['/manufacturer/add-manufactured-good'], {
+                    queryParams: {
+                        plantID: this.scannedId,
+                    },
+
+                    replaceUrl: true,
+                });
+            } else {
+                this.sideNav.toggle();
+                this.qrScannerId = this.scannedId;
+                this.productDetails = true;
+            }
+        } else if (
+            this.userRole.modelId.employer?.businessType === 'Disposer'
+        ) {
+            if (this.scannedType == 'Plant') {
+                this.router.navigate(['/disposer/test-details'], {
                     queryParams: {
                         plantID: this.scannedId,
                     },
                     replaceUrl: true,
                 });
             } else {
-                this.cd.detectChanges();
+                this._fuseConfirmationService.open({
+                    title: 'Error',
+                    message: 'Invalid QR Code',
+                    actions: {
+                        confirm: {
+                            show: false,
+                        },
+                        cancel: {
+                            show: true,
+                            label: 'Cancel',
+                        },
+                    },
+                });
+            }
+        } else if (
+            this.userRole.modelId.employer?.businessType === 'Distributor'
+        ) {
+            if (this.scannedType == 'Plant') {
+                this.plantDetails = true;
+                this.sideNav.toggle();
+                this.qrScannerId = this.scannedId;
+            } else {
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
                 this.productDetails = true;

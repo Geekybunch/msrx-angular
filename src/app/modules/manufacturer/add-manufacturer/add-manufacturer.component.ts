@@ -38,6 +38,7 @@ export class AddManufacturerComponent implements OnInit {
     isModify = false;
     public editProduct = this.data;
     addOnBlur = true;
+
     constructor(
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
@@ -45,7 +46,7 @@ export class AddManufacturerComponent implements OnInit {
         private commonService: CommonService,
         private activatedRouter: ActivatedRoute,
         @Inject(MAT_DIALOG_DATA) private data: { productData: any },
-        private _matDialogRef: MatDialogRef<AddManufacturerComponent>
+        private _matDialogRef: MatDialogRef<any>
     ) {}
 
     ngOnInit(): void {
@@ -156,6 +157,11 @@ export class AddManufacturerComponent implements OnInit {
     }
     matClose() {
         this.dialog.closeAll();
+        // this._matDialogRef.close(templateRef);
+        // // this._matDialogRef.afterClosed();
+        // this.dialog.afterAllClosed(this.scanQRCodeDialog);
+        // // this.dialog.closeAll();
+        // // this.dialog.closeAll();
     }
     addPlant() {
         this.commonService.getCommonPlantDetails(this.enterdPlantId).subscribe(

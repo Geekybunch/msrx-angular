@@ -14,15 +14,18 @@ export class PlantsDrawerComponent implements OnInit {
     constructor(private commonService: CommonService) {}
 
     ngOnInit(): void {
-        this.getPlantDetails();
-        console.log('this.qrScannerId', this.qrScannerId);
+        if (this.qrScannerId) {
+            this.getPlantDetails();
+        }
+        this.commonService.$testPantID.subscribe((res: any) => {
+            this.viewDetails = res.data.plant;
+        });
     }
     getPlantDetails() {
         return this.commonService
             .getCommonPlantDetails(this.qrScannerId)
             .subscribe(
                 (res: any) => {
-                    console.log(res);
                     this.viewDetails = res.data.plant;
                 },
                 (err: any) => {

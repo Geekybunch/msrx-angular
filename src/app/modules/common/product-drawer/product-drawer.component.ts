@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { CommonService } from 'app/core/common/common.service';
 
 @Component({
@@ -7,7 +15,9 @@ import { CommonService } from 'app/core/common/common.service';
     styleUrls: ['./product-drawer.component.scss'],
 })
 export class ProductDrawerComponent implements OnInit {
+    @ViewChild('sidenav') sideNav: MatSidenav;
     productResponse: any = [];
+    plantId: string;
     @Output() newItemEvent = new EventEmitter<string>();
     @Input() qrScannerId: string;
     constructor(private commonService: CommonService) {}
@@ -28,5 +38,19 @@ export class ProductDrawerComponent implements OnInit {
     }
     closeNav(eve: any) {
         this.newItemEvent.emit(eve);
+    }
+    getPlantsDetails(plants: string) {
+        this.commonService
+            .getCommonPlantDetails(plants)
+            .subscribe((res: any) => {
+                console.log(res);
+                this.commonService.$testPantID.next(res);
+            });
+        // this.plantId = plants;
+
+        console.log(plants);
+    }
+    closeDrawer(event) {
+        this.sideNav.close();
     }
 }
