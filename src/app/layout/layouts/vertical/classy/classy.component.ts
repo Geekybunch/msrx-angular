@@ -213,7 +213,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         } else if (
             this.role.modelId.employer?.businessType === 'Manufacturer'
         ) {
-            this.router.navigate(['/manufacturer/test-details'], {
+            this.router.navigate(['/manufacturer/add-manufactured-good'], {
                 queryParams: {
                     plantID: this.scanQRForm.value.planId,
                 },

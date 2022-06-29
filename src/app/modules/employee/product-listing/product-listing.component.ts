@@ -13,9 +13,9 @@ import {
     CreateProductsRequest,
     DisplayedManufactrors,
 } from 'app/core/manufacture/maufacturor.interface';
+import { AddManufacturerComponent } from 'app/modules/manufacturer/add-manufacturer/add-manufacturer.component';
 import { cloneDeep } from 'lodash';
 import { Observable, Subject } from 'rxjs';
-import { AddManufacturerComponent } from '../add-manufacturer/add-manufacturer.component';
 
 @Component({
     selector: 'app-product-listing',
@@ -40,7 +40,7 @@ export class ProductListingComponent implements OnInit {
     dataSource = new MatTableDataSource<CreateProductsRequest>();
     public businessInput = new Subject<string>();
     plantId$: Observable<number[]>;
-    dta;
+    menuButton: boolean = true;
 
     constructor(
         private manufactrorService: ManufactureService,
@@ -56,9 +56,11 @@ export class ProductListingComponent implements OnInit {
         if (this.router.url == '/manufacturer/product-listing') {
             this.getManufacturedProducts();
         } else if (this.router.url == '/manufacturer/inventory-details') {
+            this.menuButton = false;
             this.getInventoryDetails();
         } else if (this.router.url == '/manufacturer/update-inventory') {
             this.getInventoryLogs();
+            this.menuButton = false;
         }
     }
     ngAfterViewInit() {

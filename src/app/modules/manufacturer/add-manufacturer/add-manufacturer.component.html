@@ -1,5 +1,10 @@
 <div class="flex flex-col flex-auto min-w-0">
-    <div class="flex-auto p-6 max-h-160 -m-6 overflow-y-auto modify">
+    <div
+        class="flex-auto p-10"
+        [ngClass]="
+            isModify ? 'modify max-h-160 -m-6 overflow-y-auto p-6' : 'add'
+        "
+    >
         <div class="max-w-3xl">
             <form
                 [formGroup]="createProductForm"
@@ -11,10 +16,10 @@
                     <div
                         class="text-xl font-medium tracking-tight leading-6 truncate"
                     >
-                        Update Product
+                        {{ isModify ? "Update" : "Add" }} Product
                     </div>
 
-                    <button mat-icon-button matDialogClose>
+                    <button mat-icon-button matDialogClose *ngIf="isModify">
                         <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
                     </button>
                 </div>
@@ -107,7 +112,7 @@
                                 {{ allergy | titlecase }}
                                 <button
                                     matChipRemove
-                                    (click)="this.ingredients.splice(i, 1)"
+                                    (click)="this.allergies.splice(i, 1)"
                                 >
                                     <mat-icon>cancel</mat-icon>
                                 </button>
@@ -142,6 +147,8 @@
                             </button>
                         </mat-chip>
                         <button
+                            type="button"
+                            (click)="showScanMenu()"
                             class="scan_btn bg-primary-500 text-white rounded-full"
                         >
                             Scan More Plants
@@ -151,6 +158,7 @@
 
                 <div class="flex flex-col gt-md:flex-row mt-2">
                     <button
+                        type="button"
                         (click)="addProduct()"
                         class="max-w-50"
                         mat-raised-button
@@ -163,3 +171,47 @@
         </div>
     </div>
 </div>
+<ng-template #scanQRCodeDialog>
+    <div class="p-3" style="width: 22rem !important">
+        <h2 matDialogTitle>Scan QR Code</h2>
+        <form class="mb-3">
+            <div class="flex flex-col">
+                <mat-form-field class="flex-auto fuse-mat-dense">
+                    <input
+                        matInput
+                        name="enterdPlantId"
+                        [(ngModel)]="enterdPlantId"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="Enter Plant ID"
+                    />
+                </mat-form-field>
+            </div>
+
+            <div class="flex flex-col">
+                <button
+                    (click)="presentScanAction()"
+                    class="flex items-center justify-center rounded"
+                    style="border: 1px dashed rgb(203 213 225); padding: 10px"
+                >
+                    <mat-icon
+                        svgIcon="qr_code_scanner"
+                        class="mat-icon notranslate icon-size-5 mr-3 mat-icon-no-color"
+                    ></mat-icon>
+                    Scan QR Code
+                </button>
+            </div>
+        </form>
+        <mat-dialog-actions>
+            <button
+                (click)="addPlant()"
+                mat-button
+                mat-raised-button
+                color="primary"
+                class="px-8"
+            >
+                Done
+            </button>
+            <button mat-button (click)="matClose()">Cancel</button>
+        </mat-dialog-actions>
+    </div>
+</ng-template>

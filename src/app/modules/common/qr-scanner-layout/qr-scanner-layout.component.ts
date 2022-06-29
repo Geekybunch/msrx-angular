@@ -7,12 +7,9 @@ import {
     ViewChild,
 } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { AuthService } from 'app/core/auth/auth.service';
-import { CommonService } from 'app/core/common/common.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import QrScanner from 'qr-scanner';
 @Component({
     selector: 'app-qr-scanner-layout',
@@ -46,10 +43,7 @@ export class QrScannerLayoutComponent implements OnInit {
     constructor(
         private router: Router,
         private authService: AuthService,
-        private commonService: CommonService,
-        private spinner: NgxSpinnerService,
         private cd: ChangeDetectorRef,
-        private snackBar: MatSnackBar,
         private _fuseConfirmationService: FuseConfirmationService
     ) {
         this.userRole = this.authService.userRole;
@@ -117,6 +111,9 @@ export class QrScannerLayoutComponent implements OnInit {
         console.log('this.scannedType', this.scannedType);
         this.cd.detectChanges();
     }
+    // ngDoCheck() {
+    //     this.getTestresults();
+    // }
     getTestresults() {
         if (this.userRole.modelId.employer?.businessType === 'Tester') {
             if (this.scannedType == 'Plant') {
@@ -190,13 +187,14 @@ export class QrScannerLayoutComponent implements OnInit {
 
         if (this.userRole.modelId.employer?.businessType === 'Manufacturer') {
             if (this.scannedType == 'Plant') {
-                this.router.navigate(['/manufacturer/test-details'], {
+                this.router.navigate(['/manufacturer/add-manufactured-good'], {
                     queryParams: {
                         plantID: this.scannedId,
                     },
                     replaceUrl: true,
                 });
             } else {
+                this.cd.detectChanges();
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
                 this.productDetails = true;
@@ -213,35 +211,4 @@ export class QrScannerLayoutComponent implements OnInit {
     // cultivator can only scan a plant - we display the plant details. show popup from right
     // manufacturer can scan plant. - we display him the page where he added products.
     // manufacturer can scan product. - we display the product popup from right side.
-
-    // public getPlantDetails(): void {
-    //     this.spinner.show();
-    //     this.commonService.getCommonPlantDetails(this.scannerId).subscribe(
-    //         (res) => {
-    //             this.plantDetails = true;
-    //             console.log(res);
-    //             this.spinner.hide();
-    //             this.plantResponse = res.data.plant;
-    //         },
-    //         (err: any) => {
-    //             console.log(err);
-    //         }
-    //     );
-    // }
-
-    // public getProductDetails(): void {
-    //     //  this.spinner.show();
-    //     this.commonService.getCommonProductDetails(this.scannerId).subscribe(
-    //         (res) => {
-    //             this.productResponse = res.data.product;
-    //             this.productDetails = true;
-    //             // alert('here');
-    //             console.log(res);
-    //             // this.spinner.hide();
-    //         },
-    //         (err: any) => {
-    //             console.log(err);
-    //         }
-    //     );
-    // }
 }

@@ -225,8 +225,8 @@ export const appRoutes: Route[] = [
         path: 'manufacturer',
         canActivate: [ManufacturerGuard],
         loadChildren: () =>
-            import('app/modules/employee/employee.module').then(
-                (m) => m.EmployeeModule
+            import('app/modules/manufacturer/manufacturer.module').then(
+                (m) => m.ManufacturerModule
             ),
     },
     {

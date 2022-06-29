@@ -17,6 +17,7 @@ import { AddProcessedResultComponent } from '../add-processed-result/add-process
 import { AddTestResultComponent } from '../add-test-result/add-test-result.component';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddManufacturerComponent } from 'app/modules/manufacturer/add-manufacturer/add-manufacturer.component';
 
 @Component({
     selector: 'app-test-details',
