@@ -16,7 +16,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { MatFileUploadModule } from 'angular-material-fileupload';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { StateAgenciesComponent } from './modules/admin/state-agencies/state-agencies.component';
+import { ErrorModalComponent } from './modules/common/error-modal/error-modal.component';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -24,7 +24,7 @@ const routerConfig: ExtraOptions = {
 };
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, ErrorModalComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,

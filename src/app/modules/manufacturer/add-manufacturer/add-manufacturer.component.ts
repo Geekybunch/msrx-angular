@@ -19,6 +19,7 @@ import {
     CreateProductsRequest,
     MaufacturedProductI,
 } from 'app/core/manufacture/maufacturor.interface';
+import { ScanMorePlantsComponent } from 'app/modules/common/scan-more-plants/scan-more-plants.component';
 export interface Fruit {
     name: string;
 }
@@ -203,5 +204,15 @@ export class AddManufacturerComponent implements OnInit {
                 });
             }
         );
+    }
+    presentScanAction(): void {
+        const dialogRef = this.dialog.open(ScanMorePlantsComponent, {});
+        dialogRef.afterClosed().subscribe((result) => {
+            this.dialog.closeAll();
+
+            this.enterdPlantId = result;
+            this.addPlant();
+            console.log(result);
+        });
     }
 }
