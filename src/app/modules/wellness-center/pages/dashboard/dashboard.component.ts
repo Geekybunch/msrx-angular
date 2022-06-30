@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CalendarView } from 'angular-calendar';
 import { SlotCountI } from 'app/core/booking/booking.interfaces';
 import { BookingService } from 'app/core/booking/booking.service';
 import { WellnessStatusI } from 'app/core/wellness/wellness.interface';
@@ -21,6 +22,10 @@ export class DashboardComponent implements OnInit {
     pie1Filter = 'today';
     pie2Filter = 'today';
     slotData: SlotCountI[] = [];
+    weekArray: moment.Moment[] = [];
+    weekOffset = 0;
+    view: CalendarView = CalendarView.Month;
+    viewDate: Date = new Date();
     constructor(
         private bookingService: BookingService,
         private wellnessService: WellnessService
@@ -29,9 +34,30 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.calculateActiveWeek();
         this.getBookingCounts();
+    }
+    updateWeekOffset(offset: number) {
+        this.weekOffset += offset;
+        this.calculateActiveWeek();
+    }
+
+    calculateActiveWeek() {
+        this.weekArray = [];
+        const thisWeekMax = moment().add(1, 'week');
+        let iterator = moment();
+
+        this.weekArray.push(iterator);
+
+        while (iterator.isBefore(thisWeekMax)) {
+            iterator = iterator.clone().add(1, 'day');
+            this.weekArray.push(iterator);
+        }
+
+        this.weekArray.pop();
         this.getBookingSlots();
     }
+
     getBookingCounts() {
         this.wellnessService.getWellnessCenterCount().subscribe((res) => {
             console.log(res);
@@ -89,21 +115,34 @@ export class DashboardComponent implements OnInit {
             });
     }
 
-    filterByStartDate(event) {
-        // this.startDate = new DatePipe('en-US').transform(
-        //     event.value,
-        //     'yyyy-MM-dd'
-        // );
-        // this.dateFrom = this.startDate;
-        // this.getDashboardData(this.startDate, null);
+    getWeekRangeLabel() {
+        if (!this.weekArray.length) {
+            return '--';
+        }
+
+        const first = this.weekArray[0];
+        const last = this.weekArray[this.weekArray.length - 1];
+
+        let stringValue = `${first.date()}`;
+
+        if (first.month() !== last.month()) {
+            stringValue += ` ${first.month()}`;
+        }
+
+        stringValue += ` - ${last.date()} ${last.format('MMM')} ${last.year()}`;
+
+        return stringValue;
     }
-    filterByEndDate(event) {
-        // this.endDate = new DatePipe('en-US').transform(
-        //     event.value,
-        //     'yyyy-MM-dd'
-        // );
-        // this.dateTo = this.endDate;
-        // this.getDashboardData(this.startDate, this.endDate);
+
+    getBookingChipClass(count: number) {
+        if (count > 10) {
+            return 'booked-3';
+        } else if (count > 5) {
+            return 'booked-2';
+        } else if (count > 1) {
+            return 'booked-1';
+        } else {
+            return 'available';
+        }
     }
-    changeSelected(event) {}
 }

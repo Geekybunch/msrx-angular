@@ -8,9 +8,25 @@
         color: #fff !important;
     }
 }
-.time-slot-holder:nth-child(7n + 7) {
-    border-right: 0px !important;
+.badge {
+    width: 25px;
+    height: 25px;
+    margin: 0px auto;
+    line-height: 24px;
+    color: #fff;
+    text-align: center;
 }
-.time-slot-holder:last-child {
-    border-bottom: 0px !important;
+.bg-primary-50 {
+    width: 115px;
+    padding: 5px 14px 4px;
+    font-size: 14px;
+    font-weight: 600;
+    height: 32px;
+    line-height: 20px;
 }
+// .time-slot-holder:nth-child(7n + 7) {
+//     border-right: 0px !important;
+// }
+// .time-slot-holder:last-child {
+//     border-bottom: 0px !important;
+// }

@@ -203,14 +203,22 @@ export class ProductListingComponent implements OnInit {
         });
     }
     editProductDialog(productData: any) {
-        let EditPlant = this.matDialog.open(AddManufacturerComponent, {
-            autoFocus: false,
-            data: {
-                productData: cloneDeep(productData),
+        this.router.navigate(['/manufacturer/add-manufactured-good'], {
+            queryParams: {
+                id: productData._id,
             },
+            replaceUrl: true,
         });
-        EditPlant.afterClosed().subscribe((result) => {
-            this.getManufacturedProducts();
-        });
+        // console.log(productData._id);
+
+        // let EditPlant = this.matDialog.open(AddManufacturerComponent, {
+        //     autoFocus: false,
+        //     data: {
+        //         productData: cloneDeep(productData),
+        //     },
+        // });
+        // EditPlant.afterClosed().subscribe((result) => {
+        //     this.getManufacturedProducts();
+        // });
     }
 }

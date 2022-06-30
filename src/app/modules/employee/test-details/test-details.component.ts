@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    NgZone,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
     ActivatedRoute,
@@ -17,12 +24,14 @@ import { AddProcessedResultComponent } from '../add-processed-result/add-process
 import { AddTestResultComponent } from '../add-test-result/add-test-result.component';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AddManufacturerComponent } from 'app/modules/manufacturer/add-manufacturer/add-manufacturer.component';
+import { Observable } from 'rxjs';
+import { TesterService } from 'app/core/tester/tester.service';
 
 @Component({
     selector: 'app-test-details',
     templateUrl: './test-details.component.html',
     styleUrls: ['./test-details.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
 })
 export class TestDetailsComponent implements OnInit, OnDestroy {
     plantID: string;
@@ -30,13 +39,18 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
     viewDetails: any;
     showNext = false;
     userInfo: any;
+    plantNull: any;
+    testButton: boolean = false;
+    tesff: any;
     constructor(
         private activatedRoute: ActivatedRoute,
         private commonService: CommonService,
         private router: Router,
         private matDialog: MatDialog,
         private authService: AuthService,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private cdRef: ChangeDetectorRef,
+        private zone: NgZone
     ) {
         this.commonService.$testPantID.subscribe((res: string) => {
             this.plantID = res;
@@ -50,7 +64,9 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
                 this.plantID = this.plantID || qParams.plantID;
             }
             this.showNext = qParams.showNext;
-            this.getPlantDetails();
+            this.zone.run(() => {
+                this.getPlantDetails();
+            });
         });
     }
     ngOnDestroy(): void {
@@ -60,7 +76,11 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
     getPlantDetails() {
         return this.commonService.getCommonPlantDetails(this.plantID).subscribe(
             (res) => {
+                console.log(res);
                 this.plantResponse = res.data.plant;
+                if (this.plantResponse == null) {
+                    this.plantNull = '  "PlantId" incorrect...!';
+                }
             },
             (err: any) => {
                 this.router.navigate(['/'], {
@@ -70,7 +90,6 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
                     duration: 3000,
                     panelClass: ['alert-red'],
                 });
-
                 console.log(err);
             }
         );

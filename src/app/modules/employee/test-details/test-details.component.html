@@ -5,6 +5,7 @@
     <div class="max-w-3xl3 p-5">
         <div
             class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none py-3 px-6 bg-card shadow rounded border-b"
+            style="min-height: 55px"
         >
             <div
                 _ngcontent-dum-c251=""
@@ -19,6 +20,9 @@
                 "
             >
                 <button
+                    *ngIf="
+                        !plantResponse.plantTest && !plantResponse.plantProcess
+                    "
                     (click)="openTestResultDialog()"
                     class="items-center bg-primary text-white rounded-full"
                 >
@@ -571,7 +575,7 @@
             >
                 <div class="p-8">
                     <p class="text-2xl font-semibold text-red-500">
-                        "PlantId" incorrect...!
+                        {{ plantNull }}
                     </p>
                 </div>
             </div>

@@ -12,7 +12,7 @@ import {
     MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'app/core/common/common.service';
 import { ManufactureService } from 'app/core/manufacture/manufacture.service';
 import {
@@ -29,14 +29,16 @@ export interface Fruit {
     styleUrls: ['./add-manufacturer.component.scss'],
 })
 export class AddManufacturerComponent implements OnInit {
-    @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
+    @ViewChild('scanQRCodeDialog')
+    scanQRCodeDialog: TemplateRef<AddManufacturerComponent>;
     createProductForm: FormGroup;
     ingredients: string[] = [];
     allergies: string[] = [];
     plantIDs: string[] = [];
     public enterdPlantId: string;
     isModify = false;
-    public editProduct = this.data;
+    public editProduct: any = [];
+    public editProductId: string;
     addOnBlur = true;
 
     constructor(
@@ -45,8 +47,9 @@ export class AddManufacturerComponent implements OnInit {
         private manufactureService: ManufactureService,
         private commonService: CommonService,
         private activatedRouter: ActivatedRoute,
+        private router: Router,
         @Inject(MAT_DIALOG_DATA) private data: { productData: any },
-        private _matDialogRef: MatDialogRef<any>
+        private _matDialogRef: MatDialogRef<AddManufacturerComponent>
     ) {}
 
     ngOnInit(): void {
@@ -63,10 +66,19 @@ export class AddManufacturerComponent implements OnInit {
                 this.plantIDs = [qParams.plantID];
             }
         });
-        if (this.editProduct.productData) {
-            this.isModify = true;
-            this.fillModificationData(this.editProduct.productData);
-        }
+        this.activatedRouter.queryParams.subscribe((qParams) => {
+            if (qParams.id) {
+                this.editProductId = qParams.id;
+                this.commonService
+                    .getCommonProductDetails(this.editProductId)
+                    .subscribe((res: any) => {
+                        this.isModify = true;
+                        this.editProduct = res.data.product;
+                        console.log('res', res);
+                        this.fillModificationData(this.editProduct);
+                    });
+            }
+        });
     }
     get f() {
         return this.createProductForm.controls;
@@ -117,11 +129,15 @@ export class AddManufacturerComponent implements OnInit {
         request.plants = this.plantIDs;
         if (this.isModify) {
             this.manufactureService
-                .updateProduct(this.editProduct.productData._id, request)
+                .updateProduct(this.editProduct._id, request)
                 .subscribe(
                     (res) => {
-                        this._matDialogRef.close();
-                        console.log(res);
+                        setTimeout(() => {
+                            this.router.navigateByUrl(
+                                '/manufacturer/product-listing'
+                            );
+                        }, 1500);
+
                         this.snackBar.open(
                             'Product Updated Successfully..!',
                             'Close',
@@ -131,18 +147,23 @@ export class AddManufacturerComponent implements OnInit {
                         );
                     },
                     (err: any) => {
-                        this._matDialogRef.close();
                         console.log(err);
                     }
                 );
         } else {
             this.manufactureService.addProduct(request).subscribe(
                 (res) => {
+                    setTimeout(() => {
+                        this.router.navigateByUrl(
+                            '/manufacturer/product-listing'
+                        );
+                    }, 1500);
+
                     this.snackBar.open(
                         'Product added Successfully..!',
                         'Close',
                         {
-                            duration: 2000,
+                            duration: 3000,
                         }
                     );
                 },
@@ -155,13 +176,9 @@ export class AddManufacturerComponent implements OnInit {
     showScanMenu() {
         this.dialog.open(this.scanQRCodeDialog);
     }
-    matClose() {
+    matClose(): void {
+        this.enterdPlantId = '';
         this.dialog.closeAll();
-        // this._matDialogRef.close(templateRef);
-        // // this._matDialogRef.afterClosed();
-        // this.dialog.afterAllClosed(this.scanQRCodeDialog);
-        // // this.dialog.closeAll();
-        // // this.dialog.closeAll();
     }
     addPlant() {
         this.commonService.getCommonPlantDetails(this.enterdPlantId).subscribe(

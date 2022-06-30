@@ -21,7 +21,7 @@
                         </ng-container>
                     </div>
                 </div>
-                <mat-form-field
+                <!-- <mat-form-field
                     class="mat-form-field fuse-mat-no-subscript w-full sm:w-60 fuse-mat-dense"
                 >
                     <mat-date-range-input [rangePicker]="picker">
@@ -45,7 +45,7 @@
                         [for]="picker"
                     ></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
+                </mat-form-field> -->
             </div>
         </div>
     </div>
@@ -151,7 +151,7 @@
                 class="flex flex-col flex-auto p-8 bg-card shadow rounded-lg overflow-hidden"
             >
                 <div
-                    class="flex flex-col sm:flex-row items-start justify-between"
+                    class="flex flex-col sm:flex-row items-start justify-between mb-6"
                 >
                     <div
                         class="text-lg font-medium tracking-tight leading-6 truncate"
@@ -159,16 +159,66 @@
                         Appointment Times
                     </div>
                 </div>
+                <div class="flex flex-row justify-between mb-4">
+                    <!-- {{ weekArray | json }} -->
+                    <!-- <h3
+                        *ngFor="let date of weekArray"
+                        class="text-lg font-medium tracking-tight leading-6"
+                    >
+                        {{ date }}
+                    </h3> -->
 
-                <div
-                    class="flex flex-col flex-auto mt-6 grid grid-cols-7 border"
-                >
+                    <button
+                        mat-menu-item
+                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                        mwlCalendarPreviousView
+                        [view]="view"
+                        [(viewDate)]="viewDate"
+                        (viewDateChange)="getBookingSlots()"
+                    >
+                        <span class="flex items-center">
+                            <mat-icon
+                                class="icon-size-4 mr-2 text-primary-700"
+                                [svgIcon]="'heroicons_solid:arrow-narrow-left'"
+                            ></mat-icon>
+                            <span> Previous</span>
+                        </span>
+                    </button>
+                    <h3
+                        *ngFor="let date of weekArray"
+                        class="text-lg font-medium tracking-tight leading-6"
+                    >
+                        {{ date | date: "mediumDate" }}
+                    </h3>
+                    <button
+                        mat-menu-item
+                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
+                        mwlCalendarNextView
+                        [view]="view"
+                        [(viewDate)]="viewDate"
+                        (viewDateChange)="getBookingSlots()"
+                    >
+                        <span class="flex items-center justify-center">
+                            <span> Next</span>
+                            <mat-icon
+                                class="icon-size-4 ml-2 mr-0 text-primary-700"
+                                [svgIcon]="'heroicons_solid:arrow-narrow-right'"
+                            ></mat-icon>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="flex flex-col flex-auto grid grid-cols-5 gap-3">
                     <div
                         *ngFor="let slot of slotData"
-                        class="px-5 py-6 border-r border-b time-slot-holder text-center"
+                        class="px-5 py-5 border time-slot-holder text-center"
                     >
-                        {{ slot.count }}<br />
-                        {{ slot.slot }}
+                        <div class="bg-primary rounded-full badge mb-2 text-lg">
+                            {{ slot.count }}
+                        </div>
+                        <div class="text-lg text-secondary">
+                            {{ slot.slot }}
+                        </div>
                     </div>
                 </div>
             </div>

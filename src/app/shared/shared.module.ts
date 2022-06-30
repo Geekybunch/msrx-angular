@@ -17,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
     imports: [CommonModule, FormsModule, ReactiveFormsModule],
@@ -40,6 +41,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         MatDialogModule,
         MatChipsModule,
         MatToolbarModule,
+        MatBadgeModule,
     ],
 })
 export class SharedModule {}

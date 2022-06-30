@@ -1,10 +1,5 @@
 <div class="flex flex-col flex-auto min-w-0">
-    <div
-        class="flex-auto p-10"
-        [ngClass]="
-            isModify ? 'modify max-h-160 -m-6 overflow-y-auto p-6' : 'add'
-        "
-    >
+    <div class="flex-auto p-10">
         <div class="max-w-3xl">
             <form
                 [formGroup]="createProductForm"
@@ -18,10 +13,6 @@
                     >
                         {{ isModify ? "Update" : "Add" }} Product
                     </div>
-
-                    <button mat-icon-button matDialogClose *ngIf="isModify">
-                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                    </button>
                 </div>
                 <div class="flex flex-row gt-xs:flex-row">
                     <mat-form-field class="flex-auto gt-xs:pr-3 fuse-mat-dense">
@@ -171,7 +162,7 @@
         </div>
     </div>
 </div>
-<ng-template #scanQRCodeDialog>
+<ng-template id="myModal" #scanQRCodeDialog>
     <div class="p-3" style="width: 22rem !important">
         <h2 matDialogTitle>Scan QR Code</h2>
         <form class="mb-3">

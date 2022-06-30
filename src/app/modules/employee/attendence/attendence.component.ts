@@ -50,6 +50,7 @@ import {
 import { EmployeeAdminService } from 'app/core/employee-admin/employee-admin.service';
 import { EmployeeI } from 'app/core/auth/auth.interface';
 import { AttendanceService } from 'app/core/attendance/attendance.service';
+import { AuthService } from 'app/core/auth/auth.service';
 
 export type ChartOptions = {
     series: ApexNonAxisChartSeries;
@@ -77,11 +78,15 @@ export class AttendenceComponent implements OnInit {
     selectedEmployee: EmployeeI;
     workingDays = 0;
     leaveDays = 0;
+    public userRole: any;
 
     constructor(
         private employeeService: EmployeeAdminService,
-        private attendanceService: AttendanceService
-    ) {}
+        private attendanceService: AttendanceService,
+        private authService: AuthService
+    ) {
+        this.userRole = this.authService.userRole;
+    }
 
     ngOnInit(): void {
         this.getAdminAttendance();
@@ -92,12 +97,17 @@ export class AttendenceComponent implements OnInit {
             console.log(res);
             this.employeesList = res.data.employees.results;
             this.selectedEmployee = this.employeesList[0];
+            console.log(this.selectedEmployee);
             this.getAttendance();
         });
     }
+    changeEmploye(event) {
+        this.selectedEmployee = event.detail.value;
+        this.getAttendance();
+    }
     async getAttendance() {
-        // let empID = appStorage.authResponse.data.user?.modelId?._id;
-        let empID;
+        let empID = this.userRole.modelId?._id;
+        console.log(empID);
         if (this.selectedEmployee) {
             empID = this.selectedEmployee._id;
         }
