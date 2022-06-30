@@ -3,6 +3,7 @@ import {
     ChangeDetectorRef,
     Component,
     ElementRef,
+    NgZone,
     OnInit,
     ViewChild,
 } from '@angular/core';
@@ -47,7 +48,8 @@ export class QrScannerLayoutComponent implements OnInit {
         private router: Router,
         private authService: AuthService,
         private cd: ChangeDetectorRef,
-        private _fuseConfirmationService: FuseConfirmationService
+        private _fuseConfirmationService: FuseConfirmationService,
+        private zone: NgZone
     ) {
         this.userRole = this.authService.userRole;
     }
@@ -109,7 +111,10 @@ export class QrScannerLayoutComponent implements OnInit {
         if (type === '1') {
             this.scannedType = 'Product';
         }
-        this.getTestresults();
+        this.zone.run(() => {
+            this.getTestresults();
+        });
+
         console.log('this.scannedId', this.scannedId);
         console.log('this.scannedType', this.scannedType);
         this.cd.detectChanges();
