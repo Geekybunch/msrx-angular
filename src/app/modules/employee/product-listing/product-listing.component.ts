@@ -154,22 +154,10 @@ export class ProductListingComponent implements OnInit {
 
     openProductDetails(event) {
         this.viewDetails = event;
+        this.commonService.$passData.next(event);
         this.sideNav.toggle();
     }
 
-    openPlantDetails(id: number) {
-        this.plantId = id;
-        this.commonService.getCommonPlantDetails(this.plantId).subscribe(
-            (response: any) => {
-                console.log('plants data', response);
-                this.plantsData = response.data.plant;
-                console.log(this.plantsData);
-            },
-            (err: any) => {
-                console.log(err);
-            }
-        );
-    }
     deleteProduct(productID: string) {
         const confirmation = this.confirmationService.open({
             title: 'Are you sure ?',
@@ -220,5 +208,8 @@ export class ProductListingComponent implements OnInit {
         // EditPlant.afterClosed().subscribe((result) => {
         //     this.getManufacturedProducts();
         // });
+    }
+    closeDrawer(event) {
+        this.sideNav.close();
     }
 }

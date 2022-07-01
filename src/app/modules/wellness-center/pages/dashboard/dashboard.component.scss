@@ -24,9 +24,17 @@
     height: 32px;
     line-height: 20px;
 }
-// .time-slot-holder:nth-child(7n + 7) {
-//     border-right: 0px !important;
-// }
-// .time-slot-holder:last-child {
-//     border-bottom: 0px !important;
-// }
+.date_out {
+    background: #fafafa;
+    button:hover {
+        background: #ededed;
+    }
+}
+.time-slot-holder:hover {
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.time-slot-holder:nth-child(5n + 5) {
+    border-right: 0px !important;
+}

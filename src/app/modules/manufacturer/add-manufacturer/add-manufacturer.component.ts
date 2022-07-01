@@ -208,8 +208,6 @@ export class AddManufacturerComponent implements OnInit {
     presentScanAction(): void {
         const dialogRef = this.dialog.open(ScanMorePlantsComponent, {});
         dialogRef.afterClosed().subscribe((result) => {
-            this.dialog.closeAll();
-
             this.enterdPlantId = result;
             this.addPlant();
             console.log(result);

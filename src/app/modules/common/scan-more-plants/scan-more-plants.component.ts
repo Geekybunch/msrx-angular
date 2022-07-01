@@ -88,22 +88,22 @@ export class ScanMorePlantsComponent implements OnInit {
         }
         if (type === '1') {
             this.scannedType = 'Product';
-            this.zone.run(() => {
-                this.confirmationService.open({
-                    title: 'Error',
-                    message: 'Invalid QR Code',
-                    actions: {
-                        confirm: {
-                            show: false,
-                        },
-                        cancel: {
-                            show: true,
-                            label: 'Cancel',
-                        },
-                    },
-                });
-            });
-            this.scannedId = '';
+            // this.zone.run(() => {
+            //     this.confirmationService.open({
+            //         title: 'Error',
+            //         message: 'Invalid QR Code',
+            //         actions: {
+            //             confirm: {
+            //                 show: false,
+            //             },
+            //             cancel: {
+            //                 show: true,
+            //                 label: 'Cancel',
+            //             },
+            //         },
+            //     });
+            // });
+            // this.scannedId = '';
         }
         console.log('this.scannedId', this.scannedId);
         console.log('this.scannedType', this.scannedType);

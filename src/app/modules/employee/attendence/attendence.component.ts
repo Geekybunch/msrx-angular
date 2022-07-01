@@ -102,7 +102,8 @@ export class AttendenceComponent implements OnInit {
         });
     }
     changeEmploye(event) {
-        this.selectedEmployee = event.detail.value;
+        console.log(event);
+        this.selectedEmployee = event;
         this.getAttendance();
     }
     async getAttendance() {

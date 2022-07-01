@@ -4,8 +4,9 @@ import { QrScannerLayoutComponent } from './qr-scanner-layout.component';
 import { Route, RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'app/shared/shared.module';
-import { PlantsDrawerModule } from '../plants-drawer/plants-drawer.module';
+
 import { ProductDrawerModule } from '../product-drawer/product-drawer.module';
+import { PlantsDrawerModule } from '../plants-drawer/plants-drawer.module';
 
 const routes: Route[] = [
     {

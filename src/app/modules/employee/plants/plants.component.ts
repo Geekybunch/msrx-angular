@@ -14,6 +14,10 @@ import { GrowerService } from 'app/core/grower/grower.service';
 import { TesterService } from 'app/core/tester/tester.service';
 import { ProcessorService } from 'app/core/processor/processor.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { Observable, Observer } from 'rxjs';
+import { genereateQRCode } from 'app/shared/shared.utils';
+import { QRType } from 'app/shared/shared.enums';
+import { CommonService } from 'app/core/common/common.service';
 
 @Component({
     selector: 'app-plants',
@@ -38,6 +42,7 @@ export class PlantsComponent implements OnInit {
     authServices: any;
     testeractions: boolean = false;
     qrBase64: string;
+    base64Image: any;
 
     constructor(
         private growerService: GrowerService,
@@ -45,6 +50,7 @@ export class PlantsComponent implements OnInit {
         private testerService: TesterService,
         private processorService: ProcessorService,
         private snackBar: MatSnackBar,
+        private commonService: CommonService,
         private confirmationService: FuseConfirmationService
     ) {
         this.userInfo = JSON.parse(localStorage.getItem('userData'));
@@ -52,7 +58,6 @@ export class PlantsComponent implements OnInit {
 
     ngOnInit(): void {
         this.getPlants();
-
         console.log(this.userInfo.modelId.employer.businessType);
     }
     getPlants(): void {
@@ -117,9 +122,8 @@ export class PlantsComponent implements OnInit {
         }
     }
 
-    sideToggle(event): void {
-        this.viewDetails = event;
-        console.log(this.viewDetails);
+    plantDetails(event): void {
+        this.commonService.$passData.next(event);
         this.sideNav.toggle();
     }
 
@@ -187,5 +191,52 @@ export class PlantsComponent implements OnInit {
                 );
             }
         });
+    }
+    downloadQrCode() {
+        const qr = genereateQRCode(QRType.PLANT, this.viewDetails._id);
+        qr.toDataURL();
+        let imageUrl = qr.toDataURL();
+        this.getBase64ImageFromURL(imageUrl).subscribe((base64data) => {
+            this.base64Image = 'data:image/jpg;base64,' + base64data;
+            var link = document.createElement('a');
+            document.body.appendChild(link); // for Firefox
+            link.setAttribute('href', this.base64Image);
+            link.setAttribute('download', 'mmsrx.png');
+            link.click();
+        });
+    }
+
+    getBase64ImageFromURL(url: string) {
+        return Observable.create((observer: Observer<string>) => {
+            const img: HTMLImageElement = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = url;
+            if (!img.complete) {
+                img.onload = () => {
+                    observer.next(this.getBase64Image(img));
+                    observer.complete();
+                };
+                img.onerror = (err) => {
+                    observer.error(err);
+                };
+            } else {
+                observer.next(this.getBase64Image(img));
+                observer.complete();
+            }
+        });
+    }
+
+    getBase64Image(img: HTMLImageElement) {
+        const canvas: HTMLCanvasElement = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const dataURL: string = canvas.toDataURL('image/png');
+
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
+    }
+    closeDrawer(event) {
+        this.sideNav.close();
     }
 }

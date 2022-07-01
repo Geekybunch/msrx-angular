@@ -27,6 +27,7 @@ import {
 })
 export class CommonService {
     $testPantID = new Subject();
+    $passData = new Subject();
 
     private cityDetailsMap = new Map<string, string[]>();
 

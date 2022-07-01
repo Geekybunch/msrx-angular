@@ -543,14 +543,21 @@
                             }}</span>
                         </div>
                     </ng-container>
-                    <!-- <div class="mt-3">
+                    <div class="mt-3">
                         <button
                             (click)="downloadQrCode()"
                             class="items-center bg-primary scanner text-white rounded-full"
                         >
                             Show QR Code
                         </button>
-                    </div> -->
+                    </div>
+                    <div class="mt-4 qr_img" *ngIf="qrfileName">
+                        <img
+                            src="{{ qrfileName }}"
+                            width="150"
+                            style="width: 300px"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

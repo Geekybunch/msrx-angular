@@ -7,25 +7,18 @@ import {
     OnInit,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {
-    ActivatedRoute,
-    NavigationStart,
-    Router,
-    Event,
-    NavigationEnd,
-} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth/auth.service';
 import { CommonPlantDetailI } from 'app/core/common/common.interface';
 import { CommonService } from 'app/core/common/common.service';
-import { BusinessTypeEnums, QRType } from 'app/shared/shared.enums';
-import { genereateQRCode } from 'app/shared/shared.utils';
+import { QRType } from 'app/shared/shared.enums';
+import { downloadFile, genereateQRCode } from 'app/shared/shared.utils';
 import { cloneDeep } from 'lodash';
 import { AddProcessedResultComponent } from '../add-processed-result/add-processed-result.component';
 import { AddTestResultComponent } from '../add-test-result/add-test-result.component';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { TesterService } from 'app/core/tester/tester.service';
+import { Observable, Observer } from 'rxjs';
 
 @Component({
     selector: 'app-test-details',
@@ -37,11 +30,12 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
     plantID: string;
     plantResponse: any;
     viewDetails: any;
-    showNext = false;
+
     userInfo: any;
     plantNull: any;
     testButton: boolean = false;
-    tesff: any;
+    qrfileName: any;
+    base64Image: any;
     constructor(
         private activatedRoute: ActivatedRoute,
         private commonService: CommonService,
@@ -63,7 +57,6 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
             if (qParams.plantID) {
                 this.plantID = this.plantID || qParams.plantID;
             }
-            this.showNext = qParams.showNext;
             this.zone.run(() => {
                 this.getPlantDetails();
             });
@@ -76,7 +69,6 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
     getPlantDetails() {
         return this.commonService.getCommonPlantDetails(this.plantID).subscribe(
             (res) => {
-                console.log(res);
                 this.plantResponse = res.data.plant;
                 if (this.plantResponse == null) {
                     this.plantNull = '  "PlantId" incorrect...!';
@@ -94,6 +86,7 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
             }
         );
     }
+
     openTestResultDialog(plantData: any) {
         if (this.userInfo.modelId.employer.businessType === 'Tester') {
             let EditPlant = this.matDialog.open(AddTestResultComponent, {
@@ -119,42 +112,48 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
             });
         }
     }
-    async downloadQrCode() {
+    downloadQrCode() {
         const qr = genereateQRCode(QRType.PLANT, this.plantID);
-
-        try {
-            // const res = await this.savePicture(qr.toDataURL());
-            // alert(`QR Downloaded! ${res.filepath}`);
-            // this.toastr.show(`QR Downloaded! ${res.filepath}`);
-            this.openProtoViewer(qr.toDataURL());
-        } catch (e) {
-            // `e` may be a string or Error object
-        }
-    }
-    openProtoViewer(arg0: any) {
-        throw new Error('Method not implemented.');
-    }
-    private async savePicture(base64Data: string) {
-        await Filesystem.requestPermissions();
-        const filePath = 'mmsrx';
-        try {
-            await Filesystem.mkdir({
-                path: filePath,
-                directory: Directory.ExternalStorage,
-            });
-        } catch (error) {
-            console.error('Error in creating directory', error);
-        }
-
-        const fileName = `${filePath}/Batch #${this.plantResponse.batchNumber}.png`;
-        const savedFile = await Filesystem.writeFile({
-            path: fileName,
-            data: base64Data,
-            directory: Directory.ExternalStorage,
+        qr.toDataURL();
+        let imageUrl = qr.toDataURL();
+        this.getBase64ImageFromURL(imageUrl).subscribe((base64data) => {
+            this.base64Image = 'data:image/jpg;base64,' + base64data;
+            var link = document.createElement('a');
+            document.body.appendChild(link); // for Firefox
+            link.setAttribute('href', this.base64Image);
+            link.setAttribute('download', 'mmsrx.png');
+            link.click();
         });
-        return {
-            filepath: fileName,
-            webviewPath: savedFile.uri,
-        };
+    }
+
+    getBase64ImageFromURL(url: string) {
+        return Observable.create((observer: Observer<string>) => {
+            const img: HTMLImageElement = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = url;
+            if (!img.complete) {
+                img.onload = () => {
+                    observer.next(this.getBase64Image(img));
+                    observer.complete();
+                };
+                img.onerror = (err) => {
+                    observer.error(err);
+                };
+            } else {
+                observer.next(this.getBase64Image(img));
+                observer.complete();
+            }
+        });
+    }
+
+    getBase64Image(img: HTMLImageElement) {
+        const canvas: HTMLCanvasElement = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const dataURL: string = canvas.toDataURL('image/png');
+
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
     }
 }

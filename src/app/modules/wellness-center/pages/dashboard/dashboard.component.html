@@ -159,59 +159,27 @@
                         Appointment Times
                     </div>
                 </div>
-                <div class="flex flex-row justify-between mb-4">
-                    <!-- {{ weekArray | json }} -->
-                    <!-- <h3
-                        *ngFor="let date of weekArray"
-                        class="text-lg font-medium tracking-tight leading-6"
-                    >
-                        {{ date }}
-                    </h3> -->
-
+                <div
+                    class="flex flex-row justify-between items-center border date_out"
+                >
                     <button
-                        mat-menu-item
-                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
-                        mwlCalendarPreviousView
-                        [view]="view"
-                        [(viewDate)]="viewDate"
-                        (viewDateChange)="getBookingSlots()"
-                    >
-                        <span class="flex items-center">
-                            <mat-icon
-                                class="icon-size-4 mr-2 text-primary-700"
-                                [svgIcon]="'heroicons_solid:arrow-narrow-left'"
-                            ></mat-icon>
-                            <span> Previous</span>
-                        </span>
-                    </button>
-                    <h3
+                        (click)="getBookingSlots(date)"
                         *ngFor="let date of weekArray"
-                        class="text-lg font-medium tracking-tight leading-6"
+                        class="text-lg font-medium tracking-tight leading-6 px-6 py-2"
                     >
                         {{ date | date: "mediumDate" }}
-                    </h3>
-                    <button
-                        mat-menu-item
-                        class="items-center bg-primary-50 text-primary-700 dark:bg-primary dark:text-on-primary rounded-full"
-                        mwlCalendarNextView
-                        [view]="view"
-                        [(viewDate)]="viewDate"
-                        (viewDateChange)="getBookingSlots()"
-                    >
-                        <span class="flex items-center justify-center">
-                            <span> Next</span>
-                            <mat-icon
-                                class="icon-size-4 ml-2 mr-0 text-primary-700"
-                                [svgIcon]="'heroicons_solid:arrow-narrow-right'"
-                            ></mat-icon>
-                        </span>
                     </button>
                 </div>
 
-                <div class="flex flex-col flex-auto grid grid-cols-5 gap-3">
+                <div
+                    class="flex flex-col flex-auto border border-t-0"
+                    style="min-height: 400px"
+                    [ngClass]="!slotData.length ? '' : 'grid grid-cols-5'"
+                >
                     <div
                         *ngFor="let slot of slotData"
-                        class="px-5 py-5 border time-slot-holder text-center"
+                        routerLink="/wellnesscenter/booking-listing"
+                        class="px-5 py-5 border-r border-b time-slot-holder text-center"
                     >
                         <div class="bg-primary rounded-full badge mb-2 text-lg">
                             {{ slot.count }}
@@ -220,6 +188,11 @@
                             {{ slot.slot }}
                         </div>
                     </div>
+                    <ng-container *ngIf="!slotData.length">
+                        <h3 class="no-booking text-center p-10 py-48">
+                            No Appointments
+                        </h3>
+                    </ng-container>
                 </div>
             </div>
         </div>

@@ -14,6 +14,7 @@ import { DeliveryVehicleI } from 'app/core/dilevery-vehicle/delivery-vehicle.int
 import { DileveryVehicleService } from 'app/core/dilevery-vehicle/dilevery-vehicle.service';
 import { CreateDileveryI } from 'app/core/distributor/distributor.interface';
 import { DistributorService } from 'app/core/distributor/distributor.service';
+import { ScanMorePlantsComponent } from 'app/modules/common/scan-more-plants/scan-more-plants.component';
 import moment from 'moment';
 
 @Component({
@@ -78,7 +79,7 @@ export class AddDistributionComponent implements OnInit {
             (res: any) => {
                 this.productID = '';
                 console.log(res);
-                if (res.data.product === null) {
+                if (!res.data.product) {
                     this.snackBar.open('Invalid Product', 'Close', {
                         duration: 3000,
                         panelClass: ['alert-red'],
@@ -179,8 +180,17 @@ export class AddDistributionComponent implements OnInit {
             }
         );
     }
-    presentScanAction() {
-        this.router.navigateByUrl('/distributor/qr-scanner-layout');
-        this.dialog.closeAll();
+    presentScanAction(): void {
+        const dialogRef = this.dialog.open(ScanMorePlantsComponent, {});
+        dialogRef.afterClosed().subscribe((result) => {
+            this.productID = result;
+            // this.addPlant();
+            console.log(result);
+        });
     }
+
+    // presentScanAction() {
+    //     this.router.navigateByUrl('/distributor/qr-scanner-layout');
+    //     this.dialog.closeAll();
+    // }
 }

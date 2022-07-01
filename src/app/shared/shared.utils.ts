@@ -1,18 +1,12 @@
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
 
-import { BusinessTypeEnums, OnModelType, QRType } from './shared.enums';
+import { BusinessTypeEnums, QRType } from './shared.enums';
 import * as QRious from 'qrious';
 import moment from 'moment';
-import { AuthService } from 'app/core/auth/auth.service';
 
 export function getBusinessType(): BusinessTypeEnums {
     return this.authService.modelId.employer?.businessType;
 }
-
-// export function isPatient() {
-//     return appStorage?.authResponse?.data?.user.onModel === OnModelType.patient;
-// }
-
 export function genereateQRCode(type: QRType, value: string) {
     console.log('Generating QR Code with DATA', `${type}:${value}`);
     return new QRious({
@@ -90,7 +84,3 @@ export function filterNullValue(data: any) {
     });
     return result;
 }
-
-// export function isAdmin() {
-//     return appStorage.authResponse.data.user.modelId.type === 'Admin';
-// }

@@ -18,6 +18,7 @@ import { DeliveryVehicleI } from 'app/core/dilevery-vehicle/delivery-vehicle.int
 import { DileveryVehicleService } from 'app/core/dilevery-vehicle/dilevery-vehicle.service';
 import { CreateDileveryI } from 'app/core/distributor/distributor.interface';
 import { DistributorService } from 'app/core/distributor/distributor.service';
+import { ScanMorePlantsComponent } from 'app/modules/common/scan-more-plants/scan-more-plants.component';
 import moment from 'moment';
 
 @Component({
@@ -74,9 +75,17 @@ export class CreateDisposaryComponent implements OnInit {
         this.commonService.getCommonPlantDetails(this.plantID).subscribe(
             (res: any) => {
                 this.plantID = '';
-                console.log(res);
-                this.plantsData = res.data?.plant;
-                this.quantityDialog = true;
+                console.log('res', res);
+
+                if (!res.data.plant) {
+                    this.snackBar.open('Invalid Plant', 'Close', {
+                        duration: 3000,
+                        panelClass: ['alert-red'],
+                    });
+                } else {
+                    this.plantsData = res.data?.plant;
+                    this.quantityDialog = true;
+                }
             },
             (err: any) => {
                 this.snackBar.open(err.error.message, 'Close', {
@@ -164,8 +173,17 @@ export class CreateDisposaryComponent implements OnInit {
             }
         );
     }
-    presentScanAction() {
-        this.router.navigateByUrl('/disposer/qr-scanner-layout');
-        this.dialog.closeAll();
+    presentScanAction(): void {
+        const dialogRef = this.dialog.open(ScanMorePlantsComponent, {});
+        dialogRef.afterClosed().subscribe((result) => {
+            this.plantID = result;
+            // this.addPlant();
+            console.log(result);
+        });
     }
+
+    // presentScanAction() {
+    //     this.router.navigateByUrl('/disposer/qr-scanner-layout');
+    //     this.dialog.closeAll();
+    // }
 }

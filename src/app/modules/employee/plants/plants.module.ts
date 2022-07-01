@@ -4,6 +4,8 @@ import { PlantsComponent } from './plants.component';
 import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 
+import { PlantsDrawerModule } from 'app/modules/common/plants-drawer/plants-drawer.module';
+
 const plantsdRoutes: Route[] = [
     {
         path: '',
@@ -13,6 +15,11 @@ const plantsdRoutes: Route[] = [
 
 @NgModule({
     declarations: [PlantsComponent],
-    imports: [CommonModule, RouterModule.forChild(plantsdRoutes), SharedModule],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(plantsdRoutes),
+        SharedModule,
+        PlantsDrawerModule,
+    ],
 })
 export class PlantsModule {}
