@@ -36,6 +36,7 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
     testButton: boolean = false;
     qrfileName: any;
     base64Image: any;
+    patientId: string;
     constructor(
         private activatedRoute: ActivatedRoute,
         private commonService: CommonService,
@@ -56,10 +57,12 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
         this.activatedRoute.queryParams.subscribe((qParams) => {
             if (qParams.plantID) {
                 this.plantID = this.plantID || qParams.plantID;
+                this.patientId = this.patientId || qParams.patientId;
             }
             this.zone.run(() => {
                 this.getPlantDetails();
             });
+            console.log(this.patientId);
         });
     }
     ngOnDestroy(): void {

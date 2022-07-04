@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { AuthService } from 'app/core/auth/auth.service';
 import { CommonService } from 'app/core/common/common.service';
 import { InventoryService } from 'app/core/inventory/inventory.service';
 import { ManufactureService } from 'app/core/manufacture/manufacture.service';
@@ -35,6 +36,7 @@ export class ProductListingComponent implements OnInit {
     public plantsData: any;
     public plantId: any;
     public filterInventoryDetails: any = [];
+    public role: any;
 
     visibleColumns = DisplayedManufactrors;
     dataSource = new MatTableDataSource<CreateProductsRequest>();
@@ -49,10 +51,16 @@ export class ProductListingComponent implements OnInit {
         private confirmationService: FuseConfirmationService,
         private matDialog: MatDialog,
         private router: Router,
-        private inventoryService: InventoryService
+        private inventoryService: InventoryService,
+        private authService: AuthService
     ) {}
 
     ngOnInit(): void {
+        this.role = this.authService.userRole;
+        if (this.role.modelId.employer.businessType === 'Dispensary') {
+            this.getInventoryDetails();
+            this.menuButton = false;
+        }
         if (this.router.url == '/manufacturer/product-listing') {
             this.getManufacturedProducts();
         } else if (this.router.url == '/manufacturer/inventory-details') {

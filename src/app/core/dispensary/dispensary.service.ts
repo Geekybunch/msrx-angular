@@ -16,15 +16,9 @@ import {
 export class DispensaryService {
     constructor(private http: HttpClient) {}
 
-    getDashboardData(from: string, to: string) {
+    getDashboardData(payload: any) {
         return this.http.get<DispensaryDashboardResponse>(
-            applicationUrls.dispensaryDashboard,
-            {
-                params: {
-                    // from,
-                    // to
-                } as any,
-            }
+            applicationUrls.dispensaryDashboard + payload
         );
     }
 
@@ -48,9 +42,9 @@ export class DispensaryService {
         );
     }
 
-    getSoldDosages() {
+    getSoldDosages(payload: any) {
         return this.http.get<DosageHistoryResponse>(
-            applicationUrls.dispensaryDosageList
+            applicationUrls.dispensaryDosageList + payload
         );
     }
 }

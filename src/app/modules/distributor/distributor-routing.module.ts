@@ -31,7 +31,7 @@ const routes: Routes = [
                 path: 'delivery-vehicles',
                 loadChildren: () =>
                     import(
-                        'app/modules/disposal/pages/dilevery-vehicles/dilevery-vehicles.module'
+                        'app/modules/common/dilevery-vehicles/dilevery-vehicles.module'
                     ).then((m) => m.DileveryVehiclesModule),
             },
             {

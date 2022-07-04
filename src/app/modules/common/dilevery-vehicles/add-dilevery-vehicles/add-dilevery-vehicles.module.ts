@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChooseLocationMapComponent } from './choose-location-map.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AddDileveryVehiclesComponent } from './add-dilevery-vehicles.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @NgModule({
-    declarations: [ChooseLocationMapComponent],
+    declarations: [AddDileveryVehiclesComponent],
     imports: [CommonModule, SharedModule],
     providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
     ],
 })
-export class ChooseLocationMapModule {}
+export class AddDileveryVehiclesModule {}

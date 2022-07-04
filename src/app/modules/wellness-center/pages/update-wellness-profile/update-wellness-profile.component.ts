@@ -6,9 +6,7 @@ import { Router } from '@angular/router';
 import { CommonService } from 'app/core/common/common.service';
 import { AddWelnessDetails } from 'app/core/wellness/wellness.interface';
 import { WellnessService } from 'app/core/wellness/wellness.service';
-import { cloneDeep } from 'lodash';
 import moment from 'moment';
-import { ChooseLocationMapComponent } from './choose-location-map/choose-location-map.component';
 
 @Component({
     selector: 'app-update-wellness-profile',
@@ -108,15 +106,11 @@ export class UpdateWellnessProfileComponent implements OnInit {
             this.selectedDays.splice(idx, 1);
         }
     }
-    openLocationDialog() {
-        let addPrescription = this.matDialog.open(ChooseLocationMapComponent, {
-            autoFocus: false,
-            data: {
-                // booking: cloneDeep(booking),
-            },
-        });
-        addPrescription.afterClosed().subscribe((result) => {});
-    }
+    // openLocation() {
+    //     this.router.navigateByUrl(
+    //         'https://www.google.com/maps/place/Byhalia+Family+Health+Center/@34.870251,-89.687277,15z/data=!4m5!3m4!1s0x0:0x7109ef4929e71450!8m2!3d34.8710112!4d-89.6876625?hl=en-US'
+    //     );
+    // }
     saveProfile() {
         console.log(this.profileUpdateForm.value);
         if (this.profileUpdateForm.invalid) {

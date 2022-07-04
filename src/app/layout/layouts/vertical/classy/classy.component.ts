@@ -26,6 +26,7 @@ import { AuthService } from 'app/core/auth/auth.service';
 import {
     cultivatorNavigation,
     defaultNavigation,
+    dispensaryNavigation,
     disposalNavigation,
     distributorNavigation,
     manufacturerNavigation,
@@ -125,6 +126,10 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                     this.role.modelId.employer.businessType === 'WellnessCenter'
                 ) {
                     this.navigation.compact = wellnessCenterNavigation;
+                } else if (
+                    this.role.modelId.employer.businessType === 'Dispensary'
+                ) {
+                    this.navigation.compact = dispensaryNavigation;
                 }
             });
 
@@ -236,9 +241,9 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         } else if (
             this.role.modelId.employer?.businessType === 'WellnessCenter'
         ) {
-            this.router.navigate(['/wellnesscenter/test-details'], {
+            this.router.navigate(['/wellnesscenter/prescription-details'], {
                 queryParams: {
-                    plantID: this.scanQRForm.value.planId,
+                    patientId: this.scanQRForm.value.planId,
                 },
                 replaceUrl: true,
             });

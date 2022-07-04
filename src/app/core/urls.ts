@@ -173,7 +173,7 @@ class ApplicationURLs {
         return this.serverUrl + '/business/dispensary/profile';
     }
     get dispensaryDosageList() {
-        return this.serverUrl + '/business/common/dispensary/dosage/list';
+        return this.serverUrl + '/business/dispensary/dosage/list';
     }
 
     get adminAttendanceLastStatus() {

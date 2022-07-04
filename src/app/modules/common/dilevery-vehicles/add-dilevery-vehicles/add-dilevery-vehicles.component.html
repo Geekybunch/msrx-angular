@@ -1,0 +1,54 @@
+<div class="flex flex-col flex-auto form-Out">
+    <div class="flex-auto p-4">
+        <div
+            class="flex flex-col sm:flex-row items-center justify-between mb-5"
+        >
+            <div class="text-xl font-medium tracking-tight leading-6 truncate">
+                Add Vehicle
+            </div>
+            <button type="button" mat-icon-button matDialogClose>
+                <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+            </button>
+        </div>
+
+        <form [formGroup]="vehicleForm" class="flex flex-col">
+            <div class="flex flex-row gt-md:flex-row">
+                <mat-form-field class="flex-auto fuse-mat-dense">
+                    <mat-label> Vehicle Number</mat-label>
+                    <input matInput [formControlName]="'vehicleNumber'" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto fuse-mat-dense ml-5">
+                    <mat-label> Vehicle ID</mat-label>
+                    <input matInput [formControlName]="'vehicleId'" />
+                </mat-form-field>
+            </div>
+            <div class="flex flex-row gt-md:flex-row">
+                <mat-form-field class="flex-auto fuse-mat-dense">
+                    <mat-label> Vehicle Type</mat-label>
+                    <input matInput [formControlName]="'vehicleType'" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto fuse-mat-dense ml-5">
+                    <mat-label> Vehicle Color</mat-label>
+                    <input matInput [formControlName]="'vehicleColor'" />
+                </mat-form-field>
+            </div>
+            <div class="flex flex-row gt-md:flex-row">
+                <mat-form-field class="flex-auto fuse-mat-dense">
+                    <mat-label> Vehicle Permit</mat-label>
+                    <input matInput [formControlName]="'vehiclePermit'" />
+                </mat-form-field>
+            </div>
+
+            <div class="flex flex-col gt-md:flex-row mt-3">
+                <button
+                    (click)="saveVehicle()"
+                    class="max-w-50"
+                    mat-raised-button
+                    color="primary"
+                >
+                    Save Vehicle
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

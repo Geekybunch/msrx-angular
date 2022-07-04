@@ -38,4 +38,5 @@ export const DisplayedDeliveryVehicleI = [
     'vehicleType',
     'vehicleColor',
     'createdAt',
+    'actions',
 ];

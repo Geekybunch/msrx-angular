@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DispensaryService } from 'app/core/dispensary/dispensary.service';
 import { DisposerService } from 'app/core/disposer/disposer.service';
 import { DistributorService } from 'app/core/distributor/distributor.service';
 import { GrowerService } from 'app/core/grower/grower.service';
@@ -37,7 +38,8 @@ export class DashboardComponent implements OnInit {
         private processorService: ProcessorService,
         private manufactureService: ManufactureService,
         private disposerService: DisposerService,
-        private distributorService: DistributorService
+        private distributorService: DistributorService,
+        private dispensaryService: DispensaryService
     ) {
         this.userInfo = JSON.parse(localStorage.getItem('userData'));
     }
@@ -210,6 +212,31 @@ export class DashboardComponent implements OnInit {
                             {
                                 name: 'Manufactured',
                                 data: res.data.deliveryDone,
+                            },
+                        ];
+                    });
+            }
+        } else if (
+            this.userInfo.modelId.employer.businessType === 'Dispensary'
+        ) {
+            let params: any;
+            if (start && !end) {
+            } else {
+                if (start && end) {
+                    params = `?from=${start}&to=${end}`;
+                } else {
+                    params = `?from=${this.startDate}&to=${this.endDate}`;
+                }
+                this.dispensaryService
+                    .getDashboardData(params)
+                    .subscribe((res: any) => {
+                        this.analyticsData = res.data;
+                        this.materialType = 'Dosages';
+                        console.log(res);
+                        this.userSessionsSeries = [
+                            {
+                                name: 'Given',
+                                data: res.data.dispensaryStats,
                             },
                         ];
                     });

@@ -22,52 +22,14 @@
                                 #query
                             />
                         </mat-form-field>
-                        <!-- <ng-select
-                            class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
-                            placeholder="Select Delivery Business"
-                            [(ngModel)]="selectedBusiness"
-                            (change)="filterByBusiness()"
-                        >
-                            <ng-option
-                                *ngFor="let list of businesses"
-                                [value]="list.from._id"
-                                >{{ list.from.businessName }}</ng-option
+                        <div class="ml-6">
+                            <button
+                                (click)="createVehicle()"
+                                class="text-md items-center bg-primary scanner text-white rounded-full"
                             >
-                        </ng-select>
-                        <ng-select
-                            class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense sm:ml-4"
-                            placeholder="Select Delivery From Business"
-                            [(ngModel)]="selectedBusinessFrom"
-                            (change)="filterByBusinessFrom()"
-                        >
-                            <ng-option
-                                *ngFor="let business of businesses"
-                                [value]="business.from._id"
-                                >{{ business.from.businessName }}</ng-option
-                            >
-                        </ng-select>
-                        <ng-select
-                            class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense sm:ml-4"
-                            placeholder="Select Delivery To Business"
-                            [(ngModel)]="selectedBusinessTo"
-                            (change)="filterByBusinessTo()"
-                        >
-                            <ng-option
-                                *ngFor="let business of businesses"
-                                [value]="
-                                    business && business.to && business.to._id
-                                        ? business.to._id
-                                        : ''
-                                "
-                                >{{
-                                    business &&
-                                    business.to &&
-                                    business.to.businessName
-                                        ? business.to.businessName
-                                        : ""
-                                }}</ng-option
-                            >
-                        </ng-select> -->
+                                Add Dilevery Vehicles
+                            </button>
+                        </div>
                     </div>
                     <div class="flex flex-col items-center w-36">
                         <div
@@ -158,6 +120,57 @@
                                 *matCellDef="let element"
                             >
                                 {{ element.createdAt | date: "mediumDate" }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="actions">
+                            <th
+                                class="pl-6"
+                                mat-header-cell
+                                *matHeaderCellDef
+                            ></th>
+                            <td
+                                class="pl-6 capitalize"
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <button
+                                    mat-icon-button
+                                    [matMenuTriggerFor]="overdueMenu"
+                                >
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="
+                                            'heroicons_solid:dots-vertical'
+                                        "
+                                    ></mat-icon>
+                                </button>
+                                <mat-menu #overdueMenu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        (click)="modifyVehicle(element)"
+                                    >
+                                        <span class="flex items-center">
+                                            <mat-icon
+                                                class="icon-size-5 mr-3"
+                                                [svgIcon]="'edit'"
+                                            ></mat-icon>
+                                            <span>Edit</span>
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        mat-menu-item
+                                        (click)="deleteVehicle(element._id)"
+                                    >
+                                        <span class="flex items-center">
+                                            <mat-icon
+                                                class="icon-size-5 mr-3"
+                                                [svgIcon]="'delete'"
+                                            ></mat-icon>
+                                            <span>Delete</span>
+                                        </span>
+                                    </button>
+                                </mat-menu>
                             </td>
                         </ng-container>
 

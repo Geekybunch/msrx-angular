@@ -415,6 +415,57 @@ export const distributorNavigation: FuseNavigationItem[] = [
         link: '/sign-out',
     },
 ];
+export const dispensaryNavigation: FuseNavigationItem[] = [
+    {
+        id: 'dispensary.dashboard',
+        title: 'Dashboard',
+        type: 'basic',
+        icon: 'dashboard',
+        link: '/dispensary/dashboard',
+    },
+    {
+        id: 'dispensary.dispensary-center-detail',
+        title: 'Business Profile',
+        type: 'basic',
+        icon: 'heroicons_outline:office-building',
+        link: '/dispensary/dispensary-center-detail',
+    },
+    {
+        id: 'dispensary.dosage-history',
+        title: 'Sold Dosage',
+        type: 'basic',
+        icon: 'add_shopping_cart',
+        link: '/dispensary/dosage-history',
+    },
+    {
+        id: 'wellnesscenter.inventory-details',
+        title: 'Inventory Details',
+        type: 'basic',
+        icon: 'layers',
+        link: '/dispensary/inventory-details',
+    },
+    {
+        id: 'dispensary.attendence',
+        title: 'Attendence',
+        type: 'basic',
+        icon: 'event_available',
+        link: '/dispensary/attendence',
+    },
+    {
+        id: 'dispensary.employees',
+        title: 'Employee',
+        type: 'basic',
+        icon: 'people_alt',
+        link: '/dispensary/employees',
+    },
+    {
+        id: 'logout',
+        title: 'Logout',
+        type: 'basic',
+        icon: 'logout',
+        link: '/sign-out',
+    },
+];
 export const wellnessCenterNavigation: FuseNavigationItem[] = [
     {
         id: 'wellnesscenter.dashboard',

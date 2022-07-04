@@ -11,6 +11,7 @@ import { ManufacturerGuard } from './core/auth/guards/manufacturer.guard';
 import { DisposalGuard } from './core/auth/guards/disposal.guard';
 import { DistributorGuard } from './core/auth/guards/distributor.guard';
 import { WellnessGuard } from './core/auth/guards/wellness.guard';
+import { DispensaryGuard } from './core/auth/guards/dispensary.guard';
 
 export const appRoutes: Route[] = [
     { path: '', pathMatch: 'full', redirectTo: 'admin/dashboard' },
@@ -251,6 +252,14 @@ export const appRoutes: Route[] = [
         loadChildren: () =>
             import('app/modules/wellness-center/wellness-center.module').then(
                 (m) => m.WellnessCenterModule
+            ),
+    },
+    {
+        path: 'dispensary',
+        canActivate: [DispensaryGuard],
+        loadChildren: () =>
+            import('app/modules/dispensary/dispensary.module').then(
+                (m) => m.DispensaryModule
             ),
     },
 ];

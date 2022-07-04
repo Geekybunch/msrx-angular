@@ -1,12 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import {
     DeliveryVehicleI,
     DisplayedDeliveryVehicleI,
 } from 'app/core/dilevery-vehicle/delivery-vehicle.interface';
 import { DileveryVehicleService } from 'app/core/dilevery-vehicle/dilevery-vehicle.service';
+import { cloneDeep } from 'lodash';
+import { AddDileveryVehiclesComponent } from './add-dilevery-vehicles/add-dilevery-vehicles.component';
 
 @Component({
     selector: 'app-dilevery-vehicles',
@@ -23,7 +27,11 @@ export class DileveryVehiclesComponent implements OnInit {
     visibleColumns = DisplayedDeliveryVehicleI;
     dataSource = new MatTableDataSource<DeliveryVehicleI>();
 
-    constructor(private vehicleService: DileveryVehicleService) {}
+    constructor(
+        private vehicleService: DileveryVehicleService,
+        private matDialog: MatDialog,
+        private snackBar: MatSnackBar
+    ) {}
 
     ngOnInit(): void {
         this.vehiclesList();
@@ -53,4 +61,36 @@ export class DileveryVehiclesComponent implements OnInit {
         );
     }
     filterByBatchNumber(query: string): void {}
+
+    createVehicle() {
+        let addVehicle = this.matDialog.open(AddDileveryVehiclesComponent);
+        addVehicle.afterClosed().subscribe((result) => {
+            this.vehiclesList();
+        });
+    }
+    modifyVehicle(vehiclesData) {
+        let EditVehicle = this.matDialog.open(AddDileveryVehiclesComponent, {
+            autoFocus: false,
+            data: {
+                vehiclesData: cloneDeep(vehiclesData),
+            },
+        });
+        EditVehicle.afterClosed().subscribe((result) => {
+            this.vehiclesList();
+        });
+    }
+    deleteVehicle(id: string) {
+        console.log(id);
+        this.vehicleService.deleteVehicle(id).subscribe(
+            (res) => {
+                this.snackBar.open('Vehicles Deleted', 'Close', {
+                    duration: 3000,
+                });
+                this.vehiclesList();
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
+    }
 }
