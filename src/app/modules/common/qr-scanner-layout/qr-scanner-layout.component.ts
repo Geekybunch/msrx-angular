@@ -8,12 +8,9 @@ import {
     ViewChild,
 } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { AuthService } from 'app/core/auth/auth.service';
-import { CommonService } from 'app/core/common/common.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import QrScanner from 'qr-scanner';
 @Component({
     selector: 'app-qr-scanner-layout',
@@ -28,6 +25,7 @@ export class QrScannerLayoutComponent implements OnInit {
     public qrScannerId: string;
     plantDetails: boolean = false;
     productDetails: boolean = false;
+    prescriptionDetails: boolean = false;
     // returnDataModal = false;
     // plantID: string;
     // plantResponse: any;
@@ -110,6 +108,9 @@ export class QrScannerLayoutComponent implements OnInit {
         }
         if (type === '1') {
             this.scannedType = 'Product';
+        }
+        if (type === '3') {
+            this.scannedType = 'Patient';
         }
         this.zone.run(() => {
             this.getTestresults();
@@ -243,6 +244,58 @@ export class QrScannerLayoutComponent implements OnInit {
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
                 this.productDetails = true;
+            }
+        } else if (
+            this.userRole.modelId.employer?.businessType === 'WellnessCenter'
+        ) {
+            if (this.scannedType == 'Product') {
+                this.productDetails = true;
+                this.sideNav.toggle();
+                this.qrScannerId = this.scannedId;
+            } else if (this.scannedType == 'Patient') {
+                this.prescriptionDetails = true;
+                this.sideNav.toggle();
+                this.qrScannerId = this.scannedId;
+            } else {
+                this._fuseConfirmationService.open({
+                    title: 'Error',
+                    message: 'Invalid QR Code',
+                    actions: {
+                        confirm: {
+                            show: false,
+                        },
+                        cancel: {
+                            show: true,
+                            label: 'Cancel',
+                        },
+                    },
+                });
+            }
+        } else if (
+            this.userRole.modelId.employer?.businessType === 'Dispensary'
+        ) {
+            if (this.scannedType == 'Product') {
+                this.productDetails = true;
+                this.sideNav.toggle();
+                this.qrScannerId = this.scannedId;
+            } else if (this.scannedType == 'Patient') {
+                this.prescriptionDetails = true;
+                this.sideNav.toggle();
+                this.qrScannerId = this.scannedId;
+            } else {
+                this._fuseConfirmationService.open({
+                    title: 'Error',
+                    message: 'Invalid QR Code',
+                    actions: {
+                        confirm: {
+                            show: false,
+                        },
+                        cancel: {
+                            show: true,
+                            label: 'Cancel',
+                        },
+                    },
+                });
             }
         }
     }

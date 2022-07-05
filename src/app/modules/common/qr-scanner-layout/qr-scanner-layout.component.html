@@ -77,5 +77,10 @@
             [qrScannerId]="qrScannerId"
             (newItemEvent)="closeDrawer($event)"
         ></app-product-drawer>
+        <app-prescriptions-drawer
+            *ngIf="prescriptionDetails"
+            [qrScannerId]="qrScannerId"
+            (newItemEvent)="closeDrawer($event)"
+        ></app-prescriptions-drawer>
     </mat-sidenav>
 </mat-sidenav-container>

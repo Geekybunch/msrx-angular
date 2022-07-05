@@ -30,6 +30,7 @@ export class BookingListingComponent implements OnInit {
     public statusChange: any;
     public bookingDetails: any;
     public noRecords: any;
+
     dataSource = new MatTableDataSource<BookingI>();
     constructor(
         private employeesService: EmployeesService,
@@ -103,36 +104,42 @@ export class BookingListingComponent implements OnInit {
         if (status === BOOKIN_STATUS.VISITED) {
             this.markPatientVisited(booking, booking._id, status, new Date());
         }
-        // if (status === BOOKIN_STATUS.REJECTED) {
-        //     // const alert = await this.alertCtrl.create({
-        //     //     header: 'Enter Rejection Reason',
-        //     //     inputs: [
-        //     //         {
-        //     //             placeholder: 'Reason',
-        //     //         },
-        //     //     ],
-        //     //     buttons: [
-        //     //         {
-        //     //             text: 'Cancel',
-        //     //             role: 'cancel',
-        //     //         },
-        //     //         {
-        //     //             text: 'Done',
-        //     //         },
-        //     //     ],
-        //     // });
-        //     alert.onDidDismiss().then((val) => {
-        //         try {
-        //             reason = val?.data?.values[0];
-        //             this.saveToDb(booking, booking._id, status, reason);
-        //         } catch (error) {}
-        //     });
-        //     await alert.present();
-        // } else if (status === BOOKIN_STATUS.VISITED) {
-        //     this.markPatientVisited(booking, booking._id, status, new Date());
-        // } else {
-        //     this.saveToDb(booking, booking._id, status);
-        // }
+        if (status === BOOKIN_STATUS.REJECTED) {
+            // const alert = await this.alertCtrl.create({
+            //     header: 'Enter Rejection Reason',
+            //     inputs: [
+            //         {
+            //             placeholder: 'Reason',
+            //         },
+            //     ],
+            //     buttons: [
+            //         {
+            //             text: 'Cancel',
+            //             role: 'cancel',
+            //         },
+            //         {
+            //             text: 'Done',
+            //         },
+            //     ],
+            // });
+            // if (
+            //     (val)) => {
+            //         try {
+            //             reason = val?.data?.values[0];
+            //             this.saveToDb(booking, booking._id, status, reason);
+            //         } catch (error) {}
+            //     }
+            // if(val:any){
+            //     try {
+            //                     reason = val?.data?.values[0];
+            //                     this.saveToDb(booking, booking._id, status, reason);
+            //                 } catch (error) {}
+            // }
+        } else if (status === BOOKIN_STATUS.VISITED) {
+            this.markPatientVisited(booking, booking._id, status, new Date());
+        } else {
+            this.saveToDb(booking, booking._id, status);
+        }
     }
 
     toggleApproved(change: MatSlideToggleChange): void {
@@ -179,6 +186,7 @@ export class BookingListingComponent implements OnInit {
             (response: any) => {
                 this.sideNav.toggle();
                 this.bookingDetails = response.data.prescription;
+                this.commonService.$passData.next(this.bookingDetails);
                 console.log(response);
             },
             (error) => {
@@ -199,5 +207,8 @@ export class BookingListingComponent implements OnInit {
                 });
             }
         );
+    }
+    closeDrawer(event) {
+        this.sideNav.close();
     }
 }

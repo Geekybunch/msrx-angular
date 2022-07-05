@@ -63,11 +63,11 @@ const routes: Routes = [
                     ).then((m) => m.EmployeesModule),
             },
             {
-                path: 'test-details',
+                path: 'prescription-details',
                 loadChildren: () =>
                     import(
-                        'app/modules/employee/test-details/test-details.module'
-                    ).then((m) => m.TestDetailsModule),
+                        'app/modules/common/prescription-details/prescription-details.module'
+                    ).then((m) => m.PrescriptionDetailsModule),
             },
             {
                 path: 'qr-scanner-layout',

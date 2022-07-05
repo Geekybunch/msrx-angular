@@ -243,7 +243,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         ) {
             this.router.navigate(['/wellnesscenter/prescription-details'], {
                 queryParams: {
-                    patientId: this.scanQRForm.value.planId,
+                    patientID: this.scanQRForm.value.planId,
+                },
+                replaceUrl: true,
+            });
+        } else if (this.role.modelId.employer?.businessType === 'Dispensary') {
+            this.router.navigate(['/dispensary/prescription-details'], {
+                queryParams: {
+                    patientID: this.scanQRForm.value.planId,
                 },
                 replaceUrl: true,
             });
@@ -270,6 +277,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
             this.role.modelId.employer?.businessType === 'WellnessCenter'
         ) {
             this.router.navigateByUrl('/wellnesscenter/qr-scanner-layout');
+        } else if (this.role.modelId.employer?.businessType === 'Dispensary') {
+            this.router.navigateByUrl('/dispensary/qr-scanner-layout');
         }
 
         this.dialog.closeAll();

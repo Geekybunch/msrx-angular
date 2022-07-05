@@ -44,7 +44,10 @@
                                 *matCellDef="let element"
                                 class="capitalize"
                             >
-                                {{ element.business.businessName }}
+                                {{
+                                    element.business &&
+                                        element.business.businessName
+                                }}
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="productName">
@@ -136,7 +139,9 @@
                     <span class="font-medium text-secondary">Name</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
-                        viewMoreDetails && viewMoreDetails.business.businessName
+                        viewMoreDetails &&
+                        viewMoreDetails.business &&
+                        viewMoreDetails.business.businessName
                             ? viewMoreDetails.business.businessName
                             : ""
                     }}</span>
@@ -146,6 +151,7 @@
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
                         viewMoreDetails &&
+                        viewMoreDetails.business &&
                         viewMoreDetails.business.businessIDNumber
                             ? viewMoreDetails.business.businessIDNumber
                             : ""
@@ -155,7 +161,9 @@
                     <span class="font-medium text-secondary">Phone</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
-                        viewMoreDetails && viewMoreDetails.business.businessName
+                        viewMoreDetails &&
+                        viewMoreDetails.business &&
+                        viewMoreDetails.business.businessName
                             ? viewMoreDetails.business.businessPhone
                             : ""
                     }}</span>
@@ -164,7 +172,9 @@
                     <span class="font-medium text-secondary">Type</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
-                        viewMoreDetails && viewMoreDetails.business.businessName
+                        viewMoreDetails &&
+                        viewMoreDetails.business &&
+                        viewMoreDetails.business.businessName
                             ? viewMoreDetails.business.businessType
                             : ""
                     }}</span>
@@ -173,7 +183,9 @@
                     <span class="font-medium text-secondary">Address</span>
                     <span class="mx-2">:</span>
                     <span class="font-medium">{{
-                        viewMoreDetails && viewMoreDetails.business.businessName
+                        viewMoreDetails &&
+                        viewMoreDetails.business &&
+                        viewMoreDetails.business.businessName
                             ? viewMoreDetails.business.businessAddress
                             : ""
                     }}</span>

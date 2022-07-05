@@ -36,7 +36,6 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
     testButton: boolean = false;
     qrfileName: any;
     base64Image: any;
-    patientId: string;
     constructor(
         private activatedRoute: ActivatedRoute,
         private commonService: CommonService,
@@ -57,12 +56,11 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
         this.activatedRoute.queryParams.subscribe((qParams) => {
             if (qParams.plantID) {
                 this.plantID = this.plantID || qParams.plantID;
-                this.patientId = this.patientId || qParams.patientId;
             }
             this.zone.run(() => {
                 this.getPlantDetails();
             });
-            console.log(this.patientId);
+            console.log(this.plantID);
         });
     }
     ngOnDestroy(): void {
@@ -156,7 +154,6 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
         const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
         const dataURL: string = canvas.toDataURL('image/png');
-
         return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
     }
 }
