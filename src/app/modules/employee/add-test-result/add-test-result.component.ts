@@ -97,7 +97,7 @@ export class AddTestResultComponent implements OnInit {
                     this.router.navigateByUrl('tester/plants');
                 }, 1500);
                 this._matDialogRef.close();
-                this.snackBar.open('Palnt Tested Successfully..!', 'Close', {
+                this.snackBar.open('Plant Tested Successfully..!', 'Close', {
                     duration: 3000,
                 });
             },

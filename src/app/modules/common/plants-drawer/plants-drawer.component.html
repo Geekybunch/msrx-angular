@@ -73,6 +73,14 @@
                     : ""
             }}</span>
         </div>
+        <div class="leading-6 mb-2">
+            <button
+                (click)="downloadQrCode()"
+                class="items-center bg-primary scanner text-white rounded-full"
+            >
+                Show QR Code
+            </button>
+        </div>
     </div>
     <div class="flex flex-col border-t pt-4 mt-5">
         <div class="text-xl mt-3 font-bold truncate mb-3">Employee Details</div>
@@ -417,13 +425,5 @@
                 }}</span>
             </div>
         </ng-container>
-        <div class="mt-4">
-            <button
-                (click)="downloadQrCode()"
-                class="items-center bg-primary scanner text-white rounded-full"
-            >
-                Show QR Code
-            </button>
-        </div>
     </div>
 </div>

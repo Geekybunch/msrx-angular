@@ -28,14 +28,14 @@ export class AdminGuard implements CanActivate {
     }
 
     checkEmployee(): boolean {
-        if (this.getUser && this.getUser.onModel == 'Admin') {
+        if (this.getUser && this.getUser.onModel === 'Admin') {
             console.log('Admin');
             return true;
         } else {
             if (this.getUser) {
-                let role = this.getUser.onModel;
-                let redirect =
-                    role.toLowerCase() == 'employee'
+                const role = this.getUser.onModel;
+                const redirect =
+                    role.toLowerCase() === 'employee'
                         ? 'cultivator'
                         : role.toLowerCase();
 

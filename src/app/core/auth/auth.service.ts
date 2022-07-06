@@ -56,10 +56,6 @@ export class AuthService {
      * @param credentials
      */
     signIn(credentials: { email: string; password: string }): Observable<any> {
-        if (this._authenticated) {
-            return throwError('User is already logged in.');
-        }
-
         return this._httpClient
             .post(`${environment.apiUrl}/auth/login/`, credentials)
             .pipe(

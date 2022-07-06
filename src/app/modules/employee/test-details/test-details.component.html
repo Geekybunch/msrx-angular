@@ -15,18 +15,32 @@
             </div>
             <ng-container
                 *ngIf="
-                    userInfo.modelId?.employer?.businessType === 'Tester' ||
+                    userInfo.modelId?.employer?.businessType === 'Tester'
+                "
+            >
+                <button
+                    *ngIf="
+                        !plantResponse.plantTest
+                    "
+                    (click)="openTestResultDialog()"
+                    class="items-center bg-primary text-white rounded-full"
+                >
+                    Add Test Result
+                </button>
+            </ng-container>
+            <ng-container
+                *ngIf="
                     userInfo.modelId?.employer?.businessType === 'Processor'
                 "
             >
                 <button
                     *ngIf="
-                        !plantResponse.plantTest && !plantResponse.plantProcess
+                        !plantResponse.plantProcess
                     "
                     (click)="openTestResultDialog()"
                     class="items-center bg-primary text-white rounded-full"
                 >
-                    Add Test
+                    Add Processing Result
                 </button>
             </ng-container>
         </div>
