@@ -29,7 +29,7 @@ mat-chip {
     padding: 7px 12px;
     border-radius: 16px;
     align-items: center;
-    cursor: default;
+    cursor: pointer;
     min-height: 28px;
     margin-right: 15px;
     height: 1px;
@@ -39,6 +39,9 @@ mat-chip {
         line-height: 12px;
         font-size: 17px;
     }
+}
+::ng-deep .mat-chip-ripple {
+    display: none !important;
 }
 .sm\:w-36 {
     width: 100% !important;

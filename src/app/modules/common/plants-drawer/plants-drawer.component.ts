@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    NgZone,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'app/core/common/common.service';
 import { QRType } from 'app/shared/shared.enums';
@@ -15,7 +22,7 @@ export class PlantsDrawerComponent implements OnInit {
     @Output() newItemEvent = new EventEmitter<string>();
     @Input() qrScannerId: string;
     base64Image: any;
-    constructor(private commonService: CommonService) {}
+    constructor(private commonService: CommonService, private zone: NgZone) {}
 
     ngOnInit(): void {
         if (this.qrScannerId) {
@@ -25,6 +32,11 @@ export class PlantsDrawerComponent implements OnInit {
             this.viewDetails = res.data.plant;
         });
         this.commonService.$passData.subscribe((res: any) => {
+            this.qrScannerId = res;
+            if (this.qrScannerId) {
+                this.getPlantDetails();
+            }
+
             this.viewDetails = res;
         });
     }

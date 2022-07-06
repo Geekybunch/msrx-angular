@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
+import { CommonService } from 'app/core/common/common.service';
 import {
     CreateDileveryI,
     DisplayedDileveryI,
@@ -30,7 +31,10 @@ export class PastDileviriesComponent implements OnInit {
     visibleColumns = DisplayedDileveryI;
     dataSource = new MatTableDataSource<CreateDileveryI>();
 
-    constructor(private distributorService: DistributorService) {}
+    constructor(
+        private distributorService: DistributorService,
+        private commonService: CommonService
+    ) {}
 
     ngOnInit(): void {
         this.getPastDilevieris();
@@ -116,7 +120,11 @@ export class PastDileviriesComponent implements OnInit {
 
     openDeliveryDetails(event) {
         console.log(event);
+        this.commonService.$passData.next(event);
         this.deliveryDetails = event;
         this.sideNav.toggle();
+    }
+    closeDrawer(event) {
+        this.sideNav.close();
     }
 }

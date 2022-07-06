@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { CommonService } from 'app/core/common/common.service';
 import {
     DeliveryVehicleI,
     DisplayedDeliveryVehicleI,
@@ -23,6 +24,7 @@ export class DileveryVehiclesComponent implements OnInit {
     public pageSize = 10;
     public totalResults: number;
     public noRecords: any;
+    public vehiclesDetails: any;
 
     visibleColumns = DisplayedDeliveryVehicleI;
     dataSource = new MatTableDataSource<DeliveryVehicleI>();
@@ -30,7 +32,8 @@ export class DileveryVehiclesComponent implements OnInit {
     constructor(
         private vehicleService: DileveryVehicleService,
         private matDialog: MatDialog,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private commonService: CommonService
     ) {}
 
     ngOnInit(): void {
@@ -92,5 +95,14 @@ export class DileveryVehiclesComponent implements OnInit {
                 console.log(err);
             }
         );
+    }
+    vehicleDetails(vehicle: any) {
+        console.log(vehicle);
+        this.vehiclesDetails = vehicle;
+        // this.commonService.$passData.next(vehicle);
+        this.sideNav.toggle();
+    }
+    closeDrawer(event) {
+        this.sideNav.close();
     }
 }

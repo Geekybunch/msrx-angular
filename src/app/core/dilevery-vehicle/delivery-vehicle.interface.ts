@@ -32,7 +32,7 @@ export interface VehicleListResponse {
     };
 }
 export const DisplayedDeliveryVehicleI = [
-    'business',
+    // 'business',
     'vehicleId',
     'vehicleNumber',
     'vehicleType',

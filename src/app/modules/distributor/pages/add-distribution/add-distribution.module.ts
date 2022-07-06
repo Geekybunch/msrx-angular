@@ -4,6 +4,7 @@ import { AddDistributionComponent } from './add-distribution.component';
 import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProductDrawerModule } from 'app/modules/common/product-drawer/product-drawer.module';
 
 const addDistributionRoutes: Route[] = [
     {
@@ -18,6 +19,7 @@ const addDistributionRoutes: Route[] = [
         CommonModule,
         RouterModule.forChild(addDistributionRoutes),
         SharedModule,
+        ProductDrawerModule,
     ],
     providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },

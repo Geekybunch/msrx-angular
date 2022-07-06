@@ -4,6 +4,7 @@ import { DileveryVehiclesComponent } from './dilevery-vehicles.component';
 import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { AddDileveryVehiclesModule } from './add-dilevery-vehicles/add-dilevery-vehicles.module';
+import { DeliveriesDrawerModule } from '../deliveries-drawer/deliveries-drawer.module';
 const DileveryVehiclesRoutes: Route[] = [
     {
         path: '',
@@ -18,6 +19,7 @@ const DileveryVehiclesRoutes: Route[] = [
         RouterModule.forChild(DileveryVehiclesRoutes),
         SharedModule,
         AddDileveryVehiclesModule,
+        DeliveriesDrawerModule,
     ],
 })
 export class DileveryVehiclesModule {}

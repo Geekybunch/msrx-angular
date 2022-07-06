@@ -11,6 +11,7 @@ import {
     MatDialogRef,
     MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'app/core/common/common.service';
@@ -32,6 +33,7 @@ export interface Fruit {
 export class AddManufacturerComponent implements OnInit {
     @ViewChild('scanQRCodeDialog')
     scanQRCodeDialog: TemplateRef<AddManufacturerComponent>;
+    @ViewChild('sidenav') sideNav: MatSidenav;
     createProductForm: FormGroup;
     ingredients: string[] = [];
     allergies: string[] = [];
@@ -212,5 +214,13 @@ export class AddManufacturerComponent implements OnInit {
             this.addPlant();
             console.log(result);
         });
+    }
+    plantDetils(plant: any) {
+        console.log(plant);
+        this.commonService.$passData.next(plant);
+        this.sideNav.toggle();
+    }
+    closeDrawer(event) {
+        this.sideNav.close();
     }
 }

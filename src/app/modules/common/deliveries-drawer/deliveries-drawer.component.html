@@ -1,0 +1,164 @@
+<div class="p-6">
+    <div class="flex items-center justify-between absolute right-6">
+        <button mat-icon-button (click)="closeNav($event)">
+            <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <div class="flex flex-col">
+        <div class="text-xl mt-3 font-bold truncate mb-3">Delivery Details</div>
+        <div class="leading-6 mb-1">
+            <div class="text-xg mt-2 font-bold truncate mb-1">
+                Pick Up Details
+            </div>
+            <span class="font-medium">{{
+                deliveryDetails && deliveryDetails.pickUpLocation
+                    ? deliveryDetails.pickUpLocation
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-4">
+            <span class="font-medium">{{
+                deliveryDetails && deliveryDetails.pickUpDateTime
+                    ? (deliveryDetails.pickUpDateTime | date: "medium")
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-1">
+            <div class="text-xg mt-2 font-bold truncate mb-1">Drop Details</div>
+            <span class="font-medium">{{
+                deliveryDetails && deliveryDetails.dropLocation
+                    ? deliveryDetails.dropLocation
+                    : ""
+            }}</span>
+        </div>
+        <div class="leading-6 mb-4">
+            <span class="font-medium">{{
+                deliveryDetails && deliveryDetails.dropDateTime
+                    ? (deliveryDetails.dropDateTime | date: "mediumDate")
+                    : ""
+            }}</span>
+        </div>
+        <div class="flex flex-col mb-3">
+            <div class="leading-6 mb-1">
+                <div class="text-xg mt-2 font-bold truncate mb-1">
+                    From Delivery
+                </div>
+                <span class="font-medium text-secondary">Business Name</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">{{
+                    deliveryDetails && deliveryDetails.from.businessName
+                        ? deliveryDetails.from.businessName
+                        : ""
+                }}</span>
+            </div>
+            <div class="leading-6 mb-1">
+                <span class="font-medium text-secondary">Business Phone</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">{{
+                    deliveryDetails && deliveryDetails.from.businessPhone
+                        ? deliveryDetails.from.businessPhone
+                        : ""
+                }}</span>
+            </div>
+            <div class="leading-6 mb-1">
+                <span class="font-medium text-secondary">Business Type</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">{{
+                    deliveryDetails && deliveryDetails.from.businessType
+                        ? deliveryDetails.from.businessType
+                        : ""
+                }}</span>
+            </div>
+            <div class="leading-6 mb-1">
+                <span class="font-medium text-secondary">Business Address</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">{{
+                    deliveryDetails && deliveryDetails.from.businessAddress
+                        ? deliveryDetails.from.businessAddress
+                        : ""
+                }}</span>
+            </div>
+        </div>
+        <div class="flex flex-col mb-3">
+            <div class="leading-6 mb-1">
+                <div class="text-xg mt-2 font-bold truncate mb-1">
+                    To Delivery
+                </div>
+                <span class="font-medium text-secondary">Business Name</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">{{
+                    deliveryDetails &&
+                    deliveryDetails.to &&
+                    deliveryDetails.to.businessName
+                        ? deliveryDetails.to.businessName
+                        : ""
+                }}</span>
+            </div>
+            <div class="leading-6 mb-1">
+                <span class="font-medium text-secondary">Business Phone</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">{{
+                    deliveryDetails &&
+                    deliveryDetails.to &&
+                    deliveryDetails.to.businessPhone
+                        ? deliveryDetails.to.businessPhone
+                        : ""
+                }}</span>
+            </div>
+            <div class="leading-6 mb-1">
+                <span class="font-medium text-secondary">Business Type</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">{{
+                    deliveryDetails &&
+                    deliveryDetails.to &&
+                    deliveryDetails.to.businessType
+                        ? deliveryDetails.to.businessType
+                        : ""
+                }}</span>
+            </div>
+            <div class="leading-6 mb-1">
+                <span class="font-medium text-secondary">Business Address</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">{{
+                    deliveryDetails &&
+                    deliveryDetails.to &&
+                    deliveryDetails.to.businessAddress
+                        ? deliveryDetails.to.businessAddress
+                        : ""
+                }}</span>
+            </div>
+        </div>
+
+        <div class="leading-6 mb-1">
+            <div class="text-xg mt-2 font-bold truncate mb-1">
+                Date of Delivery
+            </div>
+            <span class="font-medium">{{
+                deliveryDetails && deliveryDetails.createdAt
+                    ? (deliveryDetails.createdAt | date: "mediumDate")
+                    : ""
+            }}</span>
+        </div>
+        <div class="flex flex-col border-t mt-6 pt-3">
+            <div class="text-xl mt-3 font-bold truncate mb-3">Materials</div>
+            <div
+                class="flex flex-col"
+                *ngFor="
+                    let material of deliveryDetails && deliveryDetails.materials
+                "
+            >
+                <div class="leading-6 mb-1">
+                    <span class="font-medium text-secondary">onModel</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{ material.onModel }}</span>
+                </div>
+                <div class="leading-6 mb-1">
+                    <span class="font-medium text-secondary">Quantity</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{ material.quantity }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

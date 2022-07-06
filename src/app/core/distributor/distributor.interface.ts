@@ -67,4 +67,5 @@ export const DisplayedDileveryI = [
     'pickUpDateTime',
     'dropLocation',
     'dropDateTime',
+    'actions',
 ];

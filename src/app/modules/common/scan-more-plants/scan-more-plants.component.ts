@@ -25,6 +25,7 @@ export class ScanMorePlantsComponent implements OnInit {
     scannedType: string;
     scannedId: string;
     scannerButtonText = 'Start Scanner';
+    addButton: boolean = false;
     cameras = [];
     constructor(
         private cd: ChangeDetectorRef,
@@ -77,6 +78,7 @@ export class ScanMorePlantsComponent implements OnInit {
         await this.stopScanner();
         this.scannerButtonText = 'Scan Again';
         this.scannedData = result;
+
         const type = this.scannedData.split(':')[0];
         this.scannedId = this.scannedData.split(':')[1];
         if (!type || !this.scannedId) {
@@ -108,5 +110,8 @@ export class ScanMorePlantsComponent implements OnInit {
         console.log('this.scannedId', this.scannedId);
         console.log('this.scannedType', this.scannedType);
         this.cd.detectChanges();
+        this.zone.run(() => {
+            this.addButton = true;
+        });
     }
 }

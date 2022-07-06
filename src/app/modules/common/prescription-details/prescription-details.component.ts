@@ -10,11 +10,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth/auth.service';
 import { CommonService } from 'app/core/common/common.service';
-import { InventoryService } from 'app/core/inventory/inventory.service';
-import { PrescriptionI } from 'app/core/wellness/wellness.interface';
-import { AddProcessedResultComponent } from 'app/modules/employee/add-processed-result/add-processed-result.component';
-import { AddTestResultComponent } from 'app/modules/employee/add-test-result/add-test-result.component';
-import { BusinessTypeEnums, QRType } from 'app/shared/shared.enums';
+import { GiveDosageFormComponent } from 'app/modules/dispensary/pages/give-dosage-form/give-dosage-form.component';
+
+import { QRType } from 'app/shared/shared.enums';
 import { genereateQRCode, getBusinessType } from 'app/shared/shared.utils';
 import { cloneDeep } from 'lodash';
 import { Observable, Observer } from 'rxjs';
@@ -38,7 +36,8 @@ export class PrescriptionDetailsComponent implements OnInit {
         private router: Router,
         private snackBar: MatSnackBar,
         private zone: NgZone,
-        private authService: AuthService
+        private authService: AuthService,
+        private matDialog: MatDialog
     ) {
         this.role = this.authService.userRole;
     }
@@ -87,7 +86,6 @@ export class PrescriptionDetailsComponent implements OnInit {
             );
     }
 
-    giveDosageForm() {}
     downloadQrCode() {
         const qr = genereateQRCode(QRType.PATIENT, this.patientID);
         qr.toDataURL();

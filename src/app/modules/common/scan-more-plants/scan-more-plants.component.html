@@ -38,14 +38,14 @@
                     {{ scannerButtonText }}
                 </button>
                 <button
+                    *ngIf="addButton"
                     class="ml-3"
-                    mat-button
-                    mat-stroked-button
-                    color="primary"
+                    mat-raised-button
+                    color="secondary"
                     [mat-dialog-close]="this.scannedId"
                     cdkFocusInitial
                 >
-                    Add Plant
+                    Add Scanned ID
                 </button>
                 <button mat-button matDialogClose class="ml-4">Cancel</button>
             </div>

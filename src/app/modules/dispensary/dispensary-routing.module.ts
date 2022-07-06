@@ -76,6 +76,13 @@ const routes: Routes = [
                         'app/modules/common/qr-scanner-layout/qr-scanner-layout.module'
                     ).then((m) => m.QrScannerLayoutModule),
             },
+            {
+                path: 'give-dosage-form',
+                loadChildren: () =>
+                    import(
+                        'app/modules/dispensary/pages/give-dosage-form/give-dosage-form.module'
+                    ).then((m) => m.GiveDosageFormModule),
+            },
         ],
     },
 ];

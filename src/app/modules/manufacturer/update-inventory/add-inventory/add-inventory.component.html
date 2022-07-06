@@ -8,7 +8,7 @@
                 _ngcontent-dum-c251=""
                 class="text-lg font-medium tracking-tight leading-6 truncate"
             >
-                Give Dosage
+                Add Item
             </div>
         </div>
         <div
@@ -50,7 +50,7 @@
 
                     <ng-template #noProductScannedMessage>
                         <h2 class="text-3xl font-medium text-center mb-8">
-                            Scan products to give dosage
+                            Scan Products to Add Inventory
                         </h2>
                     </ng-template>
                 </div>
@@ -71,10 +71,10 @@
                 </button>
                 <div class="flex flex-col items-center w-full">
                     <button
-                        (click)="saveDosage()"
+                        (click)="addItemToInventory()"
                         class="bg-primary scanner text-white rounded-full ml-4"
                     >
-                        Save Dosage
+                        Add Inventory
                     </button>
                 </div>
             </div>
@@ -125,11 +125,8 @@
         </mat-dialog-actions>
     </div>
     <div class="p-3" style="width: 22rem !important" *ngIf="quantityDialog">
-        <h2 matDialogTitle class="mb-1">Message</h2>
-        <p class="font-medium mb-4 text-secondary">
-            Selling : {{ productData.name }} - ({{ productData.dosage }} Dosage)
-        </p>
-        <p class="text-lg font-medium mb-3">Quantity of product?</p>
+        <h2 matDialogTitle>Enter Quantity</h2>
+
         <form class="">
             <div class="flex flex-col">
                 <mat-form-field

@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GiveDosageFormComponent } from './give-dosage-form.component';
+import { UpdateInventoryComponent } from './update-inventory.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { ProductDrawerModule } from 'app/modules/common/product-drawer/product-drawer.module';
 
 @NgModule({
-    declarations: [GiveDosageFormComponent],
+    declarations: [UpdateInventoryComponent],
     imports: [
         CommonModule,
         SharedModule,
         RouterModule.forChild([
             {
                 path: '',
-                component: GiveDosageFormComponent,
+                component: UpdateInventoryComponent,
             },
         ]),
+        ProductDrawerModule,
     ],
 })
-export class GiveDosageFormModule {}
+export class UpdateInventoryModule {}

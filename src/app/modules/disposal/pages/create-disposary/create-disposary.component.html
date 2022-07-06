@@ -1,99 +1,119 @@
-<div class="flex flex-col flex-auto min-w-0">
-    <div class="flex-auto p-6 sm:p-10">
-        <div class="max-w-3xl p-10 bg-card rounded-xl shadow overflow-hidden">
-            <div
-                class="flex flex-col sm:flex-row items-center justify-between mb-8"
-            >
+<mat-sidenav-container class="example-container w-full">
+    <mat-sidenav-content>
+        <div class="flex flex-col flex-auto min-w-0">
+            <div class="flex-auto p-6 sm:p-10">
                 <div
-                    class="text-xl font-medium tracking-tight leading-6 truncate"
+                    class="max-w-3xl p-10 bg-card rounded-xl shadow overflow-hidden"
                 >
-                    Create Disposal Record
+                    <div
+                        class="flex flex-col sm:flex-row items-center justify-between mb-8"
+                    >
+                        <div
+                            class="text-xl font-medium tracking-tight leading-6 truncate"
+                        >
+                            Create Disposal Record
+                        </div>
+                    </div>
+                    <div class="flex flex-row gt-md:flex-col mb-5">
+                        <mat-chip
+                            (click)="plantDetils(material)"
+                            *ngFor="let material of materials; let i = index"
+                        >
+                            {{ materialIDs[i].slice(1, 8) }}...
+                            <button
+                                matChipRemove
+                                (click)="this.materials.splice(i, 1)"
+                            >
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+
+                        <button
+                            (click)="showScanMenu()"
+                            class="scan_btn bg-primary-500 text-white rounded-full w-auto"
+                        >
+                            Scan Plants
+                        </button>
+                    </div>
+                    <form [formGroup]="dileveryForm" class="flex flex-col">
+                        <div class="flex flex-col gt-xs:flex-col mb-5">
+                            <label>Picked Up From *</label>
+                            <ng-select
+                                class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                                placeholder="Select Business"
+                                [formControlName]="'fromBusiness'"
+                                (change)="selectBusiness($event)"
+                            >
+                                <ng-option
+                                    *ngFor="let business of businesses"
+                                    [value]="business"
+                                    >{{ business.businessName }}</ng-option
+                                >
+                            </ng-select>
+                        </div>
+
+                        <div class="flex flex-col gt-md:flex-col">
+                            <mat-form-field class="flex-auto fuse-mat-dense">
+                                <mat-label> PickUp Location</mat-label>
+                                <input
+                                    matInput
+                                    [formControlName]="'pickUpLocation'"
+                                />
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-col mb-5">
+                            <label>Delivery Vehicle *</label>
+                            <ng-select
+                                class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
+                                placeholder="Select Vehicle"
+                                [formControlName]="'vehicle'"
+                            >
+                                <ng-option
+                                    *ngFor="let vehicle of vehicles"
+                                    [value]="vehicle._id"
+                                    >#{{ vehicle.vehicleNumber }}</ng-option
+                                >
+                            </ng-select>
+                        </div>
+
+                        <div class="flex flex-row gt-md:flex-row">
+                            <mat-form-field class="flex-auto fuse-mat-dense">
+                                <mat-label> Pickup Time</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="picker1"
+                                    [formControlName]="'pickUpDateTime'"
+                                />
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="picker1"
+                                ></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-md:flex-row mt-3">
+                            <button
+                                (click)="addDelivery()"
+                                class="max-w-50"
+                                mat-raised-button
+                                color="primary"
+                            >
+                                Add Disposal
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="flex flex-row gt-md:flex-col mb-5">
-                <mat-chip *ngFor="let material of materials; let i = index">
-                    {{ materialIDs[i].slice(1, 8) }}...
-                    <button matChipRemove (click)="this.materials.splice(i, 1)">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-                </mat-chip>
-
-                <button
-                    (click)="showScanMenu()"
-                    class="scan_btn bg-primary-500 text-white rounded-full w-auto"
-                >
-                    Scan Plants
-                </button>
-            </div>
-            <form [formGroup]="dileveryForm" class="flex flex-col">
-                <div class="flex flex-col gt-xs:flex-col mb-5">
-                    <label>Picked Up From *</label>
-                    <ng-select
-                        class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
-                        placeholder="Select Business"
-                        [formControlName]="'fromBusiness'"
-                        (change)="selectBusiness($event)"
-                    >
-                        <ng-option
-                            *ngFor="let business of businesses"
-                            [value]="business"
-                            >{{ business.businessName }}</ng-option
-                        >
-                    </ng-select>
-                </div>
-
-                <div class="flex flex-col gt-md:flex-col">
-                    <mat-form-field class="flex-auto fuse-mat-dense">
-                        <mat-label> PickUp Location</mat-label>
-                        <input matInput [formControlName]="'pickUpLocation'" />
-                    </mat-form-field>
-                </div>
-
-                <div class="flex flex-col gt-xs:flex-col mb-5">
-                    <label>Delivery Vehicle *</label>
-                    <ng-select
-                        class="fuse-mat-no-subscript w-full sm:w-36 fuse-mat-dense"
-                        placeholder="Select Vehicle"
-                        [formControlName]="'vehicle'"
-                    >
-                        <ng-option
-                            *ngFor="let vehicle of vehicles"
-                            [value]="vehicle._id"
-                            >#{{ vehicle.vehicleNumber }}</ng-option
-                        >
-                    </ng-select>
-                </div>
-
-                <div class="flex flex-row gt-md:flex-row">
-                    <mat-form-field class="flex-auto fuse-mat-dense">
-                        <mat-label> Pickup Time</mat-label>
-                        <input
-                            matInput
-                            [matDatepicker]="picker1"
-                            [formControlName]="'pickUpDateTime'"
-                        />
-                        <mat-datepicker-toggle
-                            matSuffix
-                            [for]="picker1"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
-                </div>
-
-                <div class="flex flex-col gt-md:flex-row mt-3">
-                    <button
-                        (click)="addDelivery()"
-                        class="max-w-50"
-                        mat-raised-button
-                        color="primary"
-                    >
-                        Add Disposal
-                    </button>
-                </div>
-            </form>
         </div>
-    </div>
-</div>
+    </mat-sidenav-content>
+    <mat-sidenav position="end" #sidenav class="sm:w-128">
+        <app-plants-drawer
+            (newItemEvent)="closeDrawer($event)"
+        ></app-plants-drawer>
+    </mat-sidenav>
+</mat-sidenav-container>
 <ng-template #scanQRCodeDialog>
     <div class="p-3" style="width: 22rem !important" *ngIf="!quantityDialog">
         <h2 matDialogTitle>Scan QR Code</h2>

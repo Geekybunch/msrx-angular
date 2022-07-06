@@ -30,6 +30,10 @@ export class ProductDrawerComponent implements OnInit {
         this.getProductDetails();
         this.commonService.$passData.subscribe((res: any) => {
             this.productResponse = res;
+            this.qrScannerId = res;
+            if (this.qrScannerId) {
+                this.getProductDetails();
+            }
         });
     }
     public getProductDetails(): void {

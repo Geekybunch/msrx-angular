@@ -46,8 +46,8 @@ const routes: Routes = [
                 path: 'update-inventory',
                 loadChildren: () =>
                     import(
-                        'app/modules/employee/product-listing/product-listing.module'
-                    ).then((m) => m.ProductListingModule),
+                        'app/modules/manufacturer/update-inventory/update-inventory.module'
+                    ).then((m) => m.UpdateInventoryModule),
             },
             {
                 path: 'inventory-details',
@@ -69,6 +69,13 @@ const routes: Routes = [
                     import(
                         'app/modules/manufacturer/add-manufacturer/add-manufacturer.module'
                     ).then((m) => m.AddManufacturerModule),
+            },
+            {
+                path: 'add-inventory',
+                loadChildren: () =>
+                    import(
+                        'app/modules/manufacturer/update-inventory/add-inventory/add-inventory.module'
+                    ).then((m) => m.AddInventoryModule),
             },
         ],
     },

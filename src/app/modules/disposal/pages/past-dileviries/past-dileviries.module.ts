@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PastDileviriesComponent } from './past-dileviries.component';
 import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
+import { DeliveriesDrawerModule } from 'app/modules/common/deliveries-drawer/deliveries-drawer.module';
 
 const PastDileviriesRoutes: Route[] = [
     {
@@ -17,6 +18,7 @@ const PastDileviriesRoutes: Route[] = [
         CommonModule,
         RouterModule.forChild(PastDileviriesRoutes),
         SharedModule,
+        DeliveriesDrawerModule,
     ],
 })
 export class PastDileviriesModule {}

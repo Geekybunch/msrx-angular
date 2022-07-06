@@ -1,20 +1,19 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ProductI } from 'app/core/common/common.interface';
 import { CommonService } from 'app/core/common/common.service';
-import { DispensaryService } from 'app/core/dispensary/dispensary.service';
-import { Location } from '@angular/common';
+import { InventoryService } from 'app/core/inventory/inventory.service';
 import { ScanMorePlantsComponent } from 'app/modules/common/scan-more-plants/scan-more-plants.component';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 @Component({
-    selector: 'app-give-dosage-form',
-    templateUrl: './give-dosage-form.component.html',
-    styleUrls: ['./give-dosage-form.component.scss'],
+    selector: 'app-add-inventory',
+    templateUrl: './add-inventory.component.html',
+    styleUrls: ['./add-inventory.component.scss'],
 })
-export class GiveDosageFormComponent implements OnInit {
+export class AddInventoryComponent implements OnInit {
     @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
     scannedProductIDs: {
         productID: string;
@@ -30,10 +29,9 @@ export class GiveDosageFormComponent implements OnInit {
         private dialog: MatDialog,
         private commonService: CommonService,
         private snackBar: MatSnackBar,
-        private dispensaryService: DispensaryService,
-        private activatedRoute: ActivatedRoute,
-        private location: Location,
-        private _fuseConfirmationService: FuseConfirmationService
+        private inventoryService: InventoryService,
+        private _fuseConfirmationService: FuseConfirmationService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {}
@@ -42,7 +40,7 @@ export class GiveDosageFormComponent implements OnInit {
         this.commonService.getCommonProductDetails(this.productID).subscribe(
             (res: any) => {
                 this.productID = '';
-                console.log('res', res);
+
                 if (!res.data.product) {
                     this.snackBar.open('Invalid Product', 'Close', {
                         duration: 3000,
@@ -78,7 +76,6 @@ export class GiveDosageFormComponent implements OnInit {
     }
     addMaterial() {
         this.quantityDialog = false;
-
         const qty = this.quantity;
         if (qty) {
             this.scannedProductIDs.push({
@@ -87,9 +84,10 @@ export class GiveDosageFormComponent implements OnInit {
                 quantity: this.quantity,
             });
         }
+        console.log(this.scannedProductIDs);
         this.dialog.closeAll();
     }
-    saveDosage() {
+    addItemToInventory() {
         if (this.scannedProductIDs.length === 0) {
             this._fuseConfirmationService.open({
                 title: 'Error',
@@ -106,22 +104,22 @@ export class GiveDosageFormComponent implements OnInit {
             });
             return;
         }
-        this.dispensaryService
-            .saveDosage(
-                this.activatedRoute.snapshot.queryParams.prescriptionID,
-                {
-                    products: this.scannedProductIDs.map((p) => ({
-                        product: p.productID,
-                        quantity: p.quantity,
-                    })),
+        this.inventoryService
+            .addQuantity({
+                quantity: this.quantity,
+                materialId: this.productData._id,
+            })
+            .subscribe(
+                (res) => {
+                    console.log(res);
+                    this.snackBar.open('Inventory Added', 'Close', {
+                        duration: 4000,
+                    });
+                    this.router.navigate(['/manufacturer/update-inventory']);
+                },
+                (err) => {
+                    console.log(err);
                 }
-            )
-            .subscribe((res: any) => {
-                console.log(res);
-                this.snackBar.open('Inventory Added', 'Close', {
-                    duration: 4000,
-                });
-                this.location.back();
-            });
+            );
     }
 }

@@ -170,6 +170,18 @@
                                             <span>Delete</span>
                                         </span>
                                     </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="vehicleDetails(element)"
+                                    >
+                                        <span class="flex items-center">
+                                            <mat-icon
+                                                class="icon-size-5 mr-3"
+                                                [svgIcon]="'info'"
+                                            ></mat-icon>
+                                            <span>Details</span>
+                                        </span>
+                                    </button>
                                 </mat-menu>
                             </td>
                         </ng-container>
@@ -201,4 +213,247 @@
             </div>
         </div>
     </mat-sidenav-content>
+    <mat-sidenav position="end" #sidenav class="sm:w-128">
+        <div class="p-6">
+            <div class="flex items-center justify-between absolute right-6">
+                <button mat-icon-button (click)="sidenav.close()">
+                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Employee Details
+                </div>
+
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Name</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.employee.name
+                            ? vehiclesDetails.employee.name
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">ID Number</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.employee.idNumber
+                            ? vehiclesDetails.employee.idNumber
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Type</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.employee.type
+                            ? vehiclesDetails.employee.type
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+            <!-- <div class="flex flex-col mt-4 pt-3 border-t">
+                <div class="text-xl mt-3 font-bold truncate mb-3">Delivery Details</div>
+                <div class="leading-6 mb-1">
+                    <div class="text-xg mt-2 font-bold truncate mb-1">
+                        Pick Up Details
+                    </div>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.pickUpLocation
+                            ? vehiclesDetails.pickUpLocation
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-4">
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.pickUpDateTime
+                            ? (vehiclesDetails.pickUpDateTime | date: "medium")
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-1">
+                    <div class="text-xg mt-2 font-bold truncate mb-1">Drop Details</div>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.dropLocation
+                            ? vehiclesDetails.dropLocation
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-4">
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.dropDateTime
+                            ? (vehiclesDetails.dropDateTime | date: "medium")
+                            : ""
+                    }}</span>
+                </div>
+                <div class="flex flex-col mb-3">
+                    <div class="leading-6 mb-1">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            From Delivery
+                        </div>
+                        <span class="font-medium text-secondary">Business Name</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            vehiclesDetails &&
+                            vehiclesDetails.from &&
+                            vehiclesDetails.from.businessName
+                                ? vehiclesDetails.from.businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary">Business Phone</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            vehiclesDetails &&
+                            vehiclesDetails.from &&
+                            vehiclesDetails.from.businessPhone
+                                ? vehiclesDetails.from.businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary">Business Type</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            vehiclesDetails &&
+                            vehiclesDetails.from &&
+                            vehiclesDetails.from.businessType
+                                ? vehiclesDetails.from.businessType
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary">Business Address</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            vehiclesDetails &&
+                            vehiclesDetails.from &&
+                            vehiclesDetails.from.businessAddress
+                                ? vehiclesDetails.from.businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col mb-3">
+                    <div class="leading-6 mb-1">
+                        <div class="text-xg mt-2 font-bold truncate mb-1">
+                            To Delivery
+                        </div>
+                        <span class="font-medium text-secondary">Business Name</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            vehiclesDetails &&
+                            vehiclesDetails.to &&
+                            vehiclesDetails.to.businessName
+                                ? vehiclesDetails.to.businessName
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary">Business Phone</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            vehiclesDetails &&
+                            vehiclesDetails.to &&
+                            vehiclesDetails.to.businessPhone
+                                ? vehiclesDetails.to.businessPhone
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary">Business Type</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            vehiclesDetails &&
+                            vehiclesDetails.to &&
+                            vehiclesDetails.to.businessType
+                                ? vehiclesDetails.to.businessType
+                                : ""
+                        }}</span>
+                    </div>
+                    <div class="leading-6 mb-1">
+                        <span class="font-medium text-secondary">Business Address</span>
+                        <span class="mx-2">:</span>
+                        <span class="font-medium">{{
+                            vehiclesDetails &&
+                            vehiclesDetails.to &&
+                            vehiclesDetails.to.businessAddress
+                                ? vehiclesDetails.to.businessAddress
+                                : ""
+                        }}</span>
+                    </div>
+                </div>
+        
+                <div class="leading-6 mb-1">
+                    <div class="text-xg mt-2 font-bold truncate mb-1">
+                        Date of Delivery
+                    </div>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.createdAt
+                            ? (vehiclesDetails.createdAt | date: "medium")
+                            : ""
+                    }}</span>
+                </div>
+            </div> -->
+            <div class="flex flex-col mt-2 pt-3 border-t">
+                <div class="text-xl mt-3 font-bold truncate mb-3">
+                    Vehicle Details
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Vehicle Id</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.vehicleId
+                            ? vehiclesDetails.vehicleId
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Vehicle Number</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.vehicleNumber
+                            ? vehiclesDetails.vehicleNumber
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Vehicle Color</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.vehicleColor
+                            ? vehiclesDetails.vehicleColor
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary">Vehicle Type</span>
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.vehicleType
+                            ? vehiclesDetails.vehicleType
+                            : ""
+                    }}</span>
+                </div>
+                <div class="leading-6 mb-2">
+                    <span class="font-medium text-secondary"
+                        >Vehicle Permit</span
+                    >
+                    <span class="mx-2">:</span>
+                    <span class="font-medium">{{
+                        vehiclesDetails && vehiclesDetails.vehiclePermit
+                            ? vehiclesDetails.vehiclePermit
+                            : ""
+                    }}</span>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav>
 </mat-sidenav-container>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ManufacturerRoutingModule } from './manufacturer-routing.module';
 import { AddManufacturerModule } from './add-manufacturer/add-manufacturer.module';
 import { ScanMorePlantsModule } from '../common/scan-more-plants/scan-more-plants.module';
+import { AddInventoryModule } from './update-inventory/add-inventory/add-inventory.module';
 
 @NgModule({
     declarations: [],
@@ -11,6 +12,7 @@ import { ScanMorePlantsModule } from '../common/scan-more-plants/scan-more-plant
         ManufacturerRoutingModule,
         AddManufacturerModule,
         ScanMorePlantsModule,
+        AddInventoryModule,
     ],
 })
 export class ManufacturerModule {}

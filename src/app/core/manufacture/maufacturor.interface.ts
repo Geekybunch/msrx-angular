@@ -55,3 +55,13 @@ export const DisplayedManufactrors = [
     'dosage',
     'actions',
 ];
+
+export const inventorys = [
+    'name',
+    'sku',
+    'ingredients',
+    'description',
+    'dosage',
+    'action',
+    'actions',
+];

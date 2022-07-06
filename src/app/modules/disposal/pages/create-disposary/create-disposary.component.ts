@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import {
@@ -28,6 +29,7 @@ import moment from 'moment';
 })
 export class CreateDisposaryComponent implements OnInit {
     @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
+    @ViewChild('sidenav') sideNav: MatSidenav;
     dileveryForm: FormGroup;
     materials: {
         id: string;
@@ -180,6 +182,14 @@ export class CreateDisposaryComponent implements OnInit {
             // this.addPlant();
             console.log(result);
         });
+    }
+    closeDrawer(event) {
+        this.sideNav.close();
+    }
+    plantDetils(plant: any) {
+        console.log(plant);
+        this.commonService.$passData.next(plant.id);
+        this.sideNav.toggle();
     }
 
     // presentScanAction() {

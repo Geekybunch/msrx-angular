@@ -9,6 +9,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { BusinessService } from 'app/core/admin/business/business.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
     selector: 'app-employees',
@@ -17,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class EmployeesComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('sidenav') sideNav: MatSidenav;
     public pageSize = 10;
     public totalResults: number;
     public filterApproved: boolean;
@@ -25,6 +27,7 @@ export class EmployeesComponent implements OnInit {
     public businesses: string[] = [];
     public businessInput = new Subject<string>();
     public selectedBusiness;
+    public employeeInfo: any;
     dataSource = new MatTableDataSource<Employees>();
     public Employees: any = ['Admin', 'Employee'];
     constructor(
@@ -161,5 +164,27 @@ export class EmployeesComponent implements OnInit {
                 );
             }
         });
+    }
+    employeeDetails(employee: any) {
+        console.log(employee);
+        this.employeeInfo = employee.employer;
+
+        if (this.employeeInfo) {
+            this.sideNav.toggle();
+        } else {
+            this._fuseConfirmationService.open({
+                title: 'Error',
+                message: 'Employer details not found...!',
+                actions: {
+                    confirm: {
+                        show: false,
+                    },
+                    cancel: {
+                        show: true,
+                        label: 'Cancel',
+                    },
+                },
+            });
+        }
     }
 }
