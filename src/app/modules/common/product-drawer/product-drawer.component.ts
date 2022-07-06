@@ -65,13 +65,16 @@ export class ProductDrawerComponent implements OnInit {
     }
     downloadQrCode() {
         const qr = genereateQRCode(QRType.PRODUCT, this.productResponse._id);
-        let imageUrl = qr.toDataURL();
+        const imageUrl = qr.toDataURL();
         this.getBase64ImageFromURL(imageUrl).subscribe((base64data) => {
             this.base64Image = 'data:image/jpg;base64,' + base64data;
-            var link = document.createElement('a');
+            const link = document.createElement('a');
             document.body.appendChild(link); // for Firefox
             link.setAttribute('href', this.base64Image);
-            link.setAttribute('download', 'mmsrx.png');
+            link.setAttribute(
+                'download',
+                `product_${this.productResponse._id}.png`
+            );
             link.click();
         });
     }

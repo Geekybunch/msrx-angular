@@ -35,8 +35,8 @@ export class EmployeeGuard implements CanActivate {
             return true;
         } else {
             if (this.getUser) {
-                let role = this.getUser.modelId.employer.businessType;
-                let redirect = role.toLowerCase();
+                const role = this.getUser.modelId.employer.businessType;
+                const redirect = role.toLowerCase();
                 this.router.navigateByUrl(`/${redirect}/dashboard`);
             }
             console.log('else');

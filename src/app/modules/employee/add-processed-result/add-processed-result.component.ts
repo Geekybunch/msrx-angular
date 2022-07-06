@@ -98,7 +98,7 @@ export class AddProcessedResultComponent implements OnInit {
                     }, 1500);
                     this._matDialogRef.close();
                     this.snackBar.open(
-                        'Palnt Process Successfully..!',
+                        'Plant Process Successfully..!',
                         'Close',
                         {
                             duration: 3000,

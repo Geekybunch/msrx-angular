@@ -90,25 +90,25 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
 
     openTestResultDialog(plantData: any) {
         if (this.userInfo.modelId.employer.businessType === 'Tester') {
-            let EditPlant = this.matDialog.open(AddTestResultComponent, {
+            const editPlant = this.matDialog.open(AddTestResultComponent, {
                 autoFocus: false,
                 data: {
                     plantData: cloneDeep(plantData),
                 },
             });
-            EditPlant.afterClosed().subscribe((result) => {
+            editPlant.afterClosed().subscribe((result) => {
                 this.getPlantDetails();
             });
         } else if (
             this.userInfo.modelId.employer.businessType === 'Processor'
         ) {
-            let EditPlant = this.matDialog.open(AddProcessedResultComponent, {
+            const editPlant = this.matDialog.open(AddProcessedResultComponent, {
                 autoFocus: false,
                 data: {
                     plantData: cloneDeep(plantData),
                 },
             });
-            EditPlant.afterClosed().subscribe((result) => {
+            editPlant.afterClosed().subscribe((result) => {
                 this.getPlantDetails();
             });
         }
@@ -116,13 +116,13 @@ export class TestDetailsComponent implements OnInit, OnDestroy {
     downloadQrCode() {
         const qr = genereateQRCode(QRType.PLANT, this.plantID);
         qr.toDataURL();
-        let imageUrl = qr.toDataURL();
+        const imageUrl = qr.toDataURL();
         this.getBase64ImageFromURL(imageUrl).subscribe((base64data) => {
             this.base64Image = 'data:image/jpg;base64,' + base64data;
-            var link = document.createElement('a');
+            const link = document.createElement('a');
             document.body.appendChild(link); // for Firefox
             link.setAttribute('href', this.base64Image);
-            link.setAttribute('download', 'mmsrx.png');
+            link.setAttribute('download', `plant_${this.plantID}.png`);
             link.click();
         });
     }

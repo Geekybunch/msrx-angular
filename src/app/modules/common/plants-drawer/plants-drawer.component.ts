@@ -58,13 +58,13 @@ export class PlantsDrawerComponent implements OnInit {
     downloadQrCode() {
         const qr = genereateQRCode(QRType.PLANT, this.viewDetails._id);
         qr.toDataURL();
-        let imageUrl = qr.toDataURL();
+        const imageUrl = qr.toDataURL();
         this.getBase64ImageFromURL(imageUrl).subscribe((base64data) => {
             this.base64Image = 'data:image/jpg;base64,' + base64data;
-            var link = document.createElement('a');
+            const link = document.createElement('a');
             document.body.appendChild(link); // for Firefox
             link.setAttribute('href', this.base64Image);
-            link.setAttribute('download', 'mmsrx.png');
+            link.setAttribute('download', `plant_${this.viewDetails._id}.png`);
             link.click();
         });
     }

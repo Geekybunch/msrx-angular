@@ -41,20 +41,20 @@
         <div class="bg-card mb-5 shadow rounded py-1">
             <table class="w-full" mat-table [dataSource]="dataSource">
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef>Employees Name</th>
+                    <th mat-header-cell *matHeaderCellDef>Employee Name</th>
                     <td class="capitalize" mat-cell *matCellDef="let element">
                         {{ element.name }}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="type">
-                    <th mat-header-cell *matHeaderCellDef>Employees Type</th>
+                    <th mat-header-cell *matHeaderCellDef>Employee Type</th>
                     <td class="capitalize" mat-cell *matCellDef="let element">
                         {{ element.type }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="idNumber">
-                    <th mat-header-cell *matHeaderCellDef>Employees ID</th>
+                    <th mat-header-cell *matHeaderCellDef>Employee ID</th>
                     <td class="capitalize" mat-cell *matCellDef="let element">
                         {{ element.idNumber }}
                     </td>

@@ -52,13 +52,9 @@ export class AddDileveryVehiclesComponent implements OnInit {
                 .updateVehicles(this.oldData._id, this.vehicleForm.value)
                 .subscribe(
                     (res) => {
-                        this.snackBar.open(
-                            'Vehicles updated successful',
-                            'Close',
-                            {
-                                duration: 3000,
-                            }
-                        );
+                        this.snackBar.open('Vehicle updated', 'Close', {
+                            duration: 3000,
+                        });
                         this.matDialog.closeAll();
                     },
                     (error) => {
@@ -69,7 +65,7 @@ export class AddDileveryVehiclesComponent implements OnInit {
             this.vehicleService.saveVehicle(this.vehicleForm.value).subscribe(
                 (res) => {
                     console.log(res);
-                    this.snackBar.open('Vehicles created successful', 'Close', {
+                    this.snackBar.open('Vehicle added', 'Close', {
                         duration: 3000,
                     });
                     this.matDialog.closeAll();

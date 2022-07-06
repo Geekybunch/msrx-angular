@@ -123,7 +123,7 @@ export class QrScannerLayoutComponent implements OnInit {
 
     getTestresults() {
         if (this.userRole.modelId.employer?.businessType === 'Tester') {
-            if (this.scannedType == 'Plant') {
+            if (this.scannedType === 'Plant') {
                 this.router.navigate(['/tester/test-details'], {
                     queryParams: {
                         plantID: this.scannedId,
@@ -148,7 +148,7 @@ export class QrScannerLayoutComponent implements OnInit {
         } else if (
             this.userRole.modelId.employer?.businessType === 'Processor'
         ) {
-            if (this.scannedType == 'Plant') {
+            if (this.scannedType === 'Plant') {
                 this.router.navigate(['/processor/test-details'], {
                     queryParams: {
                         plantID: this.scannedId,
@@ -173,7 +173,7 @@ export class QrScannerLayoutComponent implements OnInit {
         } else if (
             this.userRole.modelId.employer?.businessType === 'Cultivator'
         ) {
-            if (this.scannedType == 'Plant') {
+            if (this.scannedType === 'Plant') {
                 this.plantDetails = true;
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
@@ -195,7 +195,7 @@ export class QrScannerLayoutComponent implements OnInit {
         } else if (
             this.userRole.modelId.employer?.businessType === 'Manufacturer'
         ) {
-            if (this.scannedType == 'Plant') {
+            if (this.scannedType === 'Plant') {
                 this.router.navigate(['/manufacturer/add-manufactured-good'], {
                     queryParams: {
                         plantID: this.scannedId,
@@ -211,7 +211,7 @@ export class QrScannerLayoutComponent implements OnInit {
         } else if (
             this.userRole.modelId.employer?.businessType === 'Disposer'
         ) {
-            if (this.scannedType == 'Plant') {
+            if (this.scannedType === 'Plant') {
                 this.router.navigate(['/disposer/test-details'], {
                     queryParams: {
                         plantID: this.scannedId,
@@ -236,7 +236,7 @@ export class QrScannerLayoutComponent implements OnInit {
         } else if (
             this.userRole.modelId.employer?.businessType === 'Distributor'
         ) {
-            if (this.scannedType == 'Plant') {
+            if (this.scannedType === 'Plant') {
                 this.plantDetails = true;
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
@@ -248,11 +248,11 @@ export class QrScannerLayoutComponent implements OnInit {
         } else if (
             this.userRole.modelId.employer?.businessType === 'WellnessCenter'
         ) {
-            if (this.scannedType == 'Product') {
+            if (this.scannedType === 'Product') {
                 this.productDetails = true;
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
-            } else if (this.scannedType == 'Patient') {
+            } else if (this.scannedType === 'Patient') {
                 this.prescriptionDetails = true;
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;

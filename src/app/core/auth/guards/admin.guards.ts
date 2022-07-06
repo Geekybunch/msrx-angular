@@ -33,7 +33,7 @@ export class AdminGuard implements CanActivate {
             return true;
         } else {
             if (this.getUser) {
-                let role = this.getUser.onModel;
+                const role = this.getUser.onModel;
                 let redirect =
                     role.toLowerCase() == 'employee'
                         ? 'cultivator'

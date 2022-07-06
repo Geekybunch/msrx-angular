@@ -100,7 +100,7 @@ export class AddPlantsComponent implements OnInit {
                 .subscribe(
                     (res) => {
                         this.snackBar.open(
-                            'Palnt Updated Successfully..!',
+                            'Plant Updated Successfully..!',
                             'Close',
                             {
                                 duration: 3000,
@@ -125,7 +125,7 @@ export class AddPlantsComponent implements OnInit {
                 this.router.navigateByUrl('cultivator/plants');
             }, 1500);
 
-            this.snackBar.open('Palnt Create Successfully..!', 'Close', {
+            this.snackBar.open('Plant Create Successfully..!', 'Close', {
                 duration: 2000,
             });
         });
