@@ -73,15 +73,16 @@ export class PastDileviriesComponent implements OnInit {
         );
     }
     getBusinessDropDownlist = (businessName?: string): void => {
-        let pageParams = '?limit=20&page=1';
+        const pageParams = '?limit=20&page=1';
         this.distributorService.listDeliveries(pageParams).subscribe(
             (response: any) => {
                 console.log(response);
                 this.businesses = response.data.deliveries.results;
                 const filteredArr = this.businesses.reduce((thing, current) => {
                     const x = thing.find(
-                        (item) =>
-                            item.from.businessName === current.from.businessName
+                        (item: any) =>
+                            item.from?.businessName ===
+                            current.from?.businessName
                     );
                     if (!x) {
                         return thing.concat([current]);
