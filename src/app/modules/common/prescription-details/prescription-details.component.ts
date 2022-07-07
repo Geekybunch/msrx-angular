@@ -15,6 +15,7 @@ import { GiveDosageFormComponent } from 'app/modules/dispensary/pages/give-dosag
 import { QRType } from 'app/shared/shared.enums';
 import { genereateQRCode, getBusinessType } from 'app/shared/shared.utils';
 import { cloneDeep } from 'lodash';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Observer } from 'rxjs';
 
 @Component({
@@ -29,6 +30,7 @@ export class PrescriptionDetailsComponent implements OnInit {
     base64Image: any;
     giveDosage: boolean = false;
     role;
+    base64data: string = '';
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -37,7 +39,8 @@ export class PrescriptionDetailsComponent implements OnInit {
         private snackBar: MatSnackBar,
         private zone: NgZone,
         private authService: AuthService,
-        private matDialog: MatDialog
+        private matDialog: MatDialog,
+        private spinner: NgxSpinnerService
     ) {
         this.role = this.authService.userRole;
     }
@@ -51,7 +54,6 @@ export class PrescriptionDetailsComponent implements OnInit {
             this.zone.run(() => {
                 this.getPrescriptionDetails();
             });
-            console.log(this.patientID);
         });
         if (this.role.modelId.employer.businessType === 'Dispensary') {
             this.giveDosage = true;
@@ -131,11 +133,50 @@ export class PrescriptionDetailsComponent implements OnInit {
     }
 
     downloadDIGICard() {
+        this.spinner.show();
         this.commonService
             .getPrescriptionCard(this.prescription.booking._id)
-            .then((v) => {
-                console.log(v);
-                // this.downloadPdf(v as string);
+            .then((v: any) => {
+                this.spinner.hide();
+                const data = v.split('base64,')[1];
+                this.base64data = data;
+                this.getImage();
+                return data;
             });
+    }
+    public b64toBlob(b64Data, contentType) {
+        contentType = contentType || '';
+        let sliceSize = 512;
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+        for (
+            var offset = 0;
+            offset < byteCharacters.length;
+            offset += sliceSize
+        ) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+        var blob = new Blob(byteArrays, { type: contentType });
+        return blob;
+    }
+    getImage() {
+        var blob = this.b64toBlob(this.base64data, 'application/pdf');
+        let a = document.createElement('a');
+        document.body.appendChild(a);
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = String('DIGICARD.pdf');
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
     }
 }

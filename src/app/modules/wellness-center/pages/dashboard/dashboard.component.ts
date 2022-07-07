@@ -60,7 +60,6 @@ export class DashboardComponent implements OnInit {
 
     getBookingCounts() {
         this.wellnessService.getWellnessCenterCount().subscribe((res) => {
-            console.log(res);
             this.stats = res.data;
         });
     }
@@ -110,7 +109,6 @@ export class DashboardComponent implements OnInit {
         this.bookingService
             .getWellnessBookingSlots(dateStr)
             .subscribe((res) => {
-                console.log(res);
                 this.slotData = res.data.slotCounts;
             });
     }

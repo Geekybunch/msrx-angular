@@ -106,7 +106,6 @@ export class ProductListingComponent implements OnInit {
         let totalparams = `${pageparams + productName}`;
         this.inventoryService.getInventoryDetails(totalparams).subscribe(
             (response: any) => {
-                console.log(response);
                 this.noRecords = response.data.quantity;
                 this.totalResults = response.data.quantity.length;
                 for (let i = 0; i < response.data.quantity.length; i++) {
@@ -115,7 +114,6 @@ export class ProductListingComponent implements OnInit {
                     );
                 }
                 this.dataSource = this.filterInventoryDetails;
-                console.log(this.filterInventoryDetails);
             },
             (err: any) => {
                 console.log(err);

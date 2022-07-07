@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -23,6 +23,7 @@ import { AddPrescriptionFormComponent } from './add-prescription-form/add-prescr
 export class BookingListingComponent implements OnInit {
     BOOKIN_STATUS = BOOKIN_STATUS;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('ReasonDialog') ReasonDialog: TemplateRef<any>;
     @ViewChild('sidenav') sideNav: MatSidenav;
     public pageSize = 10;
     public totalResults: number;
@@ -30,6 +31,9 @@ export class BookingListingComponent implements OnInit {
     public statusChange: any;
     public bookingDetails: any;
     public noRecords: any;
+    reason;
+    rejectedData: BookingI;
+    REJECTED;
 
     dataSource = new MatTableDataSource<BookingI>();
     constructor(
@@ -61,7 +65,6 @@ export class BookingListingComponent implements OnInit {
 
         this.bookingService.getWellnessBooking(pageparams).subscribe(
             (response: any) => {
-                console.log(response);
                 this.noRecords = response.data.bookings.results;
                 this.dataSource = response.data.bookings.results;
                 this.totalResults = response.data.bookings.totalResults;
@@ -70,6 +73,36 @@ export class BookingListingComponent implements OnInit {
                 console.log(err);
             }
         );
+    }
+
+    markPatientVisited(booking, id: string, status: BOOKIN_STATUS, time: Date) {
+        this.wellnessService
+            .markPatientVisited(id, status, time)
+            .subscribe((res) => {
+                this.snackBar.open('Marked Patient Visit', 'Close', {
+                    duration: 3000,
+                });
+
+                booking.status = status;
+                booking.patientVisitedTime = time;
+            });
+    }
+
+    async updateBooking(status: BOOKIN_STATUS, booking: BookingI) {
+        // console.log(booking);
+        let reason: string;
+        if (status === BOOKIN_STATUS.VISITED) {
+            this.markPatientVisited(booking, booking._id, status, new Date());
+        }
+        if (status === BOOKIN_STATUS.REJECTED) {
+            this.matDialog.open(this.ReasonDialog);
+            this.rejectedData = booking;
+            console.log(this.rejectedData);
+        } else if (status === BOOKIN_STATUS.VISITED) {
+            this.markPatientVisited(booking, booking._id, status, new Date());
+        } else {
+            this.saveToDb(booking, booking._id, status);
+        }
     }
     saveToDb(
         booking: BookingI,
@@ -86,62 +119,6 @@ export class BookingListingComponent implements OnInit {
                 booking.status = status;
             });
     }
-    markPatientVisited(booking, id: string, status: BOOKIN_STATUS, time: Date) {
-        this.wellnessService
-            .markPatientVisited(id, status, time)
-            .subscribe((res) => {
-                this.snackBar.open('Marked Patient Visit', 'Close', {
-                    duration: 3000,
-                });
-
-                booking.status = status;
-                booking.patientVisitedTime = time;
-            });
-    }
-
-    async updateBooking(status: BOOKIN_STATUS, booking: BookingI) {
-        let reason: string;
-        if (status === BOOKIN_STATUS.VISITED) {
-            this.markPatientVisited(booking, booking._id, status, new Date());
-        }
-        if (status === BOOKIN_STATUS.REJECTED) {
-            // const alert = await this.alertCtrl.create({
-            //     header: 'Enter Rejection Reason',
-            //     inputs: [
-            //         {
-            //             placeholder: 'Reason',
-            //         },
-            //     ],
-            //     buttons: [
-            //         {
-            //             text: 'Cancel',
-            //             role: 'cancel',
-            //         },
-            //         {
-            //             text: 'Done',
-            //         },
-            //     ],
-            // });
-            // if (
-            //     (val)) => {
-            //         try {
-            //             reason = val?.data?.values[0];
-            //             this.saveToDb(booking, booking._id, status, reason);
-            //         } catch (error) {}
-            //     }
-            // if(val:any){
-            //     try {
-            //                     reason = val?.data?.values[0];
-            //                     this.saveToDb(booking, booking._id, status, reason);
-            //                 } catch (error) {}
-            // }
-        } else if (status === BOOKIN_STATUS.VISITED) {
-            this.markPatientVisited(booking, booking._id, status, new Date());
-        } else {
-            this.saveToDb(booking, booking._id, status);
-        }
-    }
-
     toggleApproved(change: MatSlideToggleChange): void {
         this.filterApproved = change.checked;
         this.getBookings();
@@ -171,14 +148,18 @@ export class BookingListingComponent implements OnInit {
         let addPrescription = this.matDialog.open(
             AddPrescriptionFormComponent,
             {
-                autoFocus: false,
                 data: {
                     booking: cloneDeep(booking),
                 },
             }
         );
         addPrescription.afterClosed().subscribe((result) => {
-            this.getBookings();
+            this.wellnessService.$addPrescriptionData.subscribe((res: any) => {
+                if (res.data.prescription) {
+                    this.updateBooking(BOOKIN_STATUS.COMPLETED, booking);
+                }
+                this.getBookings();
+            });
         });
     }
     seePrescription(booking: any) {
@@ -210,5 +191,13 @@ export class BookingListingComponent implements OnInit {
     }
     closeDrawer(event) {
         this.sideNav.close();
+    }
+    matClose() {
+        this.matDialog.closeAll();
+    }
+    updatedReason(status = BOOKIN_STATUS.REJECTED, booking: BookingI) {
+        let reason = this.reason;
+        this.saveToDb(booking, this.rejectedData._id, status, reason);
+        this.matDialog.closeAll();
     }
 }

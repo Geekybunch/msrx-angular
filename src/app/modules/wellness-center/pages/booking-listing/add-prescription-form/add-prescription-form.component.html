@@ -88,6 +88,8 @@
                         class="max-w-50"
                         mat-raised-button
                         color="primary"
+                        [mat-dialog-close]="savePrescription"
+                        cdkFocusInitial
                         (click)="savePrescription()"
                     >
                         Sign Prescription

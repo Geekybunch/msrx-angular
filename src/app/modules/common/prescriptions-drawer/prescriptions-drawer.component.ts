@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CommonService } from 'app/core/common/common.service';
 import { PrescriptionI } from 'app/core/wellness/wellness.interface';
 import { QRType } from 'app/shared/shared.enums';
 import { genereateQRCode } from 'app/shared/shared.utils';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Observer } from 'rxjs';
 
 @Component({
@@ -18,23 +20,26 @@ export class PrescriptionsDrawerComponent implements OnInit {
     bookingID: string;
     patientID: string;
     prescriptionNull: any;
-
+    base64data: string = '';
     @Input() qrScannerId: string;
 
-    constructor(private commonService: CommonService) {
+    constructor(
+        private commonService: CommonService,
+        private spinner: NgxSpinnerService
+    ) {
         this.commonService.$passData.subscribe((res: any) => {
             console.log('res', res);
             this.prescription = res;
             this.bookingID = this.prescription.booking._id;
             this.patientID = this.prescription.booking.patient._id;
-
             console.log(this.patientID);
         });
-        console.log('dffdsfg', this.qrScannerId);
     }
 
     ngOnInit(): void {
-        this.getPrescriptionDetails();
+        if (this.qrScannerId) {
+            this.getPrescriptionDetails();
+        }
     }
 
     public getPrescriptionDetails() {
@@ -103,11 +108,50 @@ export class PrescriptionsDrawerComponent implements OnInit {
     }
 
     downloadDIGICard() {
+        this.spinner.show();
         this.commonService
             .getPrescriptionCard(this.prescription.booking._id)
-            .then((v) => {
-                console.log(v);
-                // this.downloadPdf(v as string);
+            .then((v: any) => {
+                this.spinner.hide();
+                const data = v.split('base64,')[1];
+                this.base64data = data;
+                this.getImage();
+                return data;
             });
+    }
+    public b64toBlob(b64Data, contentType) {
+        contentType = contentType || '';
+        let sliceSize = 512;
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+        for (
+            var offset = 0;
+            offset < byteCharacters.length;
+            offset += sliceSize
+        ) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+        var blob = new Blob(byteArrays, { type: contentType });
+        return blob;
+    }
+    getImage() {
+        var blob = this.b64toBlob(this.base64data, 'application/pdf');
+        let a = document.createElement('a');
+        document.body.appendChild(a);
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = String('DIGICARD.pdf');
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
     }
 }

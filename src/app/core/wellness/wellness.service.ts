@@ -11,11 +11,14 @@ import {
 import { BOOKIN_STATUS } from './bookin.enums';
 import { BookFilterI } from '../common/common.interface';
 import { applicationUrls } from '../urls';
+import { Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class WellnessService {
+    $addPrescriptionData = new Subject();
+
     constructor(private http: HttpClient) {}
 
     searchWellnessCenter(query: BookFilterI) {

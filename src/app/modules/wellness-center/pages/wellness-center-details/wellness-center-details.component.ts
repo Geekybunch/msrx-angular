@@ -25,7 +25,6 @@ export class WellnessCenterDetailsComponent implements OnInit {
             .subscribe((res) => {
                 if (res.data.wellnessCenter) {
                     this.wellnessData = res.data.wellnessCenter;
-                    console.log(this.wellnessData);
                 } else {
                     this.router.navigateByUrl(
                         '/wellnesscenter/update-wellness-profile'

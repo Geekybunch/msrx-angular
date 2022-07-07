@@ -17,3 +17,28 @@ body .light .mat-snack-bar-container {
     background: rgb(239 68 68);
     color: #fff !important;
 }
+.btns {
+    padding: 3px 10px;
+    font-weight: 600;
+    font-size: 11px;
+}
+.completed {
+    background: rgb(187 247 208);
+    color: rgb(22 101 52);
+}
+.rejected {
+    background: rgb(254 202 202);
+    color: rgb(153 27 27);
+}
+.approved {
+    background: rgb(204 251 241);
+    color: rgb(17 94 89);
+}
+.pending {
+    background: rgb(254 243 199);
+    color: rgb(146 64 14);
+}
+.visited {
+    background: rgb(219 234 254);
+    color: rgb(30 64 175);
+}

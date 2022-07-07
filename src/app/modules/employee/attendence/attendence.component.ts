@@ -5,25 +5,9 @@ import {
     TemplateRef,
     OnInit,
 } from '@angular/core';
-import {
-    startOfDay,
-    endOfDay,
-    subDays,
-    addDays,
-    endOfMonth,
-    isSameDay,
-    isSameMonth,
-    addHours,
-} from 'date-fns';
-import { Subject } from 'rxjs';
-import {
-    CalendarEvent,
-    CalendarEventAction,
-    CalendarEventTimesChangedEvent,
-    CalendarView,
-} from 'angular-calendar';
+
+import { CalendarEvent, CalendarView } from 'angular-calendar';
 import moment from 'moment';
-import { ChartType } from 'ng-apexcharts';
 
 const colors: any = {
     red: {
@@ -94,10 +78,9 @@ export class AttendenceComponent implements OnInit {
     }
     getAdminAttendance() {
         this.employeeService.getEmployees().subscribe((res) => {
-            console.log(res);
             this.employeesList = res.data.employees.results;
             this.selectedEmployee = this.employeesList[0];
-            console.log(this.selectedEmployee);
+
             this.getAttendance();
         });
     }
@@ -108,7 +91,7 @@ export class AttendenceComponent implements OnInit {
     }
     async getAttendance() {
         let empID = this.userRole.modelId?._id;
-        console.log(empID);
+
         if (this.selectedEmployee) {
             empID = this.selectedEmployee._id;
         }
@@ -164,7 +147,6 @@ export class AttendenceComponent implements OnInit {
                     }
 
                     this.events = localEvents;
-                    console.log('Update evensts', this.events);
 
                     // this.chartOptions.series[0] = workingDays;
                     // this.chartOptions.series[1] = leaveDays;

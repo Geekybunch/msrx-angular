@@ -17,14 +17,18 @@ export class BusinessProfileComponent implements OnInit {
     }
 
     getCenterDetails() {
-        this.dispensaryService.getDisposerProfileData().subscribe((res) => {
-            console.log(res);
-            this.isOwner = true;
-            if (res.data.dispensary) {
-                this.dispensaryData = res.data.dispensary;
-            } else {
-                // this.router.navigateByUrl('/dashboard/update-wellness-profile');
+        this.dispensaryService.getDisposerProfileData().subscribe(
+            (res) => {
+                this.isOwner = true;
+                if (res.data.dispensary) {
+                    this.dispensaryData = res.data.dispensary;
+                } else {
+                    // this.router.navigateByUrl('/dashboard/update-wellness-profile');
+                }
+            },
+            (err) => {
+                console.log(err);
             }
-        });
+        );
     }
 }

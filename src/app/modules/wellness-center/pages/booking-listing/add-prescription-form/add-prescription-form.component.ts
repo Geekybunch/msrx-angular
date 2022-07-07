@@ -1,9 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+    MatDialog,
+    MatDialogRef,
+    MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { BookingI } from 'app/core/booking/booking.interfaces';
+import { CommonService } from 'app/core/common/common.service';
 import { WellnessService } from 'app/core/wellness/wellness.service';
 
 @Component({
@@ -14,11 +19,12 @@ import { WellnessService } from 'app/core/wellness/wellness.service';
 export class AddPrescriptionFormComponent implements OnInit {
     prescriptionForm: FormGroup;
     bookingDetails: any;
+    prescriptionData: any;
 
     constructor(
         private snackBar: MatSnackBar,
         private wellnessService: WellnessService,
-        private _matDialogRef: MatDialogRef<AddPrescriptionFormComponent>,
+        private matDialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) private bookingData: { booking: BookingI }
     ) {}
 
@@ -28,7 +34,6 @@ export class AddPrescriptionFormComponent implements OnInit {
             description: new FormControl(null, Validators.required),
         });
         this.bookingDetails = this.bookingData.booking;
-        console.log(this.bookingDetails);
     }
 
     savePrescription() {
@@ -46,14 +51,9 @@ export class AddPrescriptionFormComponent implements OnInit {
             )
             .subscribe(
                 (response: any) => {
-                    this._matDialogRef.close();
-                    this.snackBar.open(
-                        'Booking Updated Successfully..!',
-                        'Close',
-                        {
-                            duration: 3000,
-                        }
-                    );
+                    console.log(response);
+                    this.wellnessService.$addPrescriptionData.next(response);
+                    this.matDialog.closeAll();
                 },
                 (err: any) => {
                     this.snackBar.open(err.error.message, 'Close', {

@@ -51,21 +51,18 @@ export class DosageHistoryComponent implements OnInit {
         this.dispensaryService
             .getSoldDosages(totalparams)
             .subscribe((res: any) => {
-                console.log(res);
                 this.dataSource = res.data.prescriptions.results;
                 this.noRecords = res.data.prescriptions.results;
                 this.totalResults = res.data.prescriptions.totalResults;
             });
     }
     filterByPatientsName(query: string): void {
-        console.log(query);
         this.searchedPatient = query;
         this.getSoldDosage();
     }
     PrescriptionsDetails(event: any) {
         this.commonService.getPrescription(event._id).subscribe(
             (response: any) => {
-                console.log(response);
                 this.sideNav.toggle();
                 this.commonService.$passData.next(response);
             },
@@ -87,7 +84,6 @@ export class DosageHistoryComponent implements OnInit {
                 });
             }
         );
-        console.log(event);
     }
     closeDrawer(event) {
         this.sideNav.close();
