@@ -1,0 +1,87 @@
+<div
+    class="flex flex-col flex-auto w-full max-w-screen-xl mx-auto outer p-5"
+    *ngIf="employeeData"
+>
+    <div
+        class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none m-0"
+    >
+        <div class="text-xl font-bold p-0 mb-5">Update Attendance</div>
+        <button mat-icon-button matDialogClose>
+            <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div
+        class="flex flex-col sm:flex-col w-full max-w-xs sm:max-w-none bg-card"
+    >
+        <div class="flex flex-col">
+            <div class="text-lg font-medium truncate mb-3">Patient Details</div>
+            <div class="leading-6 mb-3">
+                <span class="font-medium text-secondary">Employee Name</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium"> {{ lastData?.employee?.name }}</span>
+            </div>
+            <div class="leading-6 mb-3">
+                <span class="font-medium text-secondary">Last Status</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium"> {{ lastStatus }}</span>
+            </div>
+            <div class="leading-6 mb-3">
+                <span class="font-medium text-secondary">
+                    Hours Worked (Today)
+                </span>
+                <span class="mx-2">:</span>
+                <span class="font-medium"> {{ workingHours }} hrs</span>
+            </div>
+            <div class="action-buttons">
+                <h2 class="ion-margin">Mark Employee Status As</h2>
+                <div class="mt-6">
+                    <button
+                        *ngIf="showWorkingButton"
+                        (click)="saveAttendance(AttendanceStatus.WORKING)"
+                        class="items-center bg-primary scanner text-white rounded-full"
+                    >
+                        Working
+                    </button>
+                    <button
+                        *ngIf="showBreakButton"
+                        (click)="saveAttendance(AttendanceStatus.ON_BREAK)"
+                        class="items-center bg-primary scanner text-white rounded-full ml-4"
+                    >
+                        Break
+                    </button>
+                    <button
+                        *ngIf="showBreakButton"
+                        (click)="
+                            saveAttendance(AttendanceStatus.DONE_FOR_THE_DAY)
+                        "
+                        class="items-center bg-primary scanner text-white rounded-full ml-4"
+                    >
+                        Stopped Working
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div
+    class="flex flex-col flex-auto w-full max-w-screen-xl mx-auto outer p-5"
+    *ngIf="!employeeData"
+>
+    <div
+        class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none m-0"
+    >
+        <div class="text-xl font-bold p-0 mb-5">Update Attendance</div>
+        <button mat-icon-button matDialogClose>
+            <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div
+        class="flex flex-col sm:flex-col w-full max-w-xs sm:max-w-none bg-card"
+    >
+        <div class="flex flex-col">
+            <div class="text-lg font-medium truncate mb-3 text-center p-10">
+                No data Found
+            </div>
+        </div>
+    </div>
+</div>

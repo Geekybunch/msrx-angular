@@ -1,0 +1,23 @@
+::ng-deep body.light .mat-snack-bar-container,
+body .light .mat-snack-bar-container {
+    background: rgb(34 197 94);
+    color: #fff !important;
+}
+::ng-deep body.light .mat-snack-bar-container .mat-button {
+    color: #fff;
+}
+
+::ng-deep body.light .mat-snack-bar-container.alert-red {
+    background: rgb(239 68 68);
+    color: #fff !important;
+}
+.bg-primary,
+.bg-primary-50 {
+    min-width: 140px;
+    padding: 6px 34px 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+.outer {
+    min-width: 30rem !important;
+}

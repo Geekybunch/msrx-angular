@@ -31,9 +31,7 @@ export class UpdateProfileComponent implements OnInit {
         private snackBar: MatSnackBar,
         private router: Router,
         private matDialog: MatDialog
-    ) {
-        this.loadStates();
-    }
+    ) {}
 
     ngOnInit(): void {
         this.profileUpdateForm = new FormGroup({
@@ -82,6 +80,7 @@ export class UpdateProfileComponent implements OnInit {
                 console.log(this.profileUpdateForm.getRawValue());
             }
         });
+        this.loadStates();
     }
     async loadStates() {
         this.states = await this.commonService.getState();

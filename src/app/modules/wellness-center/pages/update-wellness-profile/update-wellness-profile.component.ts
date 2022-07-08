@@ -31,7 +31,7 @@ export class UpdateWellnessProfileComponent implements OnInit {
         private router: Router,
         private matDialog: MatDialog
     ) {
-        this.loadStates();
+        // this.loadStates();
     }
 
     ngOnInit(): void {
@@ -79,21 +79,19 @@ export class UpdateWellnessProfileComponent implements OnInit {
                         .get('latitude')
                         .setValue(coordinates[1]);
                 }
-                console.log(this.profileUpdateForm.getRawValue());
             }
         });
+        this.loadStates();
     }
     async loadStates() {
         this.states = await this.commonService.getState();
         if (this.states.length) {
-            // this.profileUpdateForm.get('state').setValue('Mississippi');
             this.cities = await this.commonService.getCitiesByState(
                 'Mississippi'
             );
             this.changeDetectionRef.detectChanges();
             this.profileUpdateForm.get('city').setValue(this.cities[0]);
             this.changeDetectionRef.detectChanges();
-            console.log(this.profileUpdateForm.getRawValue());
         }
     }
 
@@ -106,19 +104,14 @@ export class UpdateWellnessProfileComponent implements OnInit {
             this.selectedDays.splice(idx, 1);
         }
     }
-    // openLocation() {
-    //     this.router.navigateByUrl(
-    //         'https://www.google.com/maps/place/Byhalia+Family+Health+Center/@34.870251,-89.687277,15z/data=!4m5!3m4!1s0x0:0x7109ef4929e71450!8m2!3d34.8710112!4d-89.6876625?hl=en-US'
-    //     );
-    // }
+
     saveProfile() {
-        console.log(this.profileUpdateForm.value);
         if (this.profileUpdateForm.invalid) {
             this.snackBar.open('Invalid Form', 'Close', {
                 duration: 2000,
                 panelClass: ['alert-red'],
             });
-            console.log(this.profileUpdateForm);
+
             return;
         }
         // if (this.latitude.invalid || this.longitude.invalid) {
@@ -132,15 +125,11 @@ export class UpdateWellnessProfileComponent implements OnInit {
 
         delete (data as any).latitude;
         delete (data as any).longitude;
-        // data.location = {
-        //     coordinates: [this.longitude.value, this.latitude.value],
-        //     type: 'Point',
-        // };
+
         data.zipCode = '' + data.zipCode;
         data.workingDays = this.selectedDays;
         this.wellnessService.updateWellnessCenterProfile(data).subscribe(
             (res) => {
-                console.log('data saved');
                 this.snackBar.open('Data Updated', 'Close', {
                     duration: 3000,
                 });

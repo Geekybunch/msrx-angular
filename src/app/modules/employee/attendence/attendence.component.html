@@ -9,12 +9,14 @@
                 </div>
                 <div class="leave-chart">
                     <apx-chart
+                        *ngIf="chartOptions"
                         [series]="chartOptions.series"
                         [chart]="chartOptions.chart"
                         [labels]="chartOptions.labels"
                         [responsive]="chartOptions.responsive"
                         [colors]="chartOptions.colors"
-                    ></apx-chart>
+                    >
+                    </apx-chart>
                 </div>
                 <div class="flex items-center">
                     <label for="" class="font-medium mr-4"

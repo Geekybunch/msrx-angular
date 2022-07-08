@@ -8,7 +8,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Observer, Subject, takeUntil } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import {
     FuseNavigationService,
@@ -35,8 +35,8 @@ import {
     wellnessCenterNavigation,
 } from 'app/mock-api/common/navigation/data';
 import { CommonService } from 'app/core/common/common.service';
-import { getBusinessType } from 'app/shared/shared.utils';
-import { BusinessTypeEnums } from 'app/shared/shared.enums';
+import { genereateQRCode, getBusinessType } from 'app/shared/shared.utils';
+import { BusinessTypeEnums, QRType } from 'app/shared/shared.enums';
 
 @Component({
     selector: 'classy-layout',
@@ -52,6 +52,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     scanQRForm: FormGroup;
     plantId: string;
     filterPlantId: string = null;
+    base64Image: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     @ViewChild('scanQRCodeDialog') scanQRCodeDialog: TemplateRef<any>;
@@ -282,5 +283,52 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         }
 
         this.dialog.closeAll();
+    }
+    showAttendanceCode() {
+        const qr = genereateQRCode(
+            QRType.EMPLOYEE_ATTENDANCE,
+            this.role.modelId._id
+        );
+        qr.toDataURL();
+        const imageUrl = qr.toDataURL();
+        this.getBase64ImageFromURL(imageUrl).subscribe((base64data) => {
+            this.base64Image = 'data:image/jpg;base64,' + base64data;
+            const link = document.createElement('a');
+            document.body.appendChild(link); // for Firefox
+            link.setAttribute('href', this.base64Image);
+            link.setAttribute('download', `Attendance QR Code.png`);
+            link.click();
+        });
+    }
+
+    getBase64ImageFromURL(url: string) {
+        return Observable.create((observer: Observer<string>) => {
+            const img: HTMLImageElement = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = url;
+            if (!img.complete) {
+                img.onload = () => {
+                    observer.next(this.getBase64Image(img));
+                    observer.complete();
+                };
+                img.onerror = (err) => {
+                    observer.error(err);
+                };
+            } else {
+                observer.next(this.getBase64Image(img));
+                observer.complete();
+            }
+        });
+    }
+
+    getBase64Image(img: HTMLImageElement) {
+        const canvas: HTMLCanvasElement = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const dataURL: string = canvas.toDataURL('image/png');
+
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
     }
 }

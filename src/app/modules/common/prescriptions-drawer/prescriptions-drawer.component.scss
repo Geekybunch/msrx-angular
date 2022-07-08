@@ -5,3 +5,20 @@
     font-size: 14px;
     font-weight: 600;
 }
+::ng-deep .no_sign {
+    background: rgb(254 243 199) !important;
+    font-size: 12px;
+    min-height: 26px !important;
+    color: rgb(217 119 5) !important;
+    padding: 0px 10px !important;
+    &:hover,
+    &:active {
+        background: rgb(254 243 199) !important;
+    }
+    .mat-chip-ripple {
+        display: none !important;
+    }
+    mat-icon svg {
+        height: 18px;
+    }
+}

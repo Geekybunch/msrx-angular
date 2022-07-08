@@ -36,7 +36,6 @@ export class PlantsDrawerComponent implements OnInit {
             if (this.qrScannerId) {
                 this.getPlantDetails();
             }
-
             this.viewDetails = res;
         });
     }

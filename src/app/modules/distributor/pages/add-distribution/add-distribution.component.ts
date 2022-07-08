@@ -178,6 +178,10 @@ export class AddDistributionComponent implements OnInit {
                 this.router.navigateByUrl('distributor/dashboard');
             },
             (err: any) => {
+                this.snackBar.open(err.error.message, 'Close', {
+                    duration: 4000,
+                    panelClass: ['alert-red'],
+                });
                 console.log(err);
             }
         );

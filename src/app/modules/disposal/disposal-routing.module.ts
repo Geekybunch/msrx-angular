@@ -70,6 +70,13 @@ const routes: Routes = [
                         'app/modules/common/qr-scanner-layout/qr-scanner-layout.module'
                     ).then((m) => m.QrScannerLayoutModule),
             },
+            {
+                path: 'update-attendance',
+                loadChildren: () =>
+                    import(
+                        'app/modules/common/update-attendance/update-attendance.module'
+                    ).then((m) => m.UpdateAttendanceModule),
+            },
         ],
     },
 ];

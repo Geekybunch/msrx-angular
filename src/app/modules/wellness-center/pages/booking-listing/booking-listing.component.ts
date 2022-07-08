@@ -158,7 +158,6 @@ export class BookingListingComponent implements OnInit {
                 if (res.data.prescription) {
                     this.updateBooking(BOOKIN_STATUS.COMPLETED, booking);
                 }
-                this.getBookings();
             });
         });
     }

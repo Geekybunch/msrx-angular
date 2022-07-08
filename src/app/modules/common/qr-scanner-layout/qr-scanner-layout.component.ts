@@ -7,11 +7,14 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { AuthService } from 'app/core/auth/auth.service';
+import { cloneDeep } from 'lodash';
 import QrScanner from 'qr-scanner';
+import { UpdateAttendanceComponent } from '../update-attendance/update-attendance.component';
 @Component({
     selector: 'app-qr-scanner-layout',
     templateUrl: './qr-scanner-layout.component.html',
@@ -47,7 +50,8 @@ export class QrScannerLayoutComponent implements OnInit {
         private authService: AuthService,
         private cd: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
-        private zone: NgZone
+        private zone: NgZone,
+        private dialog: MatDialog
     ) {
         this.userRole = this.authService.userRole;
     }
@@ -112,6 +116,9 @@ export class QrScannerLayoutComponent implements OnInit {
         if (type === '3') {
             this.scannedType = 'Patient';
         }
+        if (type === '4') {
+            this.scannedType = 'Employee';
+        }
         this.zone.run(() => {
             this.getTestresults();
         });
@@ -129,6 +136,13 @@ export class QrScannerLayoutComponent implements OnInit {
                         plantID: this.scannedId,
                     },
                     replaceUrl: true,
+                });
+            } else if (this.scannedType === 'Employee') {
+                this.dialog.open(UpdateAttendanceComponent, {
+                    autoFocus: false,
+                    data: {
+                        employeeId: cloneDeep(this.scannedId),
+                    },
                 });
             } else {
                 this._fuseConfirmationService.open({
@@ -155,6 +169,13 @@ export class QrScannerLayoutComponent implements OnInit {
                     },
                     replaceUrl: true,
                 });
+            } else if (this.scannedType === 'Employee') {
+                this.dialog.open(UpdateAttendanceComponent, {
+                    autoFocus: false,
+                    data: {
+                        employeeId: cloneDeep(this.scannedId),
+                    },
+                });
             } else {
                 this._fuseConfirmationService.open({
                     title: 'Error',
@@ -177,6 +198,13 @@ export class QrScannerLayoutComponent implements OnInit {
                 this.plantDetails = true;
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
+            } else if (this.scannedType === 'Employee') {
+                this.dialog.open(UpdateAttendanceComponent, {
+                    autoFocus: false,
+                    data: {
+                        employeeId: cloneDeep(this.scannedId),
+                    },
+                });
             } else {
                 this._fuseConfirmationService.open({
                     title: 'Error',
@@ -203,6 +231,13 @@ export class QrScannerLayoutComponent implements OnInit {
 
                     replaceUrl: true,
                 });
+            } else if (this.scannedType === 'Employee') {
+                this.dialog.open(UpdateAttendanceComponent, {
+                    autoFocus: false,
+                    data: {
+                        employeeId: cloneDeep(this.scannedId),
+                    },
+                });
             } else {
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
@@ -217,6 +252,13 @@ export class QrScannerLayoutComponent implements OnInit {
                         plantID: this.scannedId,
                     },
                     replaceUrl: true,
+                });
+            } else if (this.scannedType === 'Employee') {
+                this.dialog.open(UpdateAttendanceComponent, {
+                    autoFocus: false,
+                    data: {
+                        employeeId: cloneDeep(this.scannedId),
+                    },
                 });
             } else {
                 this._fuseConfirmationService.open({
@@ -240,6 +282,13 @@ export class QrScannerLayoutComponent implements OnInit {
                 this.plantDetails = true;
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
+            } else if (this.scannedType === 'Employee') {
+                this.dialog.open(UpdateAttendanceComponent, {
+                    autoFocus: false,
+                    data: {
+                        employeeId: cloneDeep(this.scannedId),
+                    },
+                });
             } else {
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
@@ -256,6 +305,13 @@ export class QrScannerLayoutComponent implements OnInit {
                 this.prescriptionDetails = true;
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
+            } else if (this.scannedType === 'Employee') {
+                this.dialog.open(UpdateAttendanceComponent, {
+                    autoFocus: false,
+                    data: {
+                        employeeId: cloneDeep(this.scannedId),
+                    },
+                });
             } else {
                 this._fuseConfirmationService.open({
                     title: 'Error',
@@ -282,6 +338,13 @@ export class QrScannerLayoutComponent implements OnInit {
                 this.prescriptionDetails = true;
                 this.sideNav.toggle();
                 this.qrScannerId = this.scannedId;
+            } else if (this.scannedType === 'Employee') {
+                this.dialog.open(UpdateAttendanceComponent, {
+                    autoFocus: false,
+                    data: {
+                        employeeId: cloneDeep(this.scannedId),
+                    },
+                });
             } else {
                 this._fuseConfirmationService.open({
                     title: 'Error',
@@ -303,10 +366,4 @@ export class QrScannerLayoutComponent implements OnInit {
     closeDrawer(event) {
         this.sideNav.close();
     }
-
-    // tester can only scan a plant - we display the test form
-    // processor can only scan a plant - we display the process form
-    // cultivator can only scan a plant - we display the plant details. show popup from right
-    // manufacturer can scan plant. - we display him the page where he added products.
-    // manufacturer can scan product. - we display the product popup from right side.
 }

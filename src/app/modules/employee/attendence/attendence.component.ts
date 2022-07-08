@@ -23,7 +23,7 @@ const colors: any = {
         secondary: '#FDF1BA',
     },
 };
-import { ChartComponent } from 'ng-apexcharts';
+import { ChartComponent, ChartType } from 'ng-apexcharts';
 
 import {
     ApexNonAxisChartSeries,
@@ -70,35 +70,39 @@ export class AttendenceComponent implements OnInit {
         private authService: AuthService
     ) {
         this.userRole = this.authService.userRole;
+        console.log(this.userRole.modelId.type);
     }
 
     ngOnInit(): void {
-        this.getAdminAttendance();
-        this.updateChart(this.workingDays, this.leaveDays);
+        if (this.userRole.modelId.type === 'Admin') {
+            this.getAdminAttendance();
+        } else {
+            this.getAttendance();
+        }
+        // this.getAdminAttendance();
+        // this.updateChart(this.workingDays, this.leaveDays);
     }
+    changeEmploye(event) {
+        this.selectedEmployee = event;
+        this.getAttendance();
+    }
+
     getAdminAttendance() {
         this.employeeService.getEmployees().subscribe((res) => {
             this.employeesList = res.data.employees.results;
             this.selectedEmployee = this.employeesList[0];
-
             this.getAttendance();
         });
     }
-    changeEmploye(event) {
-        console.log(event);
-        this.selectedEmployee = event;
-        this.getAttendance();
-    }
+
     async getAttendance() {
         let empID = this.userRole.modelId?._id;
-
         if (this.selectedEmployee) {
             empID = this.selectedEmployee._id;
         }
         const openedMonth = moment(this.viewDate);
         const start = openedMonth.startOf('month').get('date');
         const end = openedMonth.endOf('month').get('date');
-
         this.attendanceService
             .getAttendance(
                 empID,
@@ -111,7 +115,6 @@ export class AttendenceComponent implements OnInit {
                         res.data.attendances.results.map((a) => a.date)
                     );
                     const localEvents = [];
-
                     let workingDays = 0;
                     let leaveDays = 0;
 
@@ -147,34 +150,19 @@ export class AttendenceComponent implements OnInit {
                     }
 
                     this.events = localEvents;
-
-                    // this.chartOptions.series[0] = workingDays;
-                    // this.chartOptions.series[1] = leaveDays;
-                    // this.calenderRef.refresh.next();
                     this.updateChart(workingDays, leaveDays);
                 },
-                (_) => {}
+                (err) => {
+                    console.log(err);
+                }
             );
-    }
-
-    addMockEvents() {
-        this.events.push({
-            start: moment().subtract(2, 'day').toDate(),
-            title: 'Leave',
-            color: {
-                primary: '#eb445a',
-                secondary: '#ffc409',
-            },
-            cssClass: 'leave',
-            end: moment().subtract(2, 'day').toDate(),
-        });
     }
 
     updateChart(workingDays: number, leaveDays: number) {
         this.chartOptions = {
             series: [workingDays, leaveDays],
             chart: {
-                type: 'donut',
+                type: 'donut' as ChartType,
             },
             labels: ['Working', 'Leave'],
             colors: ['#70d800', '#eb445a'],
@@ -192,5 +180,17 @@ export class AttendenceComponent implements OnInit {
                 },
             ],
         };
+    }
+    addMockEvents() {
+        this.events.push({
+            start: moment().subtract(2, 'day').toDate(),
+            title: 'Leave',
+            color: {
+                primary: '#eb445a',
+                secondary: '#ffc409',
+            },
+            cssClass: 'leave',
+            end: moment().subtract(2, 'day').toDate(),
+        });
     }
 }

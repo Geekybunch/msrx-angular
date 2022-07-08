@@ -160,7 +160,7 @@ export class ProductListingComponent implements OnInit {
 
     openProductDetails(event) {
         this.viewDetails = event;
-        this.commonService.$passData.next(event);
+        this.commonService.$passData.next(event._id);
         this.sideNav.toggle();
     }
 

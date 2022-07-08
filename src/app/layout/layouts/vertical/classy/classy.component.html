@@ -27,6 +27,34 @@
         >
             <div class="fuse-vertical-navigation-item-wrapper">
                 <button
+                    (click)="showAttendanceCode()"
+                    class="mat-tooltip-trigger fuse-vertical-navigation-item"
+                    style="width: 100%"
+                >
+                    <mat-icon
+                        class="mat-icon notranslate fuse-vertical-navigation-item-icon mat-icon-no-color ng-star-inserted"
+                        [svgIcon]="'qr_code'"
+                    ></mat-icon>
+
+                    Attendance Code
+                </button>
+            </div></fuse-vertical-navigation-basic-item
+        >
+
+        <fuse-vertical-navigation-basic-item
+            *ngIf="
+                role.modelId?.employer?.businessType === 'Cultivator' ||
+                role.modelId?.employer?.businessType === 'Tester' ||
+                role.modelId?.employer?.businessType === 'Processor' ||
+                role.modelId?.employer?.businessType === 'Manufacturer' ||
+                role.modelId?.employer?.businessType === 'Disposer' ||
+                role.modelId?.employer?.businessType === 'Distributor' ||
+                role.modelId?.employer?.businessType === 'WellnessCenter' ||
+                role.modelId?.employer?.businessType === 'Dispensary'
+            "
+        >
+            <div class="fuse-vertical-navigation-item-wrapper">
+                <button
                     (click)="openDialog()"
                     class="mat-tooltip-trigger fuse-vertical-navigation-item"
                     style="width: 100%"

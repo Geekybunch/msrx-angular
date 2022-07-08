@@ -262,4 +262,16 @@ export const appRoutes: Route[] = [
                 (m) => m.DispensaryModule
             ),
     },
+    {
+        path: 'update-attendance',
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: InitialDataResolver,
+        },
+        loadChildren: () =>
+            import(
+                'app/modules/common/update-attendance/update-attendance.module'
+            ).then((m) => m.UpdateAttendanceModule),
+    },
 ];

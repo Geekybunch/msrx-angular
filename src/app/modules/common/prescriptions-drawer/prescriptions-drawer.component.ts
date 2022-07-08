@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CommonService } from 'app/core/common/common.service';
 import { PrescriptionI } from 'app/core/wellness/wellness.interface';
+import { WellnessService } from 'app/core/wellness/wellness.service';
 import { QRType } from 'app/shared/shared.enums';
 import { genereateQRCode } from 'app/shared/shared.utils';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -21,28 +23,30 @@ export class PrescriptionsDrawerComponent implements OnInit {
     patientID: string;
     prescriptionNull: any;
     base64data: string = '';
+    isSigning = false;
     @Input() qrScannerId: string;
 
     constructor(
         private commonService: CommonService,
-        private spinner: NgxSpinnerService
+        private spinner: NgxSpinnerService,
+        private snackBar: MatSnackBar,
+        private wellnessService: WellnessService
     ) {
         this.commonService.$passData.subscribe((res: any) => {
-            console.log('res', res);
             this.prescription = res;
-            this.bookingID = this.prescription.booking._id;
-            this.patientID = this.prescription.booking.patient._id;
+            this.bookingID = this.prescription?.booking._id;
+            this.patientID = this.prescription?.booking.patient._id;
             console.log(this.patientID);
         });
     }
 
     ngOnInit(): void {
         if (this.qrScannerId) {
-            this.getPrescriptionDetails();
+            this.getPrescriptionbyPatient();
         }
     }
 
-    public getPrescriptionDetails() {
+    public getPrescriptionbyPatient() {
         return this.commonService
             .getValidPrescription(this.qrScannerId)
             .subscribe(
@@ -58,6 +62,23 @@ export class PrescriptionsDrawerComponent implements OnInit {
                     console.log(err);
                 }
             );
+    }
+    signPrescription() {
+        this.wellnessService.signPrescription(this.prescription._id).subscribe(
+            () => {
+                this.snackBar.open('Prescription Signed', 'Close', {
+                    duration: 3000,
+                });
+                this.isSigning = false;
+                this.getPrescriptionbyPatient();
+            },
+            (err) => {
+                this.snackBar.open(err.error.message, 'Close', {
+                    duration: 3000,
+                    panelClass: ['alert-red'],
+                });
+            }
+        );
     }
 
     closeNav(eve: any) {

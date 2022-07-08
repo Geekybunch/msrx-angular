@@ -107,23 +107,58 @@
             </div>
             <div class="p-6">
                 <div class="flex flex-col border-b mb-5 pb-5">
-                    <div
-                        class="flex flex-col"
-                        *ngFor="
-                            let list of prescription && prescription.signedBy;
-                            let i = index
-                        "
-                    >
+                    <div class="flex flex-col">
                         <div class="text-lg mt-2 truncate">
                             <span class="font-medium text-secondary"
-                                >Signature {{ i + 1 }}</span
+                                >Signature 1</span
                             >
                             <span class="mx-2">:</span
-                            ><span class="font-bold">{{ list.name }}</span>
+                            ><span
+                                class="font-bold"
+                                *ngIf="prescription && prescription.signedBy[0]"
+                                >{{
+                                    prescription &&
+                                        prescription.signedBy[0].name
+                                }}</span
+                            >
+                            <span
+                                class="font-bold no_sign rounded-full flex items-center"
+                                *ngIf="
+                                    prescription && !prescription.signedBy[0]
+                                "
+                            >
+                                <mat-icon
+                                    class="mat-icon notranslate text-current mat-icon-no-color mr-1"
+                                    svgIcon="heroicons_outline:exclamation"
+                                ></mat-icon>
+                                Not Signed
+                            </span>
                         </div>
-
-                        <div class="leading-6 mb-2">
-                            <span class="font-medium"></span>
+                        <div class="text-lg mt-4 truncate flex">
+                            <span class="font-medium text-secondary"
+                                >Signature 2</span
+                            >
+                            <span class="mx-2">:</span
+                            ><span
+                                class="font-bold"
+                                *ngIf="prescription && prescription.signedBy[1]"
+                                >{{
+                                    prescription &&
+                                        prescription.signedBy[1].name
+                                }}</span
+                            >
+                            <span
+                                class="font-bold no_sign rounded-full flex items-center"
+                                *ngIf="
+                                    prescription && !prescription.signedBy[1]
+                                "
+                            >
+                                <mat-icon
+                                    class="mat-icon notranslate text-current mat-icon-no-color mr-1"
+                                    svgIcon="heroicons_outline:exclamation"
+                                ></mat-icon>
+                                Not Signed
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -302,6 +337,13 @@
                         class="items-center bg-primary scanner text-white rounded-full"
                     >
                         Give Dosage
+                    </button>
+                    <button
+                        *ngIf="isSigning"
+                        (click)="signPrescription()"
+                        class="items-center bg-primary scanner text-white rounded-full ml-4"
+                    >
+                        Sign Canna Card
                     </button>
                     <button
                         (click)="downloadQrCode()"

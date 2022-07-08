@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth/auth.service';
 import { CommonService } from 'app/core/common/common.service';
+import { WellnessService } from 'app/core/wellness/wellness.service';
 import { GiveDosageFormComponent } from 'app/modules/dispensary/pages/give-dosage-form/give-dosage-form.component';
 
 import { QRType } from 'app/shared/shared.enums';
@@ -24,6 +25,7 @@ import { Observable, Observer } from 'rxjs';
     styleUrls: ['./prescription-details.component.scss'],
 })
 export class PrescriptionDetailsComponent implements OnInit {
+    bookingID: string;
     patientID: string;
     prescription: any;
     prescriptionNull: any;
@@ -31,6 +33,7 @@ export class PrescriptionDetailsComponent implements OnInit {
     giveDosage: boolean = false;
     role;
     base64data: string = '';
+    isSigning = false;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -39,8 +42,8 @@ export class PrescriptionDetailsComponent implements OnInit {
         private snackBar: MatSnackBar,
         private zone: NgZone,
         private authService: AuthService,
-        private matDialog: MatDialog,
-        private spinner: NgxSpinnerService
+        private spinner: NgxSpinnerService,
+        private wellnessService: WellnessService
     ) {
         this.role = this.authService.userRole;
     }
@@ -48,27 +51,56 @@ export class PrescriptionDetailsComponent implements OnInit {
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe((qParams) => {
             console.log(qParams.patientID);
-            if (qParams.patientID) {
+            if (qParams.bookingID) {
+                this.bookingID = qParams.bookingID;
+                this.zone.run(() => {
+                    this.getPrescription();
+                });
+            } else if (qParams.patientID) {
                 this.patientID = qParams.patientID;
+                this.zone.run(() => {
+                    this.getPrescriptionbyPatient();
+                });
             }
-            this.zone.run(() => {
-                this.getPrescriptionDetails();
-            });
         });
         if (this.role.modelId.employer.businessType === 'Dispensary') {
             this.giveDosage = true;
+        } else if (
+            this.role.modelId.employer.businessType === 'WellnessCenter'
+        ) {
+            this.isSigning = true;
         }
     }
     ngOnDestroy(): void {
-        this.getPrescriptionDetails();
+        // this.getPrescriptionbyPatient();
+        // this.getPrescription();
+    }
+    getPrescription() {
+        this.commonService.getPrescription(this.bookingID).subscribe(
+            (res) => {
+                this.prescription = res?.data?.prescription;
+                this.bookingID = this.prescription.booking._id;
+                this.patientID = this.prescription.booking.patient._id;
+            },
+            (err: any) => {
+                this.router.navigate(['/'], {
+                    replaceUrl: true,
+                });
+                this.snackBar.open(err.error.message, 'Close', {
+                    duration: 3000,
+                    panelClass: ['alert-red'],
+                });
+                console.log(err);
+            }
+        );
     }
 
-    getPrescriptionDetails() {
+    getPrescriptionbyPatient() {
         return this.commonService
             .getValidPrescription(this.patientID)
             .subscribe(
                 (res) => {
-                    this.prescription = res.data.prescription;
+                    this.prescription = res?.data?.prescription;
                     console.log(this.prescription);
                     if (!this.prescription) {
                         this.prescriptionNull =
@@ -100,6 +132,23 @@ export class PrescriptionDetailsComponent implements OnInit {
             link.setAttribute('download', `prescription_${this.patientID}.png`);
             link.click();
         });
+    }
+    signPrescription() {
+        this.wellnessService.signPrescription(this.prescription._id).subscribe(
+            () => {
+                this.snackBar.open('Prescription Signed', 'Close', {
+                    duration: 3000,
+                });
+                this.isSigning = false;
+                this.getPrescriptionbyPatient();
+            },
+            (err) => {
+                this.snackBar.open(err.error.message, 'Close', {
+                    duration: 3000,
+                    panelClass: ['alert-red'],
+                });
+            }
+        );
     }
 
     getBase64ImageFromURL(url: string) {

@@ -123,7 +123,7 @@ export class PlantsComponent implements OnInit {
     }
 
     plantDetails(event): void {
-        this.commonService.$passData.next(event);
+        this.commonService.$passData.next(event._id);
         this.sideNav.toggle();
     }
 
