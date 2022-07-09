@@ -22,8 +22,8 @@ export class UpdateAttendanceComponent implements OnInit {
     lastData: AttendanceStatusObjectI;
     workingHours = '0';
     employeeData: boolean = false;
+    attendanceDetails;
     constructor(
-        private activatedRoute: ActivatedRoute,
         private attendanceService: AttendanceService,
         private snackBar: MatSnackBar,
         private _fuseConfirmationService: FuseConfirmationService,
@@ -37,10 +37,14 @@ export class UpdateAttendanceComponent implements OnInit {
     }
     getLastStatus() {
         this.attendanceService.getLastAttendance(this.employeeId).subscribe(
-            (res) => {
-                console.log(res);
+            (res: any) => {
+                this.attendanceDetails = res.data.attendance.attendanceStatus;
+                console.log(this.attendanceDetails);
                 this.employeeData = true;
-                if ((res as any).data?.lastStatus?.lastStatus) {
+                if (
+                    (res as AttendanceNoDataResponse).data?.lastStatus
+                        ?.lastStatus
+                ) {
                     this.snackBar.open('No Record Found For Today', 'Close', {
                         duration: 3000,
                         panelClass: ['alert-red'],
@@ -59,13 +63,31 @@ export class UpdateAttendanceComponent implements OnInit {
         );
     }
     saveAttendance(status: AttendanceStatus) {
+        console.log(this.employeeId);
         return this.attendanceService
             .saveAttendance(status, this.employeeId)
-            .subscribe(() => {
-                this.snackBar.open('Status Updated!', 'Close', {
-                    duration: 3000,
-                });
-            });
+            .subscribe(
+                () => {
+                    this.snackBar.open('Status Updated!', 'Close', {
+                        duration: 3000,
+                    });
+                },
+                (err) => {
+                    this._fuseConfirmationService.open({
+                        title: 'Error',
+                        message: err.error.message,
+                        actions: {
+                            confirm: {
+                                show: false,
+                            },
+                            cancel: {
+                                show: true,
+                                label: 'Cancel',
+                            },
+                        },
+                    });
+                }
+            );
     }
     get lastStatus() {
         if (!this.lastData) {

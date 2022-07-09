@@ -35,10 +35,12 @@ export class AttendanceService {
         );
     }
     saveAttendance(status: AttendanceStatus, employeeId: string) {
-        return this.http.post(applicationUrls.adminAttendanceUrl, {
-            employeeId,
-            status,
-        });
+        return this.http.post(
+            applicationUrls.attendanceUrl + employeeId + '/' + 'attendance',
+            {
+                status,
+            }
+        );
     }
     calculateWorkingTime(attendanceData: AttendanceElementI[]) {
         console.log(attendanceData);

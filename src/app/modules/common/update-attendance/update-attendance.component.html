@@ -1,7 +1,4 @@
-<div
-    class="flex flex-col flex-auto w-full max-w-screen-xl mx-auto outer p-5"
-    *ngIf="employeeData"
->
+<div class="flex flex-col flex-auto w-full max-w-screen-xl mx-auto outer p-5">
     <div
         class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none m-0"
     >
@@ -14,18 +11,35 @@
         class="flex flex-col sm:flex-col w-full max-w-xs sm:max-w-none bg-card"
     >
         <div class="flex flex-col">
-            <div class="text-lg font-medium truncate mb-3">Patient Details</div>
+            <div class="text-lg font-medium truncate mb-3">
+                Employee Details
+            </div>
             <div class="leading-6 mb-3">
+                <span class="font-medium text-secondary">Employee Status</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">
+                    {{ attendanceDetails[0].status }}</span
+                >
+            </div>
+            <div class="leading-6 mb-3">
+                <span class="font-medium text-secondary">Time</span>
+                <span class="mx-2">:</span>
+                <span class="font-medium">
+                    {{ attendanceDetails[0].time | date: "medium" }}</span
+                >
+            </div>
+
+            <div class="leading-6 mb-3" *ngIf="lastData">
                 <span class="font-medium text-secondary">Employee Name</span>
                 <span class="mx-2">:</span>
                 <span class="font-medium"> {{ lastData?.employee?.name }}</span>
             </div>
-            <div class="leading-6 mb-3">
+            <div class="leading-6 mb-3" *ngIf="lastData">
                 <span class="font-medium text-secondary">Last Status</span>
                 <span class="mx-2">:</span>
                 <span class="font-medium"> {{ lastStatus }}</span>
             </div>
-            <div class="leading-6 mb-3">
+            <div class="leading-6 mb-3" *ngIf="lastData">
                 <span class="font-medium text-secondary">
                     Hours Worked (Today)
                 </span>
@@ -63,7 +77,7 @@
         </div>
     </div>
 </div>
-<div
+<!-- <div
     class="flex flex-col flex-auto w-full max-w-screen-xl mx-auto outer p-5"
     *ngIf="!employeeData"
 >
@@ -84,4 +98,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

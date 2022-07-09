@@ -177,16 +177,16 @@ class ApplicationURLs {
     }
 
     get adminAttendanceLastStatus() {
-        return this.serverUrl + '/admin/attendance/{{employeeId}}/last-status';
-    }
-    get attendanceUrlAdmin() {
-        return this.serverUrl + '/admin/employees/{{employeeId}}/attendance';
-    }
-    get attendanceUrl() {
         return (
             this.serverUrl +
-            '/business/common/employees/{{employeeId}}/attendance'
+            '/business/common/employees/{{employeeId}}/attendance/last-status'
         );
+    }
+    get attendanceUrlAdmin() {
+        return this.serverUrl + '/business/employees/{{employeeId}}/attendance';
+    }
+    get attendanceUrl() {
+        return this.serverUrl + '/business/common/employees/';
     }
     get adminAttendanceUrl() {
         return this.serverUrl + '/admin/attendance/';
