@@ -27,7 +27,7 @@ export class AttendanceService {
         );
     }
     getLastAttendance(employeeId: string) {
-        return this.http.get<AttendanceResponse | AttendanceListResponse>(
+        return this.http.get(
             applicationUrls.adminAttendanceLastStatus.replace(
                 '{{employeeId}}',
                 employeeId
