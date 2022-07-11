@@ -13,7 +13,9 @@ export class AuthService {
     constructor(
         private _httpClient: HttpClient,
         private _userService: UserService
-    ) {}
+    ) {
+        this.userDtails = JSON.parse(localStorage.getItem('userData'));
+    }
 
     set accessToken(token: string) {
         if (!localStorage.getItem('accessToken')) {
@@ -25,7 +27,7 @@ export class AuthService {
         return localStorage.getItem('accessToken') ?? '';
     }
 
-    get userRole(): Employer {
+    get userRole() {
         return JSON.parse(localStorage.getItem('userData'));
     }
     // -----------------------------------------------------------------------------------------------------
@@ -39,6 +41,10 @@ export class AuthService {
      */
     forgotPassword(email: string): Observable<any> {
         return this._httpClient.post('api/auth/forgot-password', email);
+    }
+
+    isAdmin() {
+        return this.userDtails.modelId.type === 'Admin';
     }
 
     /**
@@ -56,9 +62,9 @@ export class AuthService {
      * @param credentials
      */
     signIn(credentials: { email: string; password: string }): Observable<any> {
-        if (this._authenticated) {
-            return throwError('User is already logged in.');
-        }
+        // if (this._authenticated) {
+        //     return throwError('User is already logged in.');
+        // }
 
         return this._httpClient
             .post(`${environment.apiUrl}/auth/login/`, credentials)
@@ -72,6 +78,7 @@ export class AuthService {
                         'userData',
                         JSON.stringify(response.data.user)
                     );
+                    this.userDtails = response.data.user;
                     return of(response);
                 })
             );

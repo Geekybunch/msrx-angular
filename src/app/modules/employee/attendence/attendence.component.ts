@@ -63,19 +63,18 @@ export class AttendenceComponent implements OnInit {
     workingDays = 0;
     leaveDays = 0;
     notWorkingDays = [6, 0];
-    public userRole: any;
+    isAdmin = false;
 
     constructor(
         private employeeService: EmployeeAdminService,
         private attendanceService: AttendanceService,
         private authService: AuthService
     ) {
-        this.userRole = this.authService.userRole;
-        console.log(this.userRole.modelId.type);
+        this.isAdmin = this.authService.isAdmin();
     }
 
     ngOnInit(): void {
-        if (this.userRole.modelId.type === 'Admin') {
+        if (this.isAdmin) {
             this.getAdminAttendance();
         } else {
             this.getAttendance();
@@ -98,7 +97,7 @@ export class AttendenceComponent implements OnInit {
     }
 
     async getAttendance() {
-        let empID = this.userRole.modelId?._id;
+        let empID = this.authService.userRole?.modelId._id;
         if (this.selectedEmployee) {
             empID = this.selectedEmployee._id;
         }
