@@ -101,8 +101,10 @@ export class AttendenceComponent implements OnInit {
             empID = this.selectedEmployee._id;
         }
         const openedMonth = moment(this.viewDate);
+        console.log(this.viewDate);
         const start = openedMonth.startOf('month').get('date');
         const end = openedMonth.endOf('month').get('date');
+        console.log('start', start, end);
         this.attendanceService
             .getAttendance(
                 empID,
