@@ -62,6 +62,7 @@ export class AttendenceComponent implements OnInit {
     selectedEmployee: EmployeeI;
     workingDays = 0;
     leaveDays = 0;
+    notWorkingDays = [6, 0];
     public userRole: any;
 
     constructor(
@@ -82,6 +83,7 @@ export class AttendenceComponent implements OnInit {
         // this.getAdminAttendance();
         // this.updateChart(this.workingDays, this.leaveDays);
     }
+
     changeEmploye(event) {
         this.selectedEmployee = event;
         this.getAttendance();
@@ -125,14 +127,15 @@ export class AttendenceComponent implements OnInit {
                     for (let index = start; index <= end; index++) {
                         const iterDate = `${index}-${openedMonth.format(
                             'MM'
-                        )}-${openedMonth.format('YY')}`;
+                        )}-${openedMonth.format('YYYY')}`;
                         const leaveDate = openedMonth
                             .clone()
                             .set('date', index);
                         if (!savedAttendance.has(iterDate)) {
                             if (
-                                leaveDate.isoWeekday() === 6 ||
-                                leaveDate.isoWeekday() === 7
+                                this.notWorkingDays.includes(
+                                    leaveDate.weekday()
+                                )
                             ) {
                                 continue;
                             }
@@ -185,6 +188,7 @@ export class AttendenceComponent implements OnInit {
             ],
         };
     }
+
     addMockEvents() {
         this.events.push({
             start: moment().subtract(2, 'day').toDate(),
