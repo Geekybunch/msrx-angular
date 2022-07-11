@@ -17,7 +17,7 @@ export class AttendanceService {
 
     getAttendance(employeeID: string, from: string, to: string) {
         return this.http.get<AttendanceListResponse>(
-            applicationUrls.attendanceUrl.replace('{{employeeId}}', employeeID),
+            applicationUrls.attendanceUrl + employeeID + '/attendance',
             {
                 params: {
                     from,
