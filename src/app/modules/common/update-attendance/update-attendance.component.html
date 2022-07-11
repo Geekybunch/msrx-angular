@@ -9,6 +9,7 @@
     </div>
     <div
         class="flex flex-col sm:flex-col w-full max-w-xs sm:max-w-none bg-card"
+        *ngIf="employeeData"
     >
         <div class="flex flex-col">
             <div class="text-lg font-medium truncate mb-3">
@@ -17,27 +18,29 @@
             <div class="leading-6 mb-3">
                 <span class="font-medium text-secondary">Employee Status</span>
                 <span class="mx-2">:</span>
-                <span class="font-medium">
-                    {{ attendanceDetails[0].status }}</span
+                <span class="font-medium" *ngIf="lastStatus">
+                    {{ lastStatus.status }}</span
+                >
+                <span class="font-medium" *ngIf="!lastStatus">
+                    HASN'T CHECKED IN</span
                 >
             </div>
             <div class="leading-6 mb-3">
                 <span class="font-medium text-secondary">Time</span>
                 <span class="mx-2">:</span>
-                <span class="font-medium">
-                    {{ attendanceDetails[0].time | date: "medium" }}</span
+                <span class="font-medium" *ngIf="lastStatus">
+                    {{ lastStatus.time | date: "medium" }}</span
                 >
+                <span class="font-medium" *ngIf="!lastStatus">
+                    HASN'T CHECKED IN</span
+                >
+
             </div>
 
-            <div class="leading-6 mb-3" *ngIf="lastData">
+            <div class="leading-6 mb-3">
                 <span class="font-medium text-secondary">Employee Name</span>
                 <span class="mx-2">:</span>
-                <span class="font-medium"> {{ lastData?.employee?.name }}</span>
-            </div>
-            <div class="leading-6 mb-3" *ngIf="lastData">
-                <span class="font-medium text-secondary">Last Status</span>
-                <span class="mx-2">:</span>
-                <span class="font-medium"> {{ lastStatus }}</span>
+                <span class="font-medium"> {{ employeeDetails?.name }}</span>
             </div>
             <div class="leading-6 mb-3" *ngIf="lastData">
                 <span class="font-medium text-secondary">
@@ -46,8 +49,24 @@
                 <span class="mx-2">:</span>
                 <span class="font-medium"> {{ workingHours }} hrs</span>
             </div>
+            <div class="leading-6 mb-3" *ngIf="lastData && lastData.attendanceStatus.length">
+                <span class="font-medium text-secondary">Last Status - </span>
+                <table>
+                    <thead>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let attendance of lastData.attendanceStatus">
+                            <td>{{ attendance.time  | date: "medium" }}</td>
+                            <td style="text-align: center;">{{ attendance.status}}</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
             <div class="action-buttons">
-                <h2 class="ion-margin">Mark Employee Status As</h2>
+                <h2 class="ion-margin" *ngIf="showWorkingButton || showBreakButton || showDoneButton">Mark Employee Status As</h2>
                 <div class="mt-6">
                     <button
                         *ngIf="showWorkingButton"
@@ -64,7 +83,7 @@
                         Break
                     </button>
                     <button
-                        *ngIf="showBreakButton"
+                        *ngIf="showDoneButton"
                         (click)="
                             saveAttendance(AttendanceStatus.DONE_FOR_THE_DAY)
                         "

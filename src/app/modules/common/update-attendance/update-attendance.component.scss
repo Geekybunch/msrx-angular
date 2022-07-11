@@ -21,3 +21,15 @@ body .light .mat-snack-bar-container {
 .outer {
     min-width: 30rem !important;
 }
+
+table, th, td {
+    border: 1px solid black;
+}
+
+table{
+    width: 100%;
+}
+
+table td{
+    padding: 10px;
+}
