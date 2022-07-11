@@ -112,7 +112,9 @@ export class AttendenceComponent implements OnInit {
             .subscribe(
                 (res) => {
                     const savedAttendance = new Set<string>(
-                        res.data.attendances.results.map((a) => a.date)
+                        res.data.attendances.results.map((a: any) =>
+                            moment(a.createdAt).format('D-MM-YYYY')
+                        )
                     );
                     const localEvents = [];
                     let workingDays = 0;
